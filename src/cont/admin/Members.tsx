@@ -174,7 +174,42 @@ const Members: React.FC = () => {
           <tr>
             <td colSpan={7}>
               <div className={styles.pagination}>
+                <nav>
+                  <ul className="pagination justify-content-center">
+                    {/* PrevPage 출력하기 : startPage > 1 보다 클때   
+                                        Upboard List = 73
+                                        검수용 : totalPages 8 / startPage: 6 / endPage : 8
+                                    */}
+                    {startPage > 1 && (
+                      <li className="page-item">
+                        <button className="page-link" onClick={() => { pageChange(startPage - 1) }}>이전</button>
+                      </li>
+                    )}
 
+                    {/* 페이지 출력하기 */}
+                    {
+                      // startPage = 1 , endPage=3 => [1,2,3]이란 배열을 만들어 준다.
+                      Array.from({ length: endPage - startPage + 1 }, (xx, i) => i + startPage)
+                        .map((page) => (
+                          <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
+                            <button className="page-link" onClick={() => { pageChange(page) }}>{page}</button>
+                          </li>
+                        ))
+                    }
+
+                    {/* <li className="page-item active">
+                                        <button className="page-link">2</button>
+                                    </li> */}
+                    {/* NextPage 출력하기 : totalPage 보다 endPage 적을 때 다음페이지가 있는 것으로 계산  
+                                검수용 : totalPages 8 / startPage: 1 / endPage : 5
+                                */}
+                    {endPage < totalPages && (
+                      <li className="page-item">
+                        <button className="page-link" onClick={() => { pageChange(endPage + 1) }}>다음</button>
+                      </li>
+                    )}
+                  </ul>
+                </nav>
               </div>
             </td>
           </tr>
@@ -185,8 +220,9 @@ const Members: React.FC = () => {
 
 
       {/* 선택한 회원 등급 변경 */}
-      <div style={{ marginTop: "20px" }}>
+      <div className="d-flex align-items-center gap-3 mt-3" style={{ maxWidth: "420px" }}>
         <select
+          className="form-select"
           value={grade}
           onChange={(e) => setGrade(e.target.value)}
         >
@@ -196,13 +232,14 @@ const Members: React.FC = () => {
           <option value="WITHDRAWN">탈퇴</option>
         </select>
 
-        <button onClick={updateGrade}>
+        <button
+          className="btn btn-primary text-nowrap px-3"
+          onClick={updateGrade}
+        >
           선택 회원 등급 변경
         </button>
       </div>
-
     </div>
   );
 };
-
 export default Members;
