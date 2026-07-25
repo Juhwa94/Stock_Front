@@ -104,27 +104,7 @@ const Login: React.FC = () => {
         >
           로그인
         </button>
-        <button
-          type="button"
-          onClick={() => alert('카카오 로그인 페이지로 이동합니다. (UI 테스트)')}
-          style={{
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#FEE500',
-            color: '#191919',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            marginTop: '10px',
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          카카오 로그인
-        </button>
+
         {/* 안내 메시지 */}
         <p style={{ marginTop: '10px', color: 'red', fontSize: '14px' }}>{message}</p>
 

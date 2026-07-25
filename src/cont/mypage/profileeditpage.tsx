@@ -13,7 +13,7 @@ interface ProfileForm {
     storeaddrDetail: string;
     phoneFirst: string;
     phoneMiddle: string;
-    phoneLast: string;
+    phoneLast: string; 
     email: string;
     smsAgree: boolean;
     emailAgree: boolean;
@@ -56,7 +56,7 @@ const ProfileEditPage = () => {
                     `${BACK_URL}/api/member/mypage`,
                     {
                         params: {
-                            id: member?.id
+                            email: member?.email
                         }
                     }
                 );
@@ -78,7 +78,7 @@ const ProfileEditPage = () => {
                     regdate: data.regdate
                 });
 
-           } catch (error) {
+            } catch (error) {
                 console.error(error);
                 alert("회원정보 조회 실패");
             } finally {
@@ -86,7 +86,7 @@ const ProfileEditPage = () => {
             }
         };
 
-        fetchProfile(); 
+        fetchProfile();
 
     }, [member]);
     const handleChange = (
@@ -170,75 +170,85 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-    const handleSubmit = async (
-        event: React.SubmitEvent,
-    ) => {
-        event.preventDefault();
+  const handleSubmit = async (
+    event: React.SubmitEvent,
+) => {
+    event.preventDefault();
 
-        if (!form.phoneMiddle || !form.phoneLast) {
-            alert('휴대전화 번호를 입력해주세요.');
-            return;
-        }
+    console.log("저장 직전 form 확인:", form);
+    if (!form.nick.trim()) {
+        alert("닉네임을 입력해주세요.");
+        return;
+    }
+    if (!form.phoneMiddle || !form.phoneLast) {
+        alert('휴대전화 번호를 입력해주세요.');
+        return;
+    }
 
-        if (!form.email.trim()) {
-            alert('이메일을 입력해주세요.');
-            return;
-        }
+    if (!form.email.trim()) {
+        alert('이메일을 입력해주세요.');
+        return;
+    }
 
-        const fullStoreAddress = form.storeaddrDetail
-            ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
-            : form.storeaddr;
+    const fullStoreAddress = form.storeaddrDetail
+        ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
+        : form.storeaddr;
 
-        const requestData = await axios.post(`${BACK_URL}/api/member/update`, {
-            nick: form.nick,
-            mphone: [
-                form.phoneFirst,
-                form.phoneMiddle,
-                form.phoneLast,
-            ].join('-'),
-            email: form.email.trim(),
-            storeaddr: fullStoreAddress,
-            smsAgree: form.smsAgree ? 'Y' : 'N',
-            emailAgree: form.emailAgree ? 'Y' : 'N',
-        });
+    try {
 
-        try {
-            console.log('회원정보 수정 요청:', requestData);
-            alert('기본정보가 저장되었습니다.');
-        } catch (error) {
-            console.error('회원정보 수정 실패:', error);
-            alert('기본정보 저장에 실패했습니다.');
-        }
-    };
+        const requestData = await axios.post(
+            `${BACK_URL}/api/member/update`,
+            {
+                nick: form.nick,
+                mphone: [
+                    form.phoneFirst,
+                    form.phoneMiddle,
+                    form.phoneLast,
+                ].join('-'),
+                email: form.email.trim(),
+                storeaddr: fullStoreAddress,
+                smsAgree: form.smsAgree ? 'Y' : 'N',
+                emailAgree: form.emailAgree ? 'Y' : 'N',
+            }
+        );
+
+        console.log('회원정보 수정 요청:', requestData);
+        alert('기본정보가 저장되었습니다.');
+
+    } catch (error) {
+
+        console.error('회원정보 수정 실패:', error);
+        alert('기본정보 저장에 실패했습니다.');
+
+    }
+};
 
     const handleCancel = () => {
         navigate(-1);
     };
-const handleWithdraw = async () => {
-    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
-        return;
-    }
-
-    try {
-        await axios.delete(
-            `${BACK_URL}/api/member/withdraw`,
-            {
-                params: {
-                    num: member?.mnum
+    const handleWithdraw = async () => {
+        if (!window.confirm("정말 탈퇴하시겠습니까?")) {
+            return;
+        }
+        try {
+            await axios.delete(
+                `${BACK_URL}/api/member/withdraw`,
+                {
+                    params: {
+                        num: member?.mnum
+                    }
                 }
-            }
-        );
+            );
+            await logout();   
 
-        await logout();   // 세션 제거 + member=null
+            alert("회원 탈퇴가 완료되었습니다.");
 
-        alert("회원 탈퇴가 완료되었습니다.");
-
-        navigate("/");
-    } catch (error) {
-        console.error("탈퇴 실패", error);
-        alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
-    }
-};
+            navigate("/");
+        } catch (error) {
+            console.error("탈퇴 실패", error);
+            alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
+        }
+    };
     if (loading) {
         return (
             <div
