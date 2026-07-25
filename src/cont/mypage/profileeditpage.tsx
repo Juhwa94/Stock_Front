@@ -6,11 +6,9 @@ import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 
 interface ProfileForm {
-    id: string;
     nick: string;
     name: string;
     grade: string;
-    storecode: string;
     storeaddr: string;
     storeaddrDetail: string;
     phoneFirst: string;
@@ -34,11 +32,9 @@ const ProfileEditPage = () => {
     const [tempNick, setTempNick] = useState('');
 
     const [form, setForm] = useState<ProfileForm>({
-        id: '',
         nick: '',
         name: '',
         grade: '',
-        storecode: '',
         storeaddr: '',
         storeaddrDetail: '',
         phoneFirst: '010',
@@ -49,16 +45,6 @@ const ProfileEditPage = () => {
         emailAgree: false,
         regdate: ''
     });
-
-
-    const generateRandomStoreCode = () => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = 'ST-';
-        for (let i = 0; i < 8; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    };
 
     useEffect(() => {
 
@@ -78,11 +64,9 @@ const ProfileEditPage = () => {
                 const data = response.data;
 
                 setForm({
-                    id: data.id,
                     nick: data.nick,
                     name: data.name,
                     grade: data.grade,
-                    storecode: data.storecode ?? '',
                     storeaddr: data.storeaddr ?? '',
                     storeaddrDetail: '',
                     phoneFirst: '010',
@@ -94,26 +78,17 @@ const ProfileEditPage = () => {
                     regdate: data.regdate
                 });
 
-            } catch (error) {
-
+           } catch (error) {
                 console.error(error);
                 alert("회원정보 조회 실패");
-
             } finally {
-
                 setLoading(false);
-
             }
-
         };
 
-
-        if (member?.id) {
-            fetchProfile();
-        }
+        fetchProfile(); 
 
     }, [member]);
-
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
@@ -215,7 +190,6 @@ const ProfileEditPage = () => {
             : form.storeaddr;
 
         const requestData = await axios.post(`${BACK_URL}/api/member/update`, {
-            id: form.id,
             nick: form.nick,
             mphone: [
                 form.phoneFirst,
@@ -223,7 +197,6 @@ const ProfileEditPage = () => {
                 form.phoneLast,
             ].join('-'),
             email: form.email.trim(),
-            storecode: form.storecode,
             storeaddr: fullStoreAddress,
             smsAgree: form.smsAgree ? 'Y' : 'N',
             emailAgree: form.emailAgree ? 'Y' : 'N',
@@ -241,31 +214,31 @@ const ProfileEditPage = () => {
     const handleCancel = () => {
         navigate(-1);
     };
-    const handleWithdraw = async () => {
-        if (!window.confirm("정말 탈퇴하시겠습니까?")) {
-            return;
-        }
+const handleWithdraw = async () => {
+    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
+        return;
+    }
 
-        try {
-            await axios.delete(
-                `${BACK_URL}/api/member/withdraw`,
-                {
-                    params: {
-                        num: member?.mnum
-                    }
+    try {
+        await axios.delete(
+            `${BACK_URL}/api/member/withdraw`,
+            {
+                params: {
+                    num: member?.mnum
                 }
-            );
+            }
+        );
 
-            await logout();   // 세션 제거 + member=null
+        await logout();   // 세션 제거 + member=null
 
-            alert("회원 탈퇴가 완료되었습니다.");
+        alert("회원 탈퇴가 완료되었습니다.");
 
-            navigate("/");
-        } catch (error) {
-            console.error("탈퇴 실패", error);
-            alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
-        }
-    };
+        navigate("/");
+    } catch (error) {
+        console.error("탈퇴 실패", error);
+        alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
+    }
+};
     if (loading) {
         return (
             <div
@@ -326,15 +299,6 @@ const ProfileEditPage = () => {
                                     </h3>
 
                                     <div className="border rounded-3 overflow-hidden">
-                                        {/* 아이디 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold">
-                                                아이디
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                {form.id}
-                                            </div>
-                                        </div>
 
                                         {/* 닉네임 (수정 가능 영역) */}
                                         <div className="row g-0 border-bottom">
@@ -419,32 +383,6 @@ const ProfileEditPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* 지점 코드 & QR 코드 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold d-flex align-items-center">
-                                                지점 코드
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <span className="font-monospace fw-bold fs-5 text-dark">
-                                                        {form.storecode}
-                                                    </span>
-
-                                                    {form.storecode && (
-                                                        <div
-                                                            className="p-1 bg-white border rounded d-inline-flex align-items-center justify-content-center shadow-sm"
-                                                            title={`QR 코드: ${form.storecode}`}
-                                                        >
-                                                            <QRCodeSVG
-                                                                value={form.storecode}
-                                                                size={42}
-                                                                level="M"
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         {/* 지점 주소 */}
                                         <div className="row g-0 border-bottom">
