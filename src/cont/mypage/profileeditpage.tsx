@@ -230,7 +230,6 @@ const ProfileEditPage = () => {
         if (!window.confirm("정말 탈퇴하시겠습니까?")) {
             return;
         }
-
         try {
             await axios.delete(
                 `${BACK_URL}/api/member/withdraw`,
@@ -240,7 +239,6 @@ const ProfileEditPage = () => {
                     }
                 }
             );
-
             await logout();   
 
             alert("회원 탈퇴가 완료되었습니다.");

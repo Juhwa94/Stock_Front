@@ -57,33 +57,33 @@ const Signup: React.FC = () => {
       setEmailMessage('');
     }
   };
-  // 이메일 중복 확인 
-  const emailDuplicateCheck = async () => {
-    if (!form.email) {
-      alert('이메일을 입력해주세요.');
-      return;
-    }
-    try {
-      const res = await axios.get(
-        `${urls}/api/member/emailCheck`,
-        {
-          params: {
-            email: form.email
-          }
-        }
-      );
-      if (res.data === 0) {
-        setEmailMessage('사용 가능한 이메일입니다. 인증을 진행해주세요.');
-        setIsEmailChecked(true);
-      } else {
-        setEmailMessage('이미 사용 중인 이메일입니다.');
-        setIsEmailChecked(false);
-      }
-    } catch (error: any) {
-      console.log(error);
-      alert("이메일 중복 확인 오류");
-    }
-  };
+  // // 이메일 중복 확인 
+  // const emailDuplicateCheck = async () => {
+  //   if (!form.email) {
+  //     alert('이메일을 입력해주세요.');
+  //     return;
+  //   }
+  //   try {
+  //     const res = await axios.get(
+  //       `${urls}/api/member/emailCheck`,
+  //       {
+  //         params: {
+  //           email: form.email
+  //         }
+  //       }
+  //     );
+  //     if (res.data === 0) {
+  //       setEmailMessage('사용 가능한 이메일입니다. 인증을 진행해주세요.');
+  //       setIsEmailChecked(true);
+  //     } else {
+  //       setEmailMessage('이미 사용 중인 이메일입니다.');
+  //       setIsEmailChecked(false);
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     alert("이메일 중복 확인 오류");
+  //   }
+  // };
   useEffect(() => {
     if (!form.email.trim()) {
       setEmailMessage('');
@@ -91,11 +91,11 @@ const Signup: React.FC = () => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      emailDuplicateCheck();
-    }, 500);
+    // const timer = setTimeout(() => {
+    //   emailDuplicateCheck();
+    // }, 500);
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
 
   }, [form.email]);
   // 이메일 인증 요청
@@ -110,6 +110,7 @@ const Signup: React.FC = () => {
       if (res.data === 0) {
         setEmailMessage('사용 가능한 이메일입니다.');
         setIsEmailChecked(true);
+        await sendEmailCode();
       } else {
         setEmailMessage('이미 사용 중인 이메일입니다.');
         setIsEmailChecked(false);
@@ -119,6 +120,26 @@ const Signup: React.FC = () => {
       console.error(error);
     }
   };
+  // 인증번호 발송
+  const sendEmailCode = async () => {
+    try {
+      const res = await axios.post(
+        `${urls}/api/auth/emailCheck`,
+        {
+          email: form.email
+        }
+      );
+
+      console.log(res.data);
+      setEmailMessage('인증번호를 발송했습니다.');
+
+    } catch (error) {
+      console.error(error);
+      setEmailMessage('메일 발송 오류');
+    }
+  };
+
+
   // 인증번호 확인
   const checkEmailCode = async () => {
     try {
@@ -264,7 +285,6 @@ const Signup: React.FC = () => {
     setModalContent(content);
     setShowModal(true);
   };
-
   return (
     <div className="container mt-5" style={{ maxWidth: '650px' }}>
       <form onSubmit={handleSubmit} className="p-4 bg-light border rounded">
