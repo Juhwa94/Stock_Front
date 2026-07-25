@@ -76,8 +76,10 @@ function NoticeDetail() {
         </div>
 
       </div>
+       
 
-    </div>
+
+      </div>
   );
 }
 

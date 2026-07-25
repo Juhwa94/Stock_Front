@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from '../cont/Home'
-import Community from '../cont/community/Community'
+
+
 import Inquiry from '../cont/inquiry/Inquiry'
 //import Management from '../cont/management/Management'
 
@@ -11,7 +12,6 @@ import Order from '../cont/order/Order'
 import Revenue from '../cont/revenue/Revenue'
 import Login from '../cont/member/Login'
 import Signup from '../cont/member/Signup'
-import UpCommunityForm from '../cont/community/UpCommunityForm'
 
 import Inquirecomm from '../cont/inquiry/Inquirecomm'
 import InquireList from '../cont/inquiry/InquireList'
@@ -20,14 +20,21 @@ import InquireDetail from '../cont/inquiry/InquireDetail'
 import Admin from '../cont/admin/Admin'
 import Members from '../cont/admin/Members'
 // import Management from "../cont/management/Management";
-import CommunityDetail from "../cont/community/CommunityDetail";
+
 import Form from "../cont/management/Form";
 import List from "../cont/management/List";
 import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
-import NoticeB from '../cont/notice/NoticeB'
-import NoticeJoin from '../cont/notice/NoticeJoin'
+// import NoticeB from '../cont/notice/NoticeB'
+import NoticeJo from '../cont/notice/NoticeJo'
+import NoticeRe from '../cont/notice/NoticeRe'
+import NoticeDetail from '../cont/notice/NoticeDetail'
+import CommunityDetail from '../cont/community/CommunityDetail'
+import CommForm from '../cont/community/commForm'
+import Comment from '../cont/community/Comment'
+import Community from '../cont/community/Community'
+
 
 // 라우터란?
 // 사용자가 입력한 주소를 감지하는 역할을 하며, 
@@ -68,18 +75,30 @@ const AppRoutes: React.FC = () => {
         { path: "/management/form2/:bookId", element: <Form2 /> },
         
         { path: '/member', element: <Member />},
-        // { path: '/notice', element: <Notice />},
+       
+        
+      
+      
+
         { path: '/order', element: <Order />},
         { path: '/user/login', element: <Login/>},
         { path: '/user/signup', element: <Signup />},
         { path: '/revenue', element: <Revenue/>},
       
-        { path: '/community', element: <Community/>},
-        {path: '/notice', element: <NoticeB />},
-        {path: '/admin/noticejoin', element: <NoticeJoin />},
-        { path: '/community/detail/:num', element: <CommunityDetail />},
-        { path: '/communityform', element: <UpCommunityForm/>},
-      
+        
+        { path: '/notice', element: <Notice />},
+        { path: '/notice/detail', element: <NoticeDetail />},
+        {path: '/admin/noticejo', element: <NoticeJo />},
+        {path: '/admin/noticere', element: <NoticeRe />},
+
+        { path: '/community', element: <Community />},
+        { path: '/community/detail', element: <CommunityDetail />},
+        { path: '/community/form', element: <CommForm/>},
+        { path: '/community/comment', element: <Comment/>},
+
+        // { path: '/communityform', element: <UpCommunityForm/>},
+        // { path: '/communityform', element: <UpCommunityForm/>},
+        
         { path: '/inquiry', element: <InquireList/>},
         { path: '/Inquirecomm', element: <Inquirecomm/>},
         { path: '/InquireForm', element: <InquireForm/>},
@@ -90,8 +109,8 @@ const AppRoutes: React.FC = () => {
         { path: '/admin/member', element: <Members />},
         { path: '/admin', element: <Admin />},
         
-        { path: '/community', element: <Community />},
-        { path: '/communityform', element: <UpCommunityForm/>}
+        
+        
 
 
         // <Route path="/login" element={<Login />} />

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-// 등록
-function NoticeJoin() {
+// 공지 사항 수정
+function NoticeRe() {
   // 학원에서 배우는 가장 정석적인 input/textarea 상태 관리 (양방향 바인딩)
-  const [title, setTitle] = useState('[공지] 온라인 숍 이용 및 배송 안내');
+  const [title, setTitle] = useState('[ 공지 ] 온라인 숍 이용 및 배송 안내');
   const [content, setContent] = useState(
     `전화와 상담\n전화 : 02 - 2774 - 1228\n시간 : 오후 1시 ~ 오후 7시 / 주말 및 공휴일 휴무\n\n게시판 알림\n하나은행 000-000000-00000 (북마인드-000)\n입금 확인 시간은 주중 오후 3시입니다.\n오후 3시 이후에 입금해주신 경우 다음날 오후 3시에 입금 확인 처리 됩니다. 단, 통화중은 입금 확인 제외기\n\n은행 계정\n하나은행 000-000000-00000 (북마인드-000)\n결제 은행 하나은행 택배 주말 정체 결제 불편이 내용입니다.`
   );
@@ -16,7 +16,7 @@ function NoticeJoin() {
       
       {/* 최상단 타이틀 뷰 */}
       <div style={{ fontSize: '14px', color: '#000000', marginBottom: '20px' }}>
-         [ 공지 등록 ] 온라인 숍 이용 및 배송 안내
+         [ 공지 수정 ] 
       </div>
 
       {/* 1. 제목 입력 필드 */}
@@ -49,7 +49,7 @@ function NoticeJoin() {
           <div style={{ width: '280px', height: '100px', backgroundColor: '#D9D9D9', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#555555', fontWeight: 'bold', fontSize: '14px' }}>
             🏪 online store
           </div>
-          <button style={{ backgroundColor: '#333333', color: '#E0E0E0', border: '1px solid #555555', padding: '6px 12px', fontSize: '12px', cursor: 'pointer' }}>이미지 등록</button>
+          <button style={{ backgroundColor: '#333333', color: '#E0E0E0', border: '1px solid #555555', padding: '6px 12px', fontSize: '12px', cursor: 'pointer' }}>이미지 수정</button>
           <button style={{ backgroundColor: '#333333', color: '#E0E0E0', border: '1px solid #555555', padding: '6px 12px', fontSize: '12px', cursor: 'pointer' }}>삭제</button>
         </div>
       </div>
@@ -68,7 +68,7 @@ function NoticeJoin() {
       {/* 5. 중앙 통제 저장/취소 버튼 그룹 */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'transparent', color: '#000000', border: '2px solid #000000', width: '140px', padding: '10px 0', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', borderRadius: '4px' }}>
-          등록
+          저장
         </button>
         <button style={{ backgroundColor: 'transparent', color: '#000000', border: '2px solid #000000', width: '140px', padding: '10px 0', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', borderRadius: '4px' }}>
           취소
@@ -100,4 +100,4 @@ function NoticeJoin() {
   ); 
 }
 
-export default NoticeJoin;
+export default NoticeRe;

@@ -1,0 +1,118 @@
+.container {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: sans-serif;
+    margin-top: 40px;
+}
+
+.line {
+    border: none;
+    border-top: 1px solid #000000;
+    margin: 20px 0;
+}
+
+.title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.commentList {
+    margin-bottom: 25px;
+}
+
+.commentItem {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 15px 5px;
+    font-size: 13px;
+}
+
+.commentHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.writer {
+    font-weight: bold;
+    color: #111111;
+}
+
+.date {
+    color: #888888;
+    font-size: 11px;
+}
+
+.commentBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.content {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    color: #333333;
+    padding-right: 20px;
+    flex: 1;
+}
+
+.deleteButton {
+    background: transparent;
+    border: none;
+    color: #999999;
+    cursor: pointer;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.deleteButton:hover {
+    color: #ff4d4f;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #000000;
+    background: #ffffff;
+    color: #000000;
+    outline: none;
+    resize: none;
+    font-size: 13px;
+    box-sizing: border-box;
+    line-height: 1.5;
+    min-height: 100px;
+}
+
+.textarea:focus {
+    border-color: #444444;
+}
+
+.buttonArea {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submitButton {
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 8px 24px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 0;
+    transition: 0.2s;
+}
+
+.submitButton:hover {
+    background: #333333;
+}

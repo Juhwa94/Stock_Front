@@ -116,9 +116,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </li>
 
                 <li>
-                  <NavLink to="/admin/noticejoin" className={linkClass}>
+                  <NavLink to="/admin/noticejo" className={linkClass}>
                     공지 등록
                   </NavLink>
+                </li>
+                    <li>
+                  <NavLink to="/admin/noticere" className={linkClass}>
+                    공지 수정
+                  </NavLink>
+                </li>
+                    <li>
+                  {/* <NavLink to="/admin/communityjo" className={linkClass}>
+                    게시글 등록
+                  </NavLink>
+                </li>
+                    <li>
+                  <NavLink to="/admin/communityre" className={linkClass}>
+                    게시글 수정
+                  </NavLink> */}
                 </li>
               </ul>
             </aside>
