@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
             <DropdownNav />
             {/* <NavLink to="/notice" className={commonLinkClass}>공지 사항</NavLink>
             <NavLink to="/community" className={commonLinkClass}>커뮤 니티</NavLink> */}
-            {isLoggedIn && (<NavLink to="/mypage"className={commonLinkClass}>마이페이지</NavLink>)}
+            {/* {isLoggedIn && (<NavLink to="/mypage"className={commonLinkClass}>마이페이지</NavLink>)} */}
         </nav>
 
     )
