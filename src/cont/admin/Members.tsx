@@ -174,7 +174,42 @@ const Members: React.FC = () => {
           <tr>
             <td colSpan={7}>
               <div className={styles.pagination}>
+                <nav>
+                  <ul className="pagination justify-content-center">
+                    {/* PrevPage 출력하기 : startPage > 1 보다 클때   
+                                        Upboard List = 73
+                                        검수용 : totalPages 8 / startPage: 6 / endPage : 8
+                                    */}
+                    {startPage > 1 && (
+                      <li className="page-item">
+                        <button className="page-link" onClick={() => { pageChange(startPage - 1) }}>이전</button>
+                      </li>
+                    )}
 
+                    {/* 페이지 출력하기 */}
+                    {
+                      // startPage = 1 , endPage=3 => [1,2,3]이란 배열을 만들어 준다.
+                      Array.from({ length: endPage - startPage + 1 }, (xx, i) => i + startPage)
+                        .map((page) => (
+                          <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
+                            <button className="page-link" onClick={() => { pageChange(page) }}>{page}</button>
+                          </li>
+                        ))
+                    }
+
+                    {/* <li className="page-item active">
+                                        <button className="page-link">2</button>
+                                    </li> */}
+                    {/* NextPage 출력하기 : totalPage 보다 endPage 적을 때 다음페이지가 있는 것으로 계산  
+                                검수용 : totalPages 8 / startPage: 1 / endPage : 5
+                                */}
+                    {endPage < totalPages && (
+                      <li className="page-item">
+                        <button className="page-link" onClick={() => { pageChange(endPage + 1) }}>다음</button>
+                      </li>
+                    )}
+                  </ul>
+                </nav>
               </div>
             </td>
           </tr>
