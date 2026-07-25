@@ -185,8 +185,9 @@ const Members: React.FC = () => {
 
 
       {/* 선택한 회원 등급 변경 */}
-      <div style={{ marginTop: "20px" }}>
+      <div className="d-flex align-items-center gap-3 mt-3" style={{ maxWidth: "420px" }}>
         <select
+          className="form-select"
           value={grade}
           onChange={(e) => setGrade(e.target.value)}
         >
@@ -196,13 +197,14 @@ const Members: React.FC = () => {
           <option value="WITHDRAWN">탈퇴</option>
         </select>
 
-        <button onClick={updateGrade}>
+        <button
+          className="btn btn-primary text-nowrap px-3"
+          onClick={updateGrade}
+        >
           선택 회원 등급 변경
         </button>
       </div>
-
     </div>
   );
 };
-
 export default Members;
