@@ -11,7 +11,7 @@ interface SignatureProps {
 }
 
 //백엔드 주소가 담긴 .env파일의 키값
-//const backendUrl = process.env.REACT_APP_BACK_END_URL;
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 export default function Signature({ order }: SignatureProps) {
     
@@ -61,7 +61,7 @@ export default function Signature({ order }: SignatureProps) {
                 );
             }
             // 백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
-            const res = await fetch(`http://192.168.0.114/myictstudy/api/order/orderForm`, {
+            const res = await fetch(`${backendUrl}/api/order/orderForm`, {
                 method: 'POST',
                 body: orderData, // Multipart FormData 전송
             });
