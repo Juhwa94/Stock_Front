@@ -4,63 +4,75 @@ import { useNavigate } from "react-router-dom";
 import style from './survey.module.css'; 
 
 interface SubmitData {
-  result : {},
-  request? : any
+  mnum : number,
+  svnum : number,
+  rating : number,
+  request : string | null;
 }
 
 interface SurveyData {
   svnum : number,
   code : number,
   sub : string,
-  questions : []
+  questions : Question[]
+}
+
+interface Question {
+  questions_text : string;
 }
 
 const SurveyAddForm: React.FC = () => {
-  const [code, setCode] = useState("5"); 
+  const [code, setCode] = useState<number>(5); 
+  const [mnum,setMnum] = useState<number>(2);
+  const [svnum, setSvnum] = useState<number>(0);
+  const [surveyData, setSurveyData] = useState<SurveyData|null>(null);
+  const [sub, setSub] = useState<string>("");
   const [req,setReq] = useState<string>("")
-  const [surveyTitles, setSurveyTitles] = useState<number[]>(Array(5).fill(0)); 
+
+  const [rating, setRating] = useState<number[]>(Array(5).fill(0)); 
   const navigate = useNavigate();
   const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
-  const [surveyRespData,setSurveyRespData] = useState<SurveyData>();
-  const [questions,setQuestions] = useState<[]>([]);
-
   const surveyRatingChange = (index: number, score: number) => {
-    const newRatings = [...surveyTitles];
+    const newRatings = [...rating];
     newRatings[index] = score;
-    setSurveyTitles(newRatings);
+    setRating(newRatings);
   };
 
   useEffect(() => {
-    /*backend의 survey_Questions 로부터 questions_text, survey로부터 code,svnum을 받아올 것.
-      개인의 mnum을 가져올 것.
-    */
-    //const resquest = await axios.get(`${backendUrl}/api/survey/selectSurvey`, surveyRespData)
-  },[])
 
+    const getSurvey = async () => {
+      try {
+        const response = await axios.get<SurveyData>(`${backendUrl}/api/survey/selectSurvey`);
+
+        const responseData = response.data;
+
+        setSurveyData(responseData);
+        setSvnum(responseData.svnum);
+        setCode(responseData.code);
+        setSub(responseData.sub);
+        setRating(Array(responseData.code).fill(0));
+
+        console.log("평가지를 불러오는데 성공하였습니다.");
+      } catch (error) {
+        console.error("평가지를 불러오는데 실패하였습니다.",error);
+      }
+    };
+    getSurvey();
+  },[])
+  
   const surveySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(svnum);
     try {
-      //이후 json을 통해 질문이 배열 형태로 ..연산자를 통하여 fixedQuestions 배열 내에 들어갈 수 있게끔
-      const fixedQuestions = [
-        "도서 검색 및 데이터 처리 속도에 만족하십니까?",
-        "메뉴 구성과 화면 디자인이 사용하기 편리했습니까?",
-        "주문 연동 및 재고 수량의 정확성에 만족하십니까?",
-        "재고 부족 알림 및 모니터링 기능이 업무에 도움이 되었습니까?",
-        "향후 이 프로그램을 지속적으로 사용할 의향이 있으십니까?",
-        "기타 개선 사항이나 추가되었으면 하는 기능이 있다면 자유롭게 적어주세요. 추가"
-      ];
-      //const fixedQuestions = [...[]]
-
-      const surveyData:SubmitData = {
-        //code: 5, //code는 관리자 페이지에서 평가항목 수정에 의해 정해진 code(갯수)
-        result: fixedQuestions.map((q, index) => ({
-        surveytitle: `${q} [기본 설정 평점: ${surveyTitles[index]}점]`, 
-        })),
+      const submitData:SubmitData[] = rating.map((rating) => ({
+        mnum : mnum,
+        svnum : svnum,
+        rating: rating, 
         request:req
-      };
-      
-      const response = await axios.post(`${backendUrl}/api/survey/addResult`, surveyData);
+      }));
+
+      const response = await axios.post(`${backendUrl}/api/survey/addResult`, submitData);
       if(response.status === 200){
         alert("평가해 주셔서 감사합니다. 여러분들의 평가는 저희의 발전의 원동력이 됩니다.");
         navigate(-1);
@@ -82,26 +94,20 @@ const SurveyAddForm: React.FC = () => {
           
           {/* 제목 */}
           <div className="card-header bg-dark text-white fw-bold py-3 text-center">
-            (회사로고)프로그램 만족도 조사
+            (회사로고){sub}
           </div>
 
           {/* 설문문항 */}
           <ul className="list-group list-group-flush">
-            {[
-              "1. 도서 검색 및 데이터 처리 속도에 만족하십니까?",
-              "2. 메뉴 구성과 화면 디자인이 사용하기 편리했습니까?",
-              "3. 주문 연동 및 재고 수량의 정확성에 만족하십니까?",
-              "4. 재고 부족 알림 및 모니터링 기능이 업무에 도움이 되었습니까?",
-              "5. 향후 이 프로그램을 지속적으로 사용할 의향이 있으십니까?"
-            ].map((question, index) => (
+            {surveyData?.questions.map((question, index) => (
               <li key={index} className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 
                 {/* 질문 */}
-                <div className="fw-bold text-dark flex-grow-1">{question}</div>
+                <div className="fw-bold text-dark flex-grow-1">{index+1}. {question.questions_text}</div>
                 <div className="d-flex align-items-center gap-3 ms-md-auto">
                   <div className={style.starRatingContainer}>
                     {[1, 2, 3, 4, 5].map((score) => {
-                      const isSelected = surveyTitles[index] >= score;
+                      const isSelected = rating[index] >= score;
                       return (
                         <span
                           key={score}
@@ -115,7 +121,7 @@ const SurveyAddForm: React.FC = () => {
                   </div>
                   {/* 점수표시  */}
                   <span className={`badge bg-secondary rounded-pill ${style.scoreBadge}`}>
-                    {surveyTitles[index]}점
+                    {rating[index]}점
                   </span>
                 </div>
 
@@ -124,7 +130,7 @@ const SurveyAddForm: React.FC = () => {
             {/*추가적인 요청 사항 텍스트 박스*/}
             <li className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
               <div className={style.textareaContainer}>
-                <p className="fw-bold text-dark flex-grow-1">6. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>{/*숫자 6은 code를 받고 +1 시킬 것. */}
+                <p className="fw-bold text-dark flex-grow-1">{code+1}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>{/*숫자 6은 code를 받고 +1 시킬 것. */}
                 <textarea
                   className={style.textarea}
                   rows={8}
