@@ -1,9 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 interface Member {
-  id: string;
+  mnum: number;
+  id?: string;
   name: string;
   email: string;
+  nick?: string;
+  authority?: string;
+  grade?: string;
+  storecode?: string;
+  storeaddr?: string;
+  mphone?: string;
 }
 
 interface AuthContextProps {
@@ -11,7 +18,7 @@ interface AuthContextProps {
   checkLogin: () => Promise<void>;
   isLoggedIn: boolean; //로그인 여부를 true / false
 
-  login: (id: string, password: string) => Promise<'success' | 'fail' | 'error'>;
+  login: (email: string, password: string) => Promise<'success' | 'fail' | 'error'>; //////
   logout: () => Promise<void>;
   updateMemberName: (name: string) => void;
   updateMemberEmail: (email: string) => void;
@@ -39,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       console.log(res.data);
       console.log(res.data.mnum);
-      if (res.data?.id) {
+      if (res.data?.email) { ///////
         setMember(res.data); // 로그인 된 정보를 받아서 useState에 저장한다.
       } else {
         setMember(null); //로그인 상태가 아니라면 useState를 초기화 

@@ -1,115 +1,290 @@
-/*conts/upboard/upboard.module.css*/
-.container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-  }
-  
-  .boardTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .boardTable th, .boardTable td {
-    border: 1px solid #ddd;
-    padding: 10px;
-  }
-  
-  .boardTable thead {
-    background-color: rgb(230, 173, 213);
-  }
-  
-  .titleLink {
-    text-decoration: none;
-    color: black;
-  }
-  
-  .titleLink:hover {
-    text-decoration: underline;
-    color: dodgerblue;
-  }
-  
-  /* 버튼 통일 스타일 */
-.button {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: rgb(160, 6, 119);
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  margin-top: 10px;
-  border: none;         
-  line-height: normal;   
-  cursor: pointer;       
-}
-  .button, .button:link, .button:visited {
-  text-decoration: none;
-  color: white;
-  }
-  .button:hover {
-    background-color: deepskyblue;
-  }
-  /*
-  form
-  */
-  .title {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-   .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-  }
-  
-  .card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    background: white;
-    transition: transform 0.3s;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-  }
-  
-  .card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .card-title {
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
+/*****************************************
+            Layout + CSS Variables
+*****************************************/
 
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .detail {
-    text-align: center;
-  }
-  
-  .detail img {
-    width: 400px;
-    max-width: 90%;
-    height: auto;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
+.container {
+  --primary-color: #6c5ce7;
+  --primary-hover: #5b4bc4;
+  --text-main: #2d3436;
+  --text-muted: #636e72;
+  --bg-light: #f8f9fa;
+  --border-color: #e9ecef;
+  --radius-sm: 8px;
+  --radius-md: 18px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.08);
+
+  max-width: 950px;
+  margin: 60px auto;
+  padding: 0 24px;
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+
+/*****************************************
+            Title
+*****************************************/
+
+.title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: var(--text-main);
+  position: relative;
+}
+
+.title::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 4px;
+  margin: 12px auto 0;
+  border-radius: 50px;
+  background: var(--primary-color);
+}
+
+
+/*****************************************
+            Board Table
+*****************************************/
+
+.boardTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.boardTable th {
+  width: 130px;
+  padding: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: left;
+  background-color: var(--bg-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.boardTable td {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.boardTable tr:last-child th,
+.boardTable tr:last-child td {
+  border-bottom: none;
+}
+
+
+/*****************************************
+            Form Card
+*****************************************/
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 40px;
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+
+/*****************************************
+            Input
+*****************************************/
+
+.input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fafafa;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.input:hover {
+  border-color: #d8d8d8;
+}
+
+.input:focus {
+  background: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
+}
+
+
+/*****************************************
+            Textarea
+*****************************************/
+
+textarea.input {
+  min-height: 280px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+
+/*****************************************
+            File Input
+*****************************************/
+
+.fileInput {
+  width: 100%;
+  padding: 12px;
+}
+
+
+/*****************************************
+            Buttons
+*****************************************/
+
+.button,
+.button:link,
+.button:visited {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  height: 45px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    #7d6ef0
+  );
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+}
+
+.button:hover {
+  background: linear-gradient(
+    135deg,
+    var(--primary-hover),
+    var(--primary-color)
+  );
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(108, 92, 231, 0.35);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+
+/*****************************************
+            Button Box
+*****************************************/
+
+.buttonBox {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+
+/*****************************************
+            Card Grid
+*****************************************/
+
+.grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(230px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.card {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: white;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.03);
+}
+
+.card-title {
+  padding: 18px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/*****************************************
+            Detail
+*****************************************/
+
+.detail {
+  padding: 40px;
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.detail img {
+  width: 100%;
+  max-width: 550px;
+  height: auto;
+  margin-top: 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+
+/*****************************************
+            Button Area
+*****************************************/
+
+.buttonArea {
+  display: flex;
+  justify-content: space-between;
+  gap: 553px;
+  padding: 20px;
+}

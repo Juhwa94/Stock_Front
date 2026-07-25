@@ -45,12 +45,12 @@ const SurveyUpdate: React.FC = () => {
             const surveyData = {
                 sub,
                 code: parseInt(code),
-                contents: surveyQuestions.map(questions => ({
-                    surveyQuestions: questions,
+                questions: surveyQuestions.map(questions => ({
+                    questions_text: questions,
                 }))
             };
             //postman에서 테스트 한 것처럼 구현 - axios.post방식
-            const response = await axios.post(`${backendUrl}/api/survey/insertSurvey`,surveyData);
+            const response = await axios.post(`${backendUrl}/api/survey/addSurvey`,surveyData);
             if(response.status === 200){
 
                 alert("등록 완료.");

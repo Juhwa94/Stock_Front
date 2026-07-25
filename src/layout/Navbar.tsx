@@ -1,23 +1,19 @@
 import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
-//외부 스타일을 typescript 모듈로 불러오기
+import { NavLink } from 'react-router-dom'
 import style from './navbar.module.css'
 import DropdownNav from './DropdownNav'
-
-//설치한 라우터의 경로에 맞게 링크(Link) 네비게이션(메뉴)를 설정한다.
-//Layout.tsx에서 사용될 메뉴
+import { useAuth } from '../comp/AuthProvider';
 const Navbar: React.FC = () => {
-
-    /*
-    className={({ isActive }) => isActive ? "link active" : "link"}
-     이 방식은 NavLink가 제공하는 공식 방법이다.
-    */
-    // 네비게이션에 공통으로 활성화 되는 유무에 따라서 스타일을 변경하는 조건 
-    // isActive === true => className='link active' 적용
-    // 아니면 className='link'
-    const commonLinkClass = ({isActive} : {isActive :boolean}) => {
-        return isActive ? `${style.link} ${style.active}`:style.link;
+    console.log("Navbar 실행됨");
+    const { isLoggedIn } = useAuth();
+    console.log("Navbar 로그인 상태:", isLoggedIn);
+    console.log("Navbar 상태 :", isLoggedIn);
+    const commonLinkClass = ({ isActive }: { isActive: boolean }) => {
+        return isActive
+            ? `${style.link} ${style.active}`
+            : style.link;
     }
+
     return (
         // <nav style={{ marginTop: '10px' }}>
         //     <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
@@ -34,12 +30,12 @@ const Navbar: React.FC = () => {
             <NavLink to="/gallery" className={commonLinkClass}>겔러리</NavLink>
             <NavLink to="/chart" className={commonLinkClass}>차트</NavLink> */}
             {/* <NavLink to="/community" className={commonLinkClass}>커뮤니티</NavLink> */}
-            <DropdownNav/>
-            <NavLink to="/notice" className={commonLinkClass}>공지 사항</NavLink>
-            <NavLink to="/community" className={commonLinkClass}>커뮤 니티</NavLink>
-            
+            <DropdownNav />
+            {/* <NavLink to="/notice" className={commonLinkClass}>공지 사항</NavLink>
+            <NavLink to="/community" className={commonLinkClass}>커뮤 니티</NavLink> */}
+            {isLoggedIn && (<NavLink to="/mypage"className={commonLinkClass}>마이페이지</NavLink>)}
         </nav>
-        
+
     )
 }
 

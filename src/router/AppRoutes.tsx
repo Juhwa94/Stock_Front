@@ -35,6 +35,7 @@ import SurveyAddForm from '../cont/survey/SurveyAddForm'
 import SurveyManagement from '../cont/survey/SurveyManagement'
 import SurveyUpdate from '../cont/survey/SurveyUpdate'
 import Product from '../cont/product/Product'
+import InquiryDetail from '../cont/inquiry/InquireDetail'
 
 
 // 라우터란
@@ -91,7 +92,9 @@ const AppRoutes: React.FC = () => {
         { path: '/inquiry', element: <InquireList/>},
         { path: '/Inquirecomm', element: <Inquirecomm/>},
         { path: '/InquireForm', element: <InquireForm/>},
-        { path: '/InquireDetail', element: <InquireDetail/>},
+        // { path: '/InquireDetail', element: <InquireDetail/>},
+        {path:"/inquiry/detail/:num", element:<InquiryDetail/>},
+
 
 
 

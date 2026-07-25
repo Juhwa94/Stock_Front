@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DaumPostcode, { Address } from 'react-daum-postcode';   // npm install react-daum-postcode 설치하면 됨
 import { QRCodeSVG } from 'qrcode.react';   // npm install qrcode.react 설치하면 됨
+import axios from 'axios';
+import { useAuth } from '../../comp/AuthProvider';
 
 interface ProfileForm {
-    id: string;
     nick: string;
     name: string;
     grade: string;
-    storecode: string;
     storeaddr: string;
     storeaddrDetail: string;
     phoneFirst: string;
@@ -22,20 +22,19 @@ interface ProfileForm {
 
 const ProfileEditPage = () => {
     const navigate = useNavigate();
+    const { member, logout } = useAuth();
+    const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
     const [loading, setLoading] = useState(true);
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
-    // 닉네임 수정 상태 관리
     const [isEditingNick, setIsEditingNick] = useState(false);
     const [tempNick, setTempNick] = useState('');
 
     const [form, setForm] = useState<ProfileForm>({
-        id: '',
         nick: '',
         name: '',
         grade: '',
-        storecode: '',
         storeaddr: '',
         storeaddrDetail: '',
         phoneFirst: '010',
@@ -47,49 +46,49 @@ const ProfileEditPage = () => {
         regdate: ''
     });
 
-    // 임의의 영어+숫자 조합 지점코드 생성 함수 (예: ST-8F92A0X1)
-    const generateRandomStoreCode = () => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = 'ST-';
-        for (let i = 0; i < 8; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    };
-
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                // TODO: 실제 회원정보 조회 API로 교체
-                const profile: ProfileForm = {
-                    id: 'pkwed1206',
-                    nick: '테스형',
-                    name: '홍길동',
-                    grade: 'A등급',
-                    storecode: generateRandomStoreCode(),
-                    storeaddr: '서울 마포구 백범로 35',
-                    storeaddrDetail: '3층 301호',
-                    phoneFirst: '010',
-                    phoneMiddle: '4532',
-                    phoneLast: '9516',
-                    email: 'pkwed1206@gmail.com',
-                    smsAgree: true,
-                    emailAgree: true,
-                    regdate: '2026-04-15'
-                };
 
-                setForm(profile);
-            } catch (error) {
-                console.error('회원정보 조회 실패:', error);
-                alert('회원정보를 불러오지 못했습니다.');
+        const fetchProfile = async () => {
+
+            try {
+
+                const response = await axios.get(
+                    `${BACK_URL}/api/member/mypage`,
+                    {
+                        params: {
+                            id: member?.id
+                        }
+                    }
+                );
+
+                const data = response.data;
+
+                setForm({
+                    nick: data.nick,
+                    name: data.name,
+                    grade: data.grade,
+                    storeaddr: data.storeaddr ?? '',
+                    storeaddrDetail: '',
+                    phoneFirst: '010',
+                    phoneMiddle: '',
+                    phoneLast: '',
+                    email: data.email,
+                    smsAgree: false,
+                    emailAgree: false,
+                    regdate: data.regdate
+                });
+
+           } catch (error) {
+                console.error(error);
+                alert("회원정보 조회 실패");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProfile();
-    }, []);
+        fetchProfile(); 
 
+    }, [member]);
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
@@ -172,7 +171,7 @@ const ProfileEditPage = () => {
     };
 
     const handleSubmit = async (
-        event: React.FormEvent<HTMLFormElement>,
+        event: React.SubmitEvent,
     ) => {
         event.preventDefault();
 
@@ -186,23 +185,22 @@ const ProfileEditPage = () => {
             return;
         }
 
-        const fullStoreAddress = form.storeaddrDetail 
+        const fullStoreAddress = form.storeaddrDetail
             ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
             : form.storeaddr;
 
-        const requestData = {
+        const requestData = await axios.post(`${BACK_URL}/api/member/update`, {
             nick: form.nick,
-            storecode: form.storecode,
-            storeaddr: fullStoreAddress,
-            phone: [
+            mphone: [
                 form.phoneFirst,
                 form.phoneMiddle,
                 form.phoneLast,
             ].join('-'),
             email: form.email.trim(),
+            storeaddr: fullStoreAddress,
             smsAgree: form.smsAgree ? 'Y' : 'N',
             emailAgree: form.emailAgree ? 'Y' : 'N',
-        };
+        });
 
         try {
             console.log('회원정보 수정 요청:', requestData);
@@ -216,7 +214,31 @@ const ProfileEditPage = () => {
     const handleCancel = () => {
         navigate(-1);
     };
+const handleWithdraw = async () => {
+    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
+        return;
+    }
 
+    try {
+        await axios.delete(
+            `${BACK_URL}/api/member/withdraw`,
+            {
+                params: {
+                    num: member?.mnum
+                }
+            }
+        );
+
+        await logout();   // 세션 제거 + member=null
+
+        alert("회원 탈퇴가 완료되었습니다.");
+
+        navigate("/");
+    } catch (error) {
+        console.error("탈퇴 실패", error);
+        alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
+    }
+};
     if (loading) {
         return (
             <div
@@ -277,15 +299,6 @@ const ProfileEditPage = () => {
                                     </h3>
 
                                     <div className="border rounded-3 overflow-hidden">
-                                        {/* 아이디 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold">
-                                                아이디
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                {form.id}
-                                            </div>
-                                        </div>
 
                                         {/* 닉네임 (수정 가능 영역) */}
                                         <div className="row g-0 border-bottom">
@@ -370,32 +383,6 @@ const ProfileEditPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* 지점 코드 & QR 코드 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold d-flex align-items-center">
-                                                지점 코드
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <span className="font-monospace fw-bold fs-5 text-dark">
-                                                        {form.storecode}
-                                                    </span>
-                                                    
-                                                    {form.storecode && (
-                                                        <div 
-                                                            className="p-1 bg-white border rounded d-inline-flex align-items-center justify-content-center shadow-sm"
-                                                            title={`QR 코드: ${form.storecode}`}
-                                                        >
-                                                            <QRCodeSVG 
-                                                                value={form.storecode} 
-                                                                size={42} 
-                                                                level="M" 
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         {/* 지점 주소 */}
                                         <div className="row g-0 border-bottom">
@@ -593,7 +580,8 @@ const ProfileEditPage = () => {
                                     </div>
                                 </section>
 
-                                <div className="d-flex justify-content-center gap-2 pt-3 border-top">
+                                <div className="d-flex align-items-center pt-3 border-top">
+
                                     <button
                                         type="button"
                                         onClick={handleCancel}
@@ -602,12 +590,36 @@ const ProfileEditPage = () => {
                                         취소
                                     </button>
 
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary px-5"
-                                    >
-                                        저장하기
-                                    </button>
+
+                                    <div className="ms-auto d-flex align-items-center gap-3">
+
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary px-5"
+                                        >
+                                            저장하기
+                                        </button>
+
+
+                                        <span
+                                            onClick={handleWithdraw}
+                                            style={{
+                                                cursor: "pointer",
+                                                color: "#6c757d",
+                                                fontSize: "14px"
+                                            }}
+                                            onMouseEnter={(e) =>
+                                                e.currentTarget.style.color = "#dc3545"
+                                            }
+                                            onMouseLeave={(e) =>
+                                                e.currentTarget.style.color = "#6c757d"
+                                            }
+                                        >
+                                            회원탈퇴
+                                        </span>
+
+                                    </div>
+
                                 </div>
                             </form>
                         </div>

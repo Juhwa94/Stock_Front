@@ -1,6 +1,6 @@
 .floatingContainer {
     position: fixed;
-    right: 30px;
+    right: max(20px, calc((100vw - 1200px) / 2 + 20px));
     bottom: 30px;
 
     display: flex;
