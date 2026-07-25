@@ -93,8 +93,8 @@ const AppRoutes: React.FC = () => {
         { path: '/Inquirecomm', element: <Inquirecomm/>},
         { path: '/InquireForm', element: <InquireForm/>},
         // { path: '/InquireDetail', element: <InquireDetail/>},
-        {path:"/inquiry/detail/:num", element:<InquiryDetail/>},
-
+        {path:"/inquiry/detail/:num", element:<InquireDetail/>},
+        {path:"/reply/list/:num", element:<Inquirecomm/>},
 
 
 
