@@ -14,7 +14,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigate = useNavigate();
-  const { isLoggedIn, logout  } = useAuth();
+  const { member, isLoggedIn, logout } = useAuth();
   const { pathname } = useLocation();
   // /user 로 시작하는 모든 페이지
   const isSimpleLayout = pathname.startsWith('/user');
@@ -26,8 +26,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     // 활성화가 된 상태이면 style.active를 추가한다.
     isActive ? `${styles.link} ${styles.active}` : styles.link;
-
-
 
   return (
     <div
@@ -67,22 +65,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </h1>
 
             <div className={styles.buttonContainer}>
-              <button type="button" className={styles.customBtn} onClick={() => navigate('/admin')}>
-                관리자 전환
-              </button>
+              {member?.authority === 'ADMIN' && (
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/admin')}>
+                  관리자 전환
+                </button>
+              )}
 
               {!isLoggedIn && (<>
-                  <button type="button" className={styles.customBtn} onClick={() => navigate('/user/login')}>
-                로그인
-              </button>
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/user/login')}>
+                  로그인
+                </button>
 
-                  <button type="button" className={styles.customBtn} onClick={() => navigate('/user/signup')}>
-                회원가입
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/user/signup')}>
+                  회원가입
                 </button></>
               )}
               {isLoggedIn && (
                 <button type="button" className={styles.customBtn} onClick={logout}>
-                로그아웃
+                  로그아웃
                 </button>
               )}
             </div>
@@ -124,7 +124,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <nav className={styles.sidebar_nav}>
                 <ul>
                   <li>
-                    <NavLink to="/admin/member" className={`${styles.nav_item} ${styles.active}`}>
+                    <NavLink to="/admin/member" className={`${styles.nav_item}`}>
                       회원 관리
                     </NavLink>
                   </li>
