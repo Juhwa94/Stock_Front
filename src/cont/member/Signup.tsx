@@ -24,14 +24,15 @@ const Signup: React.FC = () => {
     addr: '',
     authority: 'MEMBER'
   });
-  
+
   const [code, setCode] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [nickMessage, setNickMessage] = useState('');
   const [isNickChecked, setIsNickChecked] = useState(false);
-
+  const [pwdMessage, setPwdMessage] = useState('');
+  const [isPwdMatched, setIsPwdMatched] = useState(false);
 
 
   const [showModal, setShowModal] = useState(false);
@@ -72,8 +73,7 @@ const Signup: React.FC = () => {
         }
       );
       if (res.data === 0) {
-        alert('사용 가능한 이메일입니다.');
-        setEmailMessage('사용 가능한 이메일입니다.');
+        setEmailMessage('사용 가능한 이메일입니다. 인증을 진행해주세요.');
         setIsEmailChecked(true);
       } else {
         setEmailMessage('이미 사용 중인 이메일입니다.');
@@ -84,27 +84,40 @@ const Signup: React.FC = () => {
       alert("이메일 중복 확인 오류");
     }
   };
+  useEffect(() => {
+    if (!form.email.trim()) {
+      setEmailMessage('');
+      setIsEmailChecked(false);
+      return;
+    }
 
+    const timer = setTimeout(() => {
+      emailDuplicateCheck();
+    }, 500);
+
+    return () => clearTimeout(timer);
+
+  }, [form.email]);
   // 이메일 인증 요청
   const emailCheck = async () => {
     try {
       const res = await axios.post(`${urls}/api/auth/emailCheck`, {
         email: form.email,
       });
+
       if (res.data === 0) {
-        alert('인증 번호가 발송되었습니다.');
-        setEmailMessage('인증 번호가 발송되었습니다.');
+        setEmailMessage('사용 가능한 이메일입니다. 인증번호를 발송했습니다.');
+        setIsEmailChecked(true);
         setIsEmailVerified(false);
       } else {
-        alert('이미 가입된 이메일입니다.');
         setEmailMessage('이미 사용 중인 이메일입니다.');
+        setIsEmailChecked(false);
       }
     } catch (error) {
-      alert('이메일 인증 오류가 발생했습니다.');
+      setEmailMessage('이메일 확인 중 오류가 발생했습니다.');
       console.error(error);
     }
   };
-
   // 인증번호 확인
   const checkEmailCode = async () => {
     try {
@@ -132,7 +145,6 @@ const Signup: React.FC = () => {
   };
   // 닉네임 입력 시 실시간 중복 체크
   useEffect(() => {
-    // 닉네임이 비어있으면 메시지 초기화
     if (!form.nick.trim()) {
       setNickMessage('');
       setIsNickChecked(false);
@@ -152,15 +164,36 @@ const Signup: React.FC = () => {
           setNickMessage('이미 사용 중인 닉네임입니다.');
           setIsNickChecked(false);
         }
+
       } catch (error) {
-        console.error('닉네임 중복 체크 오류:', error);
-        setNickMessage('닉네임 중복 확인 중 오류 발생');
+        console.error(error);
+        setNickMessage('닉네임 확인 오류');
         setIsNickChecked(false);
       }
     }, 300);
 
     return () => clearTimeout(timer);
+
   }, [form.nick, urls]);
+
+
+  //  비밀번호 일치 확인 
+  useEffect(() => {
+    if (!form.pwd1 || !form.pwd2) {
+      setPwdMessage('');
+      setIsPwdMatched(false);
+      return;
+    }
+
+    if (form.pwd1 === form.pwd2) {
+      setPwdMessage('비밀번호가 일치합니다.');
+      setIsPwdMatched(true);
+    } else {
+      setPwdMessage('비밀번호가 일치하지 않습니다.');
+      setIsPwdMatched(false);
+    }
+
+  }, [form.pwd1, form.pwd2]);
 
   //전체 동의 체크박스 핸들러
   const handleAllAgreementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -245,7 +278,6 @@ const Signup: React.FC = () => {
               className="form-control"
               value={form.email}
               onChange={handleChange}
-              disabled={isEmailChecked}
               required
             />
           </div>
@@ -301,6 +333,17 @@ const Signup: React.FC = () => {
               onChange={handleChange}
               required
             />
+            {pwdMessage && (
+              <p
+                style={{
+                  color: isPwdMatched ? 'green' : 'red',
+                  fontSize: '13px',
+                  marginTop: '5px'
+                }}
+              >
+                {pwdMessage}
+              </p>
+            )}
           </div>
         </div>
         {/* 이름 입력란 */}
@@ -343,28 +386,28 @@ const Signup: React.FC = () => {
           </label>
           <div className="col-sm-9 d-flex gap-4 align-items-center">
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="authority" value="MEMBER"checked={form.authority === 'MEMBER'}
-                onChange={handleChange}/>
+              <input className="form-check-input" type="radio" name="authority" value="MEMBER" checked={form.authority === 'MEMBER'}
+                onChange={handleChange} />
               <label className="form-check-label">
                 일반회원
               </label>
             </div>
             <div className="form-check">
               <input className="form-check-input" type="radio" name="authority" value="ADMIN"
-                checked={form.authority === 'ADMIN'} onChange={handleChange}/>
+                checked={form.authority === 'ADMIN'} onChange={handleChange} />
               <label className="form-check-label">
                 관리자
               </label>
             </div>
           </div>
         </div>
-        
+
         {/* 주소 입력란 */}
         <div className="mb-3 row">
           <label htmlFor="addr" className="col-sm-3 col-form-label fw-bold">주소</label>
           <div className="col-sm-9">
             <input type="text" name="addr" className="form-control" placeholder="도로명 주소를 입력하세요"
-              value={form.addr} onChange={handleChange} required={form.authority === 'MEMBER'}/>
+              value={form.addr} onChange={handleChange} required={form.authority === 'MEMBER'} />
           </div>
         </div>
         {/* 약관동의  */}

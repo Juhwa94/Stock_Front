@@ -15,7 +15,7 @@ interface ProductItem {
     piprice: number; //단가
     piamount: number; //수량
     pisumprice: number; //1행의 합계 가격 (가격*수량)
-    piunitCost: number; //출판사
+    piunitCost: number; //원가
 }
 
 

@@ -8,11 +8,11 @@ interface InquiryVO {
     ititle: string;
     iwriter: string;
     icontent: string;
-    imgn: string;   
+    imgn: string;
+    membernum: number;
     idate: string;
 }
 
- 
 const InquireList: React.FC = () => {
     //2. 서버데이터 JsonArray를 자바스크립트 배열로 저장할 useState 만들기
     const [inquiryList, setInquiryList] = useState<InquiryVO[]>([]);
@@ -32,10 +32,19 @@ const InquireList: React.FC = () => {
     //http://192.168.0.195/myictstudy/imgfile/
     const imageBasePath = `${backendUrl}/imgfile/`;
 
+
+    // currentPage 상태가 바뀔 때마다 스크롤을 맨 위로 올림
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }, [currentPage]);
+
     const fetchInquiryList = async (page: number) => {
         try {
             console.log(backendUrl);
-            const urls = `${backendUrl}/upboard/upList`;
+            const urls = `${backendUrl}/api/inquiry/inquiryList`;
             const response = await axios.get(urls, {
                 params: {
                     cPage: page,
@@ -72,23 +81,22 @@ const InquireList: React.FC = () => {
         <div className={styles.container}>
             <table className={styles.boardTable}>
                 <thead>
-                    <tr><td colSpan={5}>현재페이지 {currentPage}</td></tr>
+                    <tr><td colSpan={5}>여기는 페이지{currentPage}</td></tr>
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
                         <th>작성자</th>
-                        <th>이미지</th>
                         <th>작성일</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {/* upboardList.map((item)=>()) */}
+
                     {
                         inquiryList.map((item) => (
                             <tr key={item.inum}>
                                 <td>{item.inum}</td>
                                 <td>
-                                    <Link to={`/community/updetail/${item.inum}`}
+                                    <Link to={`/inquiry/detail/${item.inum}`}
                                         className={styles.titleLink}
                                     >{item.ititle}</Link>
                                 </td>
@@ -98,7 +106,7 @@ const InquireList: React.FC = () => {
                                         alt={item.ititle} style={{ width: '80px', height: 'auto' }}
                                     />) : ("No Image")}
                                 </td>
-                                
+
                                 <td>{item.idate}</td>
                             </tr>
                         ))
@@ -164,9 +172,9 @@ const InquireList: React.FC = () => {
                 글쓰기
             </Link>
 
-            <Link to="/InquireDetail" className={styles.button}>
+            {/* <Link to="/InquireDetail" className={styles.button}>
                 디테일로 이동하기 위한 버튼
-            </Link>
+            </Link> */}
         </div>
     )
 }
