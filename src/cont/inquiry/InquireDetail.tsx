@@ -1,52 +1,125 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import styles from './Inquire.module.css'
-import Inquirecomm from './Inquirecomm';
+import InquireComm from './Inquirecomm';
 
-const InquireDetail: React.FC = () => {
+interface InquiryVO {
+    inum: number;
+    ititle: string;
+    iwriter: string;
+    icontent: string;
+    imgn?: string;
+    membernum : number;
+    idate: string;
+}
 
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
+
+const InquiryDetail: React.FC = () => {
+
+    const [inquiry, setInquiry] = useState<InquiryVO | null>(null);
+    const { num } = useParams<{ num: string }>();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const detailServer = async () => {
+
+            const url = `${backendUrl}/api/inquiry/detail?num=${num}`;
+            const resp = await axios.get(url);
+
+            setInquiry(resp.data);
+        }
+
+        detailServer();
+    }, [num]);
+
+    const handleDelete = async () => {
+
+        if (!window.confirm("정말 삭제하시겠습니까?")) {
+            return;
+        }
+
+        try {
+            await axios.delete(
+                `${backendUrl}/api/inquiry/delete?num=${num}`
+            );
+
+            alert("삭제 완료");
+            navigate("/inquiry");
+
+        } catch (error) {
+            console.log(error);
+            alert("삭제 실패");
+        }
+    };
+
+    const imageBasePath = `${backendUrl}/imgfile/`;
 
     return (
         <div className={styles.container}>
-            <h1>상세보기 예제</h1>
+
             <table className={styles.boardTable}>
                 <tbody>
+
                     <tr>
                         <th>번호</th>
-                        <td>1</td>
+                        <td>{inquiry?.inum}</td>
                     </tr>
+
                     <tr>
                         <th>제목</th>
-                        <td>안녕하세요</td>
+                        <td>{inquiry?.ititle}</td>
                     </tr>
+
                     <tr>
                         <th>작성자</th>
-                        <td>테스형</td>
+                        <td>{inquiry?.iwriter}</td>
                     </tr>
+
                     <tr>
                         <th>이미지</th>
-                        <td>이미지를 사용할 자리</td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td>내용이 들어갈 자리</td>
-                    </tr>    
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colSpan={2} style={{textAlign:"center"}}>
-                        <button className={styles.button} >삭제</button>&nbsp;  
-                        <Link to="/inquiry" className={styles.button}>
-                        목록</Link>
+                        <td>
+                            {
+                                inquiry?.imgn && (
+                                    <img
+                                        src={`${imageBasePath}${inquiry.imgn}`}
+                                        alt="문의 이미지"
+                                    />
+                                )
+                            }
                         </td>
                     </tr>
-                </tfoot>           
+
+                    <tr>
+                        <th>내용</th>
+                        <td>{inquiry?.icontent}</td>
+                    </tr>
+
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colSpan={2}>
+
+                            <button onClick={handleDelete}>삭제</button>
+
+                            <Link to="/inquiry">
+                                목록
+                            </Link>
+
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
+
             <hr />
-            <Inquirecomm/>
+
+            {/* 댓글 컴포넌트 */}
+            <InquireComm num={num} />
+
         </div>
     )
 }
 
-export default InquireDetail
+export default InquiryDetail;

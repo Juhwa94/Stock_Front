@@ -444,35 +444,7 @@ const Form2: React.FC = () => {
                 />
               </div>
 
-              <div className={styles.formRow}>
-                <label>판형</label>
-
-                <div className={styles.sizeArea}>
-                  <input
-                    name="bookWidth"
-                    type="number"
-                    min="1"
-                    step="1"
-                    value={formData.bookWidth}
-                    onChange={formChange}
-                    placeholder="가로"
-                  />
-
-                  <span>×</span>
-
-                  <input
-                    name="bookHeight"
-                    type="number"
-                    min="1"
-                    step="1"
-                    value={formData.bookHeight}
-                    onChange={formChange}
-                    placeholder="세로"
-                  />
-
-                  <span>mm</span>
-                </div>
-              </div>
+        
 
               <div className={styles.formRow}>
                 <label htmlFor="category">분야</label>

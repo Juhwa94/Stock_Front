@@ -1,0 +1,113 @@
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
+}
+
+
+.sal_div_header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #f8f9fa;
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.sal_div_header p {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+}
+
+.sal_div_header input[type='date'] {
+    padding: 6px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    outline: none;
+}
+
+
+.total_price_title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 16px 0 20px 0;
+}
+
+
+.Table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.Table th {
+    background-color: #f1f3f5;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.Table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+    vertical-align: middle;
+    color: #495057;
+}
+
+
+.Table input[type='text'],
+.Table input[type='number'] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.Table input:focus {
+    border-color: #4c6ef5;
+    outline: none;
+}
+
+
+button {
+    background-color: #4c6ef5;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #3b5bdb;
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed #dee2e6;
+    margin: 24px 0;
+}

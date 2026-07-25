@@ -45,6 +45,11 @@ const DropdownNav: React.FC = () => {
                     발주관리
                 </NavLink>
             </div>
+          <div className={style.navItem}>
+            <NavLink to="/product" className={linkClass}>
+            판매관리
+            </NavLink>
+          </div>
 
             {/* 5. 커뮤니티 */}
             <div className={style.navItem}>

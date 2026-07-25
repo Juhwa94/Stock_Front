@@ -6,13 +6,75 @@
 }
 
 
-/* 사이드바 */
+/* 1. 전체 레이아웃 (오른쪽 배치 핵심!) */
+.admin_container {
+  display: flex; /* 사이드바와 본문을 가로로 나란히 배치 */
+  align-items: flex-start;
+  min-height: 100vh;
+  gap: 24px; /* 사이드바와 본문 사이 간격 */
+  padding: 20px;
+  background-color: #f8f9fa; /* 전체 배경도 깔끔한 연회색 */
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  letter-spacing: -0.3px;
+}
+
+/* 2. 본문 (사이드바 오른쪽 영역을 꽉 채움) */
+.main_content {
+  flex: 1; /* 남은 오른쪽 공간을 모두 차지 */
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  min-height: 500px;
+}
+
+/* 3. 사이드바 (깔끔한 Light Gray 스타일) */
 .sidebar {
   width: 220px;
-  background-color: #f5f5f5;
+  min-height: 100vh;
+  background-color: #f1f3f5; /* 고급스러운 은은한 회색 */
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* 사이드바 헤더 */
+.sidebar_header {
+  padding: 0 8px 12px 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.sidebar_header h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212529; /* 검정색 헤더 텍스트 */
+}
+
+/* 메뉴 리스트 */
+.sidebar_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 기본 메뉴 버튼 (검정/어두운 회색 글자) */
+.nav_item {
+  display: block;
+  padding: 10px 12px;
+  color: #495057; /* 진한 회색 글자 */
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
   border-radius: 8px;
-  padding: 20px 0;
-  border: 1px solid #ddd;
+  transition: all 0.15s ease-in-out;
+}
+
+.nav_item:hover, .active {
+  background-color: #000000 !important;
+  color: #ffffff !important;
 }
 
 
@@ -68,20 +130,21 @@
   border-radius: 8px;
   padding: 30px;
   border: 1px solid #ddd;
-
+  min-height: 900px;
   display: flex;
   flex-direction: column;
 }
 
 
 /* 사용자 전환 버튼 */
-.transbtn {
+.transBtn {
+  background-color: #333333;
+  color: #ffffff;
   align-self: flex-end;
-  padding: 8px 15px;
+  padding: 12px 24px;
   border: 1px solid #555 !important;
-  border-radius: 6px;
+  border-radius: 20px;
   text-decoration: none;
-  color: #333 !important;
   margin-bottom: 20px;
 }
 
@@ -193,4 +256,30 @@
 
 .button:hover {
   background-color: #bbb;
+}
+
+
+.buttonContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* 버튼 스타일 */
+.customBtn {
+  background-color: #333333;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.customBtn:hover {
+  background-color: #4a4a4a;
 }

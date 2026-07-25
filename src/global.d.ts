@@ -6,3 +6,9 @@ declare module '*.module.css' {
 }
 // declare module "slick-carousel/slick/*.css";
 declare module "*.css";
+
+declare module "swiper";
+declare module "swiper/react";
+declare module "swiper/css";
+declare module "swiper/css/navigation";
+declare module "swiper/css/pagination";

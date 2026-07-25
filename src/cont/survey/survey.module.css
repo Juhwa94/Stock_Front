@@ -1,0 +1,125 @@
+/* 설문 작성 폼 전체 컨테이너 */
+.container2 {
+  max-width: 750px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 정돈 */
+.surveyTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.surveyTable th, .surveyTable td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+/* 왼쪽 질문 라벨 스타일 (회색 칸 넓히고 정렬) */
+.questionLabel {
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+  text-align: left;
+  width: 65%; 
+}
+
+/* 우측 입력 상자 스타일 */
+.inputField {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.inputField:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* 하단 버튼 정렬 */
+.buttonGroup {
+  text-align: center;
+  padding: 20px 0 10px 0;
+}
+
+.submitBtn {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.submitBtn:hover {
+  background-color: #0b5ed7;
+}
+
+.cancelBtn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancelBtn:hover {
+  background-color: #5c636a;
+}
+
+/* 별점 */
+.starRatingContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;       
+  padding: 5px 0;
+}
+
+/* 회색 빈 별 */
+.starItem {
+  font-size: 1.8rem;    
+  cursor: pointer;        
+  color: #e4e5e9;       
+  user-select: none;      
+  transition: color 0.15s ease, transform 0.1s ease; 
+}
+
+.starItem:hover {
+  transform: scale(1.2);  
+  color: #ffda6a;       
+}
+
+/* 클릭 후 선택 완료된 별*/
+.starItem.active {
+  color: #ffc107;         
+  text-shadow: 0 0 4px rgba(255, 193, 7, 0.4); 
+}
+
+/* 점수를 숫자로 보여주는 배지  */
+.scoreBadge {
+  min-width: 45px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  padding: 5px 8px;
+}
+/* 텍스트 상자 크기 고정 */
+.textarea {
+  resize: none;
+}

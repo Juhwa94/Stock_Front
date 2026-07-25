@@ -133,15 +133,15 @@ const Detail: React.FC = () => {
     <>
       <header className={styles.topHeader}>
         <div className={styles.topBar}>
-          <div className={styles.logo}>RETAIL BOOKS 재고 관리</div>
+          <div className={styles.logo}>재고 관리</div>
         </div>
       </header>
 
       <main className={styles.detailContainer}>
         <header className={styles.pageHeader}>
-          <h1>도서 프로필</h1>
-          <p>도서 상세 정보와 현재 재고입니다.</p>
-        </header>
+          <h1>도서 프로필</h1></header>
+      
+        
 
         <section className={styles.detailContent}>
           <div className={styles.detailImage}>
@@ -188,12 +188,7 @@ const Detail: React.FC = () => {
               <span>{book.isbn}</span>
             </div>
 
-            <div className={styles.detailRow}>
-              <strong>판형</strong>
-              <span>
-                {book.bookWidth} × {book.bookHeight}mm
-              </span>
-            </div>
+        
 
             <div className={styles.detailRow}>
               <strong>분야</strong>

@@ -55,7 +55,7 @@ const sampleBooks: BookVO[] = [
   },
   {
     bookId: 4,
-    title: "Get Lost",
+    title: "싯타르타",
     author: "Justin Halpern",
     publisher: "Novel Books",
     publishDate: "2025-02-11",

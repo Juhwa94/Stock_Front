@@ -26,7 +26,6 @@ import List from "../cont/management/List";
 import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
-// import NoticeB from '../cont/notice/NoticeB'
 import NoticeJo from '../cont/notice/NoticeJo'
 import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
@@ -34,9 +33,16 @@ import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
 import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
+import MyPage from '../cont/mypage/mypage'
+import ProfileEditPage from '../cont/mypage/profileeditpage'
+import SurveyAddForm from '../cont/survey/SurveyAddForm'
+import SurveyManagement from '../cont/survey/SurveyManagement'
+import SurveyUpdate from '../cont/survey/SurveyUpdate'
+import Product from '../cont/product/Product'
+import InquiryDetail from '../cont/inquiry/InquireDetail'
 
 
-// 라우터란?
+// 라우터란
 // 사용자가 입력한 주소를 감지하는 역할을 하며, 
 // 여러 환경에서 동작할 수 있도록 여러 종유의 라우터 컴포넌트를 제공
 // 라우터 기본 구성
@@ -70,7 +76,7 @@ const AppRoutes: React.FC = () => {
         {path: "/",element: <Home />,},
         { path: "/management", element: <Form /> },
         { path: "/management/form", element: <Form /> },
-         { path: "/management/list", element: <List /> },
+        { path: "/management/list", element: <List /> },
         { path: "/management/detail/:bookId", element: <Detail /> },
         { path: "/management/form2/:bookId", element: <Form2 /> },
         
@@ -80,6 +86,8 @@ const AppRoutes: React.FC = () => {
       
       
 
+        { path: '/product', element: <Product/>},
+        // { path: '/notice', element: <Notice />},
         { path: '/order', element: <Order />},
         { path: '/user/login', element: <Login/>},
         { path: '/user/signup', element: <Signup />},
@@ -99,10 +107,18 @@ const AppRoutes: React.FC = () => {
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
         
+        { path: '/community', element: <Community/>},
+        {path: '/notice', element: <NoticeB />},
+        {path: '/admin/noticejoin', element: <NoticeJoin />},
+        { path: '/community/detail/:num', element: <CommunityDetail />},
+        { path: '/communityform', element: <UpCommunityForm/>},
+      
         { path: '/inquiry', element: <InquireList/>},
         { path: '/Inquirecomm', element: <Inquirecomm/>},
         { path: '/InquireForm', element: <InquireForm/>},
-        { path: '/InquireDetail', element: <InquireDetail/>},
+        // { path: '/InquireDetail', element: <InquireDetail/>},
+        {path:"/inquiry/detail/:num", element:<InquireDetail/>},
+        {path:"/reply/list/:num", element:<Inquirecomm/>},
 
 
 
@@ -111,12 +127,41 @@ const AppRoutes: React.FC = () => {
         
         
         
+        { path: '/community', element: <Community />},
+        { path: '/communityform', element: <UpCommunityForm/>},
+        { path: '/mypage', element: <MyPage />},
+        { path: '/profileeditpage', element: <ProfileEditPage/>},
+
+        { path: '/survey', element: <SurveyAddForm />},
+        { path: '/admin/surveymanagement', element: <SurveyManagement />},
+        { path: '/admin/surveyupdate', element: <SurveyUpdate />},
+
 
 
         // <Route path="/login" element={<Login />} />
         // <Route path="/signup" element={<Signup />} />
         // <Route path="/dashboard" element={<Dashboard />} />
 
+// 커뮤니티
+{ path: '/community', element: <Community /> },
+{ path: '/notice', element: <NoticeB /> },
+{ path: '/admin/noticejoin', element: <NoticeJoin /> },
+{ path: '/community/detail/:num', element: <CommunityDetail /> },
+{ path: '/communityform', element: <UpCommunityForm /> },
+
+// 문의
+{ path: '/inquiry', element: <InquireList /> },
+{ path: '/Inquirecomm', element: <Inquirecomm /> },
+{ path: '/InquireForm', element: <InquireForm /> },
+{ path: '/InquireDetail', element: <InquireDetail /> },
+
+// 관리자
+{ path: '/admin/member', element: <Members /> },
+{ path: '/admin', element: <Admin /> },
+
+// <Route path="/login" element={<Login />} />
+// <Route path="/signup" element={<Signup />} />
+// <Route path="/dashboard" element={<Dashboard />} />
 
     ];
     return (
@@ -125,7 +170,7 @@ const AppRoutes: React.FC = () => {
                 routeList.map((route, idx) => (
                     <Route key={idx} {...route} />
                 ))}
-            
+
         </Routes>
     );
 };

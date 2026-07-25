@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Chart from './Chart'
 import Stayle from './revenue.module.css'
 import ShareChart from './ShareChart'
@@ -14,24 +14,30 @@ import ShareChart from './ShareChart'
   console.log(monthNum); // 7 (숫자형)
 
   발주일 input태그에서 각각 차트컴포넌트로 값을 보낼때 
-  받아온 벨류값을 숫자로써  전처리하는 패턴임
+  받아온 벨류값을 숫자로써  전처리하는 패턴임zzzzzzzzzzzzzzzzzzzzz
 */
 
+
 const Revenue: React.FC = () => {
+  const [date, setDate] = useState("");
+
   return (
     <div>
       <h1>매출관리</h1>
       <div className={Stayle.chart_layout_parent} >
         <div>
           <ul className={Stayle.layout_child} style={{ marginRight: 300 }}>
-            <li>발주일 : <input type="month" name='date' /></li>
+            <li>이번달 결산 : <input type="month" name='date' onChange={(e) => {
+              setDate(e.target.value);
+              console.log(e.target.value);
+            }} /></li>
             <li>총 매출 : </li>
             <li>총 판매수량  : </li>
             <li>마진 : </li>
             <li>원가 : </li>
           </ul>
         </div>
-        <div  style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ShareChart />
         </div>
       </div>
