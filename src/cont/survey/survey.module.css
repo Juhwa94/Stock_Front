@@ -100,6 +100,7 @@
   transition: color 0.15s ease, transform 0.1s ease; 
 }
 
+
 .starItem:hover {
   transform: scale(1.2);  
   color: #ffda6a;       
@@ -119,7 +120,33 @@
   font-size: 0.85rem;
   padding: 5px 8px;
 }
+
 /* 텍스트 상자 크기 고정 */
 .textarea {
   resize: none;
+}
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* 최상단 레이어 위치 */
+}
+
+/* 모달 본체 박스 */
+.modalContent {
+  width: 90%;
+  max-width: 700px; /* 적절한 최대 너비 설정 */
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
