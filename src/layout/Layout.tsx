@@ -117,7 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className={styles.admin_container}>
             {/* 사이드바 */}
             <aside className={styles.sidebar}>
-              
+
               <div className={styles.sidebar_header}>
                 <h3>관리자 메뉴</h3>
               </div>
@@ -130,18 +130,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     </NavLink>
                   </li>
 
-<li>
-                  <NavLink to="/admin/noticejo" className={linkClass}>
-                    공지 등록
-                  </NavLink>
-                </li>
-                    <li>
-                  <NavLink to="/admin/noticere" className={linkClass}>
-                    공지 수정
-                  </NavLink>
-                </li>
-                    <li>
-                  {/* <NavLink to="/admin/communityjo" className={linkClass}>
+                  <li>
+                    <NavLink to="/admin/noticejo" className={linkClass}>
+                      공지 등록
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/admin/noticere" className={linkClass}>
+                      공지 수정
+                    </NavLink>
+                  </li>
+                  <li>
+                    {/* <NavLink to="/admin/communityjo" className={linkClass}>
                     게시글 등록
                   </NavLink>
                 </li>
@@ -149,7 +149,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <NavLink to="/admin/communityre" className={linkClass}>
                     게시글 수정
                   </NavLink> */}
-                </li>
+                  </li>
 
                   <li>
                     <NavLink to="/admin/surveymanagement" className={styles.nav_item}>

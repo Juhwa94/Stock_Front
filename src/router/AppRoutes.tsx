@@ -19,7 +19,6 @@ import InquireDetail from '../cont/inquiry/InquireDetail'
 
 import Admin from '../cont/admin/Admin'
 import Members from '../cont/admin/Members'
-// import Management from "../cont/management/Management";
 
 import Form from "../cont/management/Form";
 import List from "../cont/management/List";
@@ -106,12 +105,6 @@ const AppRoutes: React.FC = () => {
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
-        
-        { path: '/community', element: <Community/>},
-        {path: '/notice', element: <NoticeB />},
-        {path: '/admin/noticejoin', element: <NoticeJoin />},
-        { path: '/community/detail/:num', element: <CommunityDetail />},
-        { path: '/communityform', element: <UpCommunityForm/>},
       
         { path: '/inquiry', element: <InquireList/>},
         { path: '/Inquirecomm', element: <Inquirecomm/>},
@@ -125,10 +118,6 @@ const AppRoutes: React.FC = () => {
         { path: '/admin/member', element: <Members />},
         { path: '/admin', element: <Admin />},
         
-        
-        
-        { path: '/community', element: <Community />},
-        { path: '/communityform', element: <UpCommunityForm/>},
         { path: '/mypage', element: <MyPage />},
         { path: '/profileeditpage', element: <ProfileEditPage/>},
 
@@ -144,10 +133,7 @@ const AppRoutes: React.FC = () => {
 
 // 커뮤니티
 { path: '/community', element: <Community /> },
-{ path: '/notice', element: <NoticeB /> },
-{ path: '/admin/noticejoin', element: <NoticeJoin /> },
 { path: '/community/detail/:num', element: <CommunityDetail /> },
-{ path: '/communityform', element: <UpCommunityForm /> },
 
 // 문의
 { path: '/inquiry', element: <InquireList /> },
