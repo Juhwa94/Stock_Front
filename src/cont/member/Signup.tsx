@@ -101,20 +101,21 @@ const Signup: React.FC = () => {
   // 이메일 인증 요청
   const emailCheck = async () => {
     try {
-      const res = await axios.post(`${urls}/api/auth/emailCheck`, {
-        email: form.email,
+      const res = await axios.get(`${urls}/api/member/emailCheck`, {
+        params: {
+          email: form.email
+        }
       });
 
       if (res.data === 0) {
-        setEmailMessage('사용 가능한 이메일입니다. 인증번호를 발송했습니다.');
+        setEmailMessage('사용 가능한 이메일입니다.');
         setIsEmailChecked(true);
-        setIsEmailVerified(false);
       } else {
         setEmailMessage('이미 사용 중인 이메일입니다.');
         setIsEmailChecked(false);
       }
+
     } catch (error) {
-      setEmailMessage('이메일 확인 중 오류가 발생했습니다.');
       console.error(error);
     }
   };

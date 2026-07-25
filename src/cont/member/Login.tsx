@@ -104,7 +104,7 @@ const Login: React.FC = () => {
         >
           로그인
         </button>
-        
+
         {/* 안내 메시지 */}
         <p style={{ marginTop: '10px', color: 'red', fontSize: '14px' }}>{message}</p>
 
