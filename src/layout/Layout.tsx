@@ -124,7 +124,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <nav className={styles.sidebar_nav}>
                 <ul>
                   <li>
-                    <NavLink to="/admin/member" className={`${styles.nav_item} ${styles.active}`}>
+                    <NavLink to="/admin/member" className={`${styles.nav_item}`}>
                       회원 관리
                     </NavLink>
                   </li>
