@@ -1,0 +1,23 @@
+.board {
+    width: 100%;
+}
+
+.list {
+    border: 1px solid #ddd;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.content {
+    flex: 1;
+}
+
+.date {
+    color: gray;
+    font-size: 14px;
+}

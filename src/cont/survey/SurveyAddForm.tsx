@@ -29,7 +29,7 @@ interface SurveyModalProps {
 const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
-  const [code, setCode] = useState<number>(5);
+  
   const [mnum, setMnum] = useState<number>(2);
   const [svnum, setSvnum] = useState<number>(0);
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
@@ -37,6 +37,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
 
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
 
+  //modal이 활성화 되어 렌더링 시 실행되는 useEffect
   useEffect(() => {
     //modal 컴포넌트가 열려있을 때만 api 출력
     if (!isOpen) return;
@@ -57,6 +58,20 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
     };
     getSurvey();
   }, [isOpen])
+
+  useEffect(() => {
+    const getMnum = async () => {
+      try {
+        const res = await axios.get(`${backendUrl}/api/login/session`, {
+          withCredentials: true,
+        });
+        setMnum(res.data.mnum);
+      } catch (error) {
+        console.error("로그인 정보 확인 실패.", error);
+      }};
+      
+      getMnum();
+  }, []);
 
   const surveySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,7 +159,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
                 {/*추가적인 요청 사항 텍스트 박스*/}
                 <li className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                   <div className={style.textareaContainer}>
-                    <p className="fw-bold text-dark flex-grow-1">{code + 1}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>{/*숫자 6은 code를 받고 +1 시킬 것. */}
+                    <p className="fw-bold text-dark flex-grow-1">{surveyData?.code}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>
                     <textarea
                       className={style.textarea}
                       rows={8}

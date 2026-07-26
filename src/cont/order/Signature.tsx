@@ -36,7 +36,7 @@ export default function Signature({ order }: SignatureProps) {
         }
 
         //그려진 공간을 이미지 데이터(Base64 문자열)로 추출
-        const trimmedCanvas = canvasRef.current.getTrimmedCanvas();
+        const trimmedCanvas = canvasRef.current.getCanvas();
         const image64: string = trimmedCanvas.toDataURL('image/png');
 
         // 스프링부트 백엔드로 전송할 FormData 객체 생성
@@ -56,12 +56,12 @@ export default function Signature({ order }: SignatureProps) {
             orderData.append('signature', blob, fileName); // 백엔드에서 'signature'이라는 이름으로 받음
             if (order) {
                 orderData.append(
-                    'order',
+                    'orderData',
                     new Blob([JSON.stringify(order)], { type: 'application/json' })
                 );
             }
             // 백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
-            const res = await fetch(`${backendUrl}/api/order`, {
+            const res = await fetch(`${backendUrl}/api/order/orderForm`, {
                 method: 'POST',
                 body: orderData, // Multipart FormData 전송
             });

@@ -5,9 +5,16 @@ import { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useAuth } from '../comp/AuthProvider';
 
 
 const Home = () => {
+  const { member, isLoggedIn } = useAuth();
+
+  console.log("현재 회원:", member);
+  console.log("로그인 여부:", isLoggedIn);
+  console.log(member?.authority);
+  
   const banners = [
     {
       id: 1,
