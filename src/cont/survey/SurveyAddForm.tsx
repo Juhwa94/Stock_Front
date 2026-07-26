@@ -38,7 +38,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
 
   useEffect(() => {
-
+    //modal 컴포넌트가 열려있을 때만 api 출력
     if (!isOpen) return;
 
     const getSurvey = async () => {
