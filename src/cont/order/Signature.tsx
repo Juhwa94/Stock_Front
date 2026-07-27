@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import Stayle from './order.module.css'
 import { OrderForm } from './Order';
-import axios from 'axios';
 
 
 //OrderForm객체를 매개변수로 받기위한 인터페이스

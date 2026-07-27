@@ -22,26 +22,38 @@ const Revenue: React.FC = () => {
   const [date, setDate] = useState("");
 
   return (
-    <div>
-      <h1>매출관리</h1>
-      <div className={Stayle.chart_layout_parent} >
-        <div>
-          <ul className={Stayle.layout_child} style={{ marginRight: 300 }}>
-            <li>이번달 결산 : <input type="month" name='date' onChange={(e) => {
-              setDate(e.target.value);
-              console.log(e.target.value);
-            }} /></li>
+    <div className={Stayle.container}>
+      <h1 className={Stayle.main_title}>매출관리</h1>
+
+      <div className={Stayle.chart_layout_parent}>
+        <div className={Stayle.info_card_box}>
+          <ul className={Stayle.layout_child}>
+            <li>
+              이번달 결산 :{' '}
+              <input
+                type="month"
+                name="date"
+                onChange={(e) => {
+                  setDate(e.target.value);
+                  console.log(e.target.value);
+                }}
+              />
+            </li>
             <li>총 매출 : </li>
-            <li>총 판매수량  : </li>
+            <li>총 판매수량 : </li>
             <li>마진 : </li>
             <li>원가 : </li>
           </ul>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+
+        <div className={Stayle.pie_chart_wrapper}>
           <ShareChart />
         </div>
       </div>
-      <Chart />
+
+      <div className={Stayle.line_chart_container}>
+        <Chart />
+      </div>
     </div>
   )
 }

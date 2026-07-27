@@ -26,6 +26,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     // 활성화가 된 상태이면 style.active를 추가한다.
     isActive ? `${styles.link} ${styles.active}` : styles.link;
+  const handleLogout = async () => {
+    await logout();
+    alert('로그아웃 되었습니다.');
+    navigate('/');
+  };
+
 
   return (
     <div
@@ -81,7 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </button></>
               )}
               {isLoggedIn && (
-                <button type="button" className={styles.customBtn} onClick={logout}>
+                <button type="button" className={styles.customBtn} onClick={handleLogout}>
                   로그아웃
                 </button>
               )}
