@@ -102,7 +102,7 @@ const Members: React.FC = () => {
   };
 
   return (
-    <div className={styles.memberContainer}>
+    <div className={`${styles.memberContainer} ${styles.table_responsive}`}>
 
       <h2>회원관리</h2>
 
