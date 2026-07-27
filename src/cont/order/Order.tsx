@@ -25,7 +25,7 @@ interface OrderItem {
     oipublisher: string;
 }
 
-const BackendUrl = process.env.REACT_APP_BACK_END_URL;
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const Order: React.FC = () => {
     //-------Form--------------------------------
@@ -69,7 +69,7 @@ const Order: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await axios.get(`http://192.168.0.114/myictstudy/api/login/session`, {
+                const res = await axios.get(`${backendUrl}/api/login/session`, {
                     withCredentials: true,
                 });
                 setMnum(res.data.mnum);
