@@ -13,7 +13,7 @@ interface ProfileForm {
     storeaddrDetail: string;
     phoneFirst: string;
     phoneMiddle: string;
-    phoneLast: string; 
+    phoneLast: string;
     email: string;
     smsAgree: boolean;
     emailAgree: boolean;
@@ -49,7 +49,10 @@ const ProfileEditPage = () => {
     useEffect(() => {
 
         const fetchProfile = async () => {
-
+            if (!member?.email) {
+                setLoading(false);
+                return;
+            }
             try {
 
                 const response = await axios.get(
@@ -170,58 +173,58 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-  const handleSubmit = async (
-    event: React.SubmitEvent,
-) => {
-    event.preventDefault();
+    const handleSubmit = async (
+        event: React.SubmitEvent,
+    ) => {
+        event.preventDefault();
 
-    console.log("저장 직전 form 확인:", form);
-    if (!form.nick.trim()) {
-        alert("닉네임을 입력해주세요.");
-        return;
-    }
-    if (!form.phoneMiddle || !form.phoneLast) {
-        alert('휴대전화 번호를 입력해주세요.');
-        return;
-    }
+        console.log("저장 직전 form 확인:", form);
+        if (!form.nick.trim()) {
+            alert("닉네임을 입력해주세요.");
+            return;
+        }
+        if (!form.phoneMiddle || !form.phoneLast) {
+            alert('휴대전화 번호를 입력해주세요.');
+            return;
+        }
 
-    if (!form.email.trim()) {
-        alert('이메일을 입력해주세요.');
-        return;
-    }
+        if (!form.email.trim()) {
+            alert('이메일을 입력해주세요.');
+            return;
+        }
 
-    const fullStoreAddress = form.storeaddrDetail
-        ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
-        : form.storeaddr;
+        const fullStoreAddress = form.storeaddrDetail
+            ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
+            : form.storeaddr;
 
-    try {
+        try {
 
-        const requestData = await axios.post(
-            `${BACK_URL}/api/member/update`,
-            {
-                nick: form.nick,
-                mphone: [
-                    form.phoneFirst,
-                    form.phoneMiddle,
-                    form.phoneLast,
-                ].join('-'),
-                email: form.email.trim(),
-                storeaddr: fullStoreAddress,
-                smsAgree: form.smsAgree ? 'Y' : 'N',
-                emailAgree: form.emailAgree ? 'Y' : 'N',
-            }
-        );
+            const requestData = await axios.post(
+                `${BACK_URL}/api/member/update`,
+                {
+                    nick: form.nick,
+                    mphone: [
+                        form.phoneFirst,
+                        form.phoneMiddle,
+                        form.phoneLast,
+                    ].join('-'),
+                    email: form.email.trim(),
+                    storeaddr: fullStoreAddress,
+                    smsAgree: form.smsAgree ? 'Y' : 'N',
+                    emailAgree: form.emailAgree ? 'Y' : 'N',
+                }
+            );
 
-        console.log('회원정보 수정 요청:', requestData);
-        alert('기본정보가 저장되었습니다.');
+            console.log('회원정보 수정 요청:', requestData);
+            alert('기본정보가 저장되었습니다.');
 
-    } catch (error) {
+        } catch (error) {
 
-        console.error('회원정보 수정 실패:', error);
-        alert('기본정보 저장에 실패했습니다.');
+            console.error('회원정보 수정 실패:', error);
+            alert('기본정보 저장에 실패했습니다.');
 
-    }
-};
+        }
+    };
 
     const handleCancel = () => {
         navigate(-1);
@@ -239,7 +242,7 @@ const ProfileEditPage = () => {
                     }
                 }
             );
-            await logout();   
+            await logout();
 
             alert("회원 탈퇴가 완료되었습니다.");
 

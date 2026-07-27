@@ -25,6 +25,9 @@ import List from "../cont/management/List";
 import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
+
+import MyPage from '../cont/mypage/Mypage'
+import ProfileEditPage from '../cont/mypage/Profileeditpage'
 import NoticeJo from '../cont/notice/NoticeJo'
 import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
@@ -32,8 +35,6 @@ import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
 import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
-import MyPage from '../cont/mypage/mypage'
-import ProfileEditPage from '../cont/mypage/profileeditpage'
 import SurveyAddForm from '../cont/survey/SurveyAddForm'
 import SurveyManagement from '../cont/survey/SurveyManagement'
 import SurveyUpdate from '../cont/survey/SurveyUpdate'
