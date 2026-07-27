@@ -123,9 +123,9 @@
 
 /* 텍스트 상자 크기 고정 */
 .textarea {
+  width: 100%;
   resize: none;
 }
-
 
 .modalOverlay {
   position: fixed;
@@ -149,4 +149,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 }
+
+
