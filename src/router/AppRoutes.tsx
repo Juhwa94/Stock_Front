@@ -26,14 +26,15 @@ import List from "../cont/management/List";
 import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
-// import NoticeB from '../cont/notice/NoticeB'
-import NoticeJo from '../cont/notice/NoticeJo'
-import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
 import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
-import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
+import NommForm from '../cont/notice/nommForm'
+import AdminNotice from '../cont/notice/AdminNotice'
+
+
+
 
 
 // 라우터란?
@@ -87,14 +88,18 @@ const AppRoutes: React.FC = () => {
       
         
         { path: '/notice', element: <Notice />},
-        { path: '/notice/detail', element: <NoticeDetail />},
-        {path: '/admin/noticejo', element: <NoticeJo />},
-        {path: '/admin/noticere', element: <NoticeRe />},
+        { path: '/notice/detail/:num', element: <NoticeDetail />},
+       
+        { path: "/admin/notice", element: <AdminNotice /> },
+        { path: "/admin/notice/form", element: <NommForm /> },
+        { path: "/admin/notice/update/:num", element: <NommForm /> },
+        
 
         { path: '/community', element: <Community />},
-        { path: '/community/detail', element: <CommunityDetail />},
+        { path: '/community/detail/:num', element: <CommunityDetail />},
         { path: '/community/form', element: <CommForm/>},
-        { path: '/community/comment', element: <Comment/>},
+
+       
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
@@ -108,6 +113,8 @@ const AppRoutes: React.FC = () => {
 
         { path: '/admin/member', element: <Members />},
         { path: '/admin', element: <Admin />},
+       
+
         
         
         

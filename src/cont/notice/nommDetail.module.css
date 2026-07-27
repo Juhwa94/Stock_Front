@@ -1,0 +1,160 @@
+.container {
+    background-color: #ffffff;
+    color: #000000;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 40px;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+/* 카테고리 */
+.category {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #666;
+    letter-spacing: 1px;
+}
+
+/* 제목 */
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* 작성 정보 */
+.info {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: #777777;
+    margin-bottom: 30px;
+}
+
+/* 본문 */
+.content {
+    font-size: 15px;
+    line-height: 2;
+    white-space: pre-wrap;
+    margin-bottom: 40px;
+}
+
+/* 이미지 */
+.imageBox {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.image {
+    max-width: 100%;
+    width: 500px;
+    border: 1px solid #dddddd;
+}
+
+/* 버튼 영역 */
+.buttonArea {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+/* Link 버튼 */
+.button {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #ffffff;
+    border: 1px solid #222222;
+    color: #222222;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 14px;
+}
+
+.button:hover {
+    background: #222222;
+    color: #ffffff;
+}
+
+/* 삭제 버튼(button 태그용) */
+.deleteButton {
+    padding: 8px 20px;
+    background: #ffffff;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 14px;
+}
+
+.deleteButton:hover {
+    background: #cc0000;
+    color: #ffffff;
+}
+
+/* Footer */
+.footer {
+    border-top: 1px solid #333333;
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.footerTitle {
+    font-weight: bold;
+}
+
+.footerLink {
+    cursor: pointer;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
+}
+
+/* 로딩 */
+.loading {
+    text-align: center;
+    padding: 100px 0;
+    font-size: 18px;
+    color: #666666;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+
+    .container {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .info {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .image {
+        width: 100%;
+    }
+
+    .buttonArea {
+        flex-wrap: wrap;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+}
