@@ -10,7 +10,6 @@ interface Props {
 }
 
 const RequestList: React.FC<Props> = ({ requests }) => {
-    console.log(requests);
     return (
         <ul className={style.board}>
                 {requests.length > 0 ? (

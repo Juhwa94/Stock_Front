@@ -17,6 +17,7 @@ interface Data {
     sdate: string,
     result: SurveyResult[]
 }
+
 interface RequestData {
     REQUEST: string;
     RESDATE: string;
