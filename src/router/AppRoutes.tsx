@@ -35,9 +35,9 @@ import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
 import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
-import SurveyAddForm from '../cont/survey/SurveyAddForm'
-import SurveyManagement from '../cont/survey/SurveyManagement'
-import SurveyUpdate from '../cont/survey/SurveyUpdate'
+//import SurveyAddForm from '../cont/survey/SurveyAddForm'
+//import SurveyManagement from '../cont/survey/SurveyManagement'
+//import SurveyUpdate from '../cont/survey/SurveyUpdate'
 import Product from '../cont/product/Product'
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -70,6 +70,7 @@ interface RouteItem {
     path: string;
     element: React.ReactElement;
     private?: boolean;
+    role?: string;
 }
 
 const AppRoutes: React.FC = () => {
@@ -127,9 +128,9 @@ const AppRoutes: React.FC = () => {
         { path: '/mypage', element: <MyPage />, private: true },
         { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
 
-        { path: '/survey', element: <SurveyAddForm /> },
-        { path: '/admin/surveymanagement', element: <SurveyManagement /> },
-        { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
+        // { path: '/survey', element: <SurveyAddForm /> },
+        // { path: '/admin/surveymanagement', element: <SurveyManagement /> },
+        // { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
 
 
 
@@ -157,49 +158,53 @@ const AppRoutes: React.FC = () => {
 
     ];
 
-   return (
+    return (
 
-    <Routes>
-        {
-            routeList.map((route, idx) => {
+        <Routes>
+            {
+                routeList.map((route, idx) => {
+                    console.log("Home", Home);
+                    console.log("Admin", Admin);
+                    console.log("ProtectedRoute", ProtectedRoute);
+                    console.log("Members", Members);
 
-              console.log(
-    "ROUTE",
-    idx,
-    route.path,
-    route.element
-);
-if (!React.isValidElement(route.element)) {
-    console.log("문제 Route 발견:", route);
-}
-                if(route.private){
+                    console.log(
+                        "ROUTE",
+                        idx,
+                        route.path,
+                        route.element
+                    );
+                    if (!React.isValidElement(route.element)) {
+                        console.log("문제 Route 발견:", route);
+                    }
+                    if (route.private) {
+
+                        return (
+                            <Route
+                                key={idx}
+                                element={<ProtectedRoute />}
+                            >
+                                <Route
+                                    path={route.path}
+                                    element={route.element}
+                                />
+                            </Route>
+                        )
+
+                    }
+
 
                     return (
-                        <Route 
+                        <Route
                             key={idx}
-                            element={<ProtectedRoute />}
-                        >
-                            <Route
-                                path={route.path}
-                                element={route.element}
-                            />
-                        </Route>
+                            path={route.path}
+                            element={route.element}
+                        />
                     )
 
-                }
-
-
-                return (
-                    <Route
-                        key={idx}
-                        path={route.path}
-                        element={route.element}
-                    />
-                )
-
-            })
-        }
-    </Routes>
-);
+                })
+            }
+        </Routes>
+    );
 };
 export default AppRoutes;
