@@ -80,7 +80,7 @@ const AppRoutes: React.FC = () => {
         { path: '/', element: <Home /> },
         // 도서 재고 관리
         { path: "/", element: <Home />, },
-        { path: "/management", element: <Form /> },
+        { path: "/management", element: <Form />, private: true },
         { path: "/management/form", element: <Form /> },
         { path: "/management/list", element: <List /> },
         { path: "/management/detail/:bookId", element: <Detail /> },
@@ -92,12 +92,12 @@ const AppRoutes: React.FC = () => {
 
 
 
-        { path: '/product', element: <Product /> },
+        { path: '/product', element: <Product />, private: true},
         // { path: '/notice', element: <Notice />},
-        { path: '/order', element: <Order /> },
+        { path: '/order', element: <Order />, private: true},
         { path: '/user/login', element: <Login /> },
         { path: '/user/signup', element: <Signup /> },
-        { path: '/revenue', element: <Revenue /> },
+        { path: '/revenue', element: <Revenue />, private: true  },
 
 
         { path: '/notice', element: <Notice /> },
