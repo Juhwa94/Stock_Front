@@ -89,7 +89,7 @@ const Product: React.FC = () => {
 
                 //전송결과 출력
                 if (res.ok) {
-                    //nav("/revenue");
+                    nav("/revenue");
                 } else {
                     alert("전송 실패 서버 에러");
                 }

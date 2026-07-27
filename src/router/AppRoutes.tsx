@@ -26,10 +26,10 @@ import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
 
-import NoticeB from '../cont/notice/NoticeB'
-import NoticeJoin from '../cont/notice/NoticeJoin'
-import MyPage from '../cont/mypage/Mypage'
-import ProfileEditPage from '../cont/mypage/Profileeditpage'
+// import NoticeB from '../cont/notice/NoticeB'
+// import NoticeJoin from '../cont/notice/NoticeJoin'
+// import MyPage from '../cont/mypage/Mypage'
+// import ProfileEditPage from '../cont/mypage/Profileeditpage'
 import NoticeJo from '../cont/notice/NoticeJo'
 import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
@@ -121,8 +121,8 @@ const AppRoutes: React.FC = () => {
         { path: '/admin/member', element: <Members />},
         { path: '/admin', element: <Admin />},
         
-        { path: '/mypage', element: <MyPage />},
-        { path: '/profileeditpage', element: <ProfileEditPage/>},
+        // { path: '/mypage', element: <MyPage />},
+        // { path: '/profileeditpage', element: <ProfileEditPage/>},
 
         { path: '/survey', element: <SurveyAddForm />},
         { path: '/admin/surveymanagement', element: <SurveyManagement />},
