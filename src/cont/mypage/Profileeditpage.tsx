@@ -49,6 +49,8 @@ const ProfileEditPage = () => {
 
     useEffect(() => {
 
+        console.log("member =", member);
+
         const fetchProfile = async () => {
             if (!member?.email) {
                 setLoading(false);

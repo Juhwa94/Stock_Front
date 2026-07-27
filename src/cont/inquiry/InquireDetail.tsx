@@ -103,7 +103,7 @@ const InquiryDetail: React.FC = () => {
                         <td colSpan={2}>
 
                             <button onClick={handleDelete}>삭제</button>
-                            <Link style={{}} to="/inquiry">목록</Link>
+                            <button><Link style={{color:'white',gap:'50px'}} to="/inquiry">목록</Link></button>
 
                         </td>
                     </tr>

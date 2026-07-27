@@ -288,3 +288,7 @@ textarea.input {
   gap: 553px;
   padding: 20px;
 }
+.comment-content {
+    width: 500px;
+    height: 150px;
+}

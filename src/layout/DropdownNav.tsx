@@ -18,15 +18,15 @@ const DropdownNav: React.FC = () => {
 
             {/* 2. 재고관리 */}
             <div className={`${style.navItem} ${style.hasDropdown}`}>
-                <NavLink to="/management" className={linkClass}>
+                <NavLink to="/myStockList" className={linkClass}>
                     재고관리
                 </NavLink>
                 {/* 호버 시 나타날 드롭다운 메뉴 */}
                 <div className={style.dropdownMenu}>
-                    <NavLink to="/management" className={style.dropdownItem}>
+                    <NavLink to="/stockForm" className={style.dropdownItem}>
                         재고등록
                     </NavLink>
-                    <NavLink to="/management/list" className={style.dropdownItem}>
+                    <NavLink to="/myStockList" className={style.dropdownItem}>
                         재고조회
                     </NavLink>
                 </div>
