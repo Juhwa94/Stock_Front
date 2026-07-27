@@ -31,6 +31,7 @@ const ProfileEditPage = () => {
     const [isEditingNick, setIsEditingNick] = useState(false);
     const [tempNick, setTempNick] = useState('');
 
+    const [isNickChecked, setIsNickChecked] = useState(false);
     const [form, setForm] = useState<ProfileForm>({
         nick: '',
         name: '',
@@ -130,24 +131,50 @@ const ProfileEditPage = () => {
     const handleStartNickEdit = () => {
         setTempNick(form.nick);
         setIsEditingNick(true);
+        setIsNickChecked(false); ///////
     };
 
-    const handleSaveNick = () => {
+    const handleSaveNick = async () => {
         if (!tempNick.trim()) {
             alert('닉네임을 입력해주세요.');
             return;
         }
+    
+    const urls = process.env.REACT_APP_BACK_END_URL;
 
-        setForm((prev) => ({
-            ...prev,
-            nick: tempNick.trim(),
-        }));
-        setIsEditingNick(false);
-    };
+    // 기존 닉네임과 같으면 중복검사 생략
+    if (tempNick.trim() !== form.nick) {
+        try {
+            const res = await axios.post(`${urls}/api/auth/nickCheck`, {
+                nick: tempNick.trim(),
+            });    
 
-    const handleCancelNickEdit = () => {
-        setTempNick('');
-        setIsEditingNick(false);
+            if (res.data !== 0) {
+                setIsNickChecked(false);
+                alert('이미 사용 중인 닉네임입니다.');
+                return;
+            }
+
+            // 사용 가능한 닉네임
+            setIsNickChecked(true);
+
+        } catch (error) {
+            console.error(error);
+            setIsNickChecked(false);
+            alert('닉네임 확인 중 오류가 발생했습니다.');
+            return;
+        }
+    } else {
+        // 기존 닉네임 그대로인 경우
+        setIsNickChecked(true);
+    }
+
+    setForm((prev) => ({
+        ...prev,
+        nick: tempNick.trim(),
+    }));
+
+    setIsEditingNick(false);
     };
 
     // 카카오 우편번호 검색 완료 핸들러
@@ -172,6 +199,16 @@ const ProfileEditPage = () => {
 
         setIsAddressModalOpen(false);
     };
+
+    const canSave =
+        form.nick.trim() &&
+        form.name.trim() &&
+        form.email.trim() &&
+        form.phoneFirst.trim() &&
+        form.phoneMiddle.trim() &&
+        form.phoneLast.trim() &&
+        form.storeaddr.trim() &&
+        isNickChecked;
 
     const handleSubmit = async (
         event: React.SubmitEvent,
@@ -339,7 +376,7 @@ const ProfileEditPage = () => {
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            onClick={handleCancelNickEdit}
+                                                            onClick={() => setIsEditingNick(false)}
                                                             className="btn btn-outline-secondary btn-sm text-nowrap"
                                                         >
                                                             취소
