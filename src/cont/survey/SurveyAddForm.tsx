@@ -37,19 +37,6 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
 
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
 
-  //테이블에 데이터가 존재하지 않을 시 더미데이터 자동 삽입
-  const dummy = {
-            sub: "프로그램 만족도 조사",
-            code: 5,
-            questions: [
-              {questions_text:"도서 검색 및 데이터 처리 속도에 만족하십니까?"},
-              {questions_text:"메뉴 구성과 화면 디자인이 사용하기 편리했습니까?"},
-              {questions_text:"주문 연동 및 재고 수량의 정확성에 만족하십니까?"},
-              {questions_text:"재고 부족 알림 및 모니터링 기능이 업무에 도움이 되었습니까?"},
-              {questions_text:"향후 이 프로그램을 지속적으로 사용할 의향이 있으십니까?"}
-            ]
-          };
-
   const navigate = useNavigate();
   //modal이 활성화 되어 렌더링 시 실행되는 useEffect
 
