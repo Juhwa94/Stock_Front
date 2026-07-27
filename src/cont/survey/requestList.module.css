@@ -15,10 +15,28 @@
     justify-content: space-between;
     padding: 12px;
     border-bottom: 1px solid #eee;
+
 }
 
 .content {
     flex: 1;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width:100%;
+}
+.content:hover + .hiddencontent, .hiddencontent:hover {
+    display: block;
+}
+.hiddencontent {
+    width: 40%;
+    padding: 15px 20px;
+    background-color: #c1d322;
+    border-radius: 5px;
+    color: white;
+    position: absolute;
+    display: none;
 }
 
 .date {
@@ -27,4 +45,10 @@
 
     color: gray;
     font-size: 14px;
+}
+
+.buttonContainer {
+    padding: 10px;
+    align-items: center;
+    text-align: right;
 }
