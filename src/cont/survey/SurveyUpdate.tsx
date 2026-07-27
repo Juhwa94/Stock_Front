@@ -31,6 +31,7 @@ const SurveyUpdate: React.FC = () => {
             })
         }
     };
+    
     // 위에서 code에 의해서 항목이  ["","",""] => ["항목내용1","항목내용2","항목내용3"]
     const surveyQuestionChange = (index: number, value: string) => {
         const newQuestions = [...surveyQuestions];
