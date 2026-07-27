@@ -34,7 +34,7 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
             const url =
                 `${backendUrl}/api/reply/list?num=${num}`;
 
-                console.log(url);
+            console.log(url);
 
 
             const response = await axios.get(url);
@@ -111,10 +111,16 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
                     value={rwriter}
                     onChange={(e) =>
                         setRWriter(e.target.value)
+
+
                     }
                 />
                 <br />
-                <textarea style={{}}
+                <textarea style={{
+                    width: "700px",
+                    height: "180px",
+                    resize: "none"
+                }}
                     placeholder="댓글을 입력하세요."
                     value={rcontent}
                     onChange={(e) =>
