@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DaumPostcode, { Address } from 'react-daum-postcode';   // npm install react-daum-postcode 설치하면 됨
-import { QRCodeSVG } from 'qrcode.react';   // npm install qrcode.react 설치하면 됨
+import DaumPostcode, { Address } from 'react-daum-postcode';
+import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 
@@ -30,8 +30,9 @@ const ProfileEditPage = () => {
 
     const [isEditingNick, setIsEditingNick] = useState(false);
     const [tempNick, setTempNick] = useState('');
+    // 기존 닉네임 상태일 때는 기본값을 true로 설정
+    const [isNickChecked, setIsNickChecked] = useState(true);
 
-    const [isNickChecked, setIsNickChecked] = useState(false);
     const [form, setForm] = useState<ProfileForm>({
         nick: '',
         name: '',
@@ -48,14 +49,12 @@ const ProfileEditPage = () => {
     });
 
     useEffect(() => {
-
         const fetchProfile = async () => {
             if (!member?.email) {
                 setLoading(false);
                 return;
             }
             try {
-
                 const response = await axios.get(
                     `${BACK_URL}/api/member/mypage`,
                     {
@@ -68,20 +67,19 @@ const ProfileEditPage = () => {
                 const data = response.data;
 
                 setForm({
-                    nick: data.nick,
-                    name: data.name,
-                    grade: data.grade,
+                    nick: data.nick || '',
+                    name: data.name || '',
+                    grade: data.grade || '',
                     storeaddr: data.storeaddr ?? '',
                     storeaddrDetail: '',
                     phoneFirst: '010',
                     phoneMiddle: '',
                     phoneLast: '',
-                    email: data.email,
+                    email: data.email || '',
                     smsAgree: false,
                     emailAgree: false,
-                    regdate: data.regdate
+                    regdate: data.regdate || ''
                 });
-
             } catch (error) {
                 console.error(error);
                 alert("회원정보 조회 실패");
@@ -91,13 +89,12 @@ const ProfileEditPage = () => {
         };
 
         fetchProfile();
+    }, [member, BACK_URL]);
 
-    }, [member]);
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value } = event.target;
-
         setForm((previousForm) => ({
             ...previousForm,
             [name]: value,
@@ -108,7 +105,6 @@ const ProfileEditPage = () => {
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const { name, checked } = event.target;
-
         setForm((previousForm) => ({
             ...previousForm,
             [name]: checked,
@@ -127,54 +123,50 @@ const ProfileEditPage = () => {
         }));
     };
 
-    // 닉네임 수정 관련 이벤트 핸들러
+    // 닉네임 수정 시작
     const handleStartNickEdit = () => {
         setTempNick(form.nick);
         setIsEditingNick(true);
-        setIsNickChecked(false); ///////
+        setIsNickChecked(false);
     };
 
+    // 닉네임 중복확인 및 반영
     const handleSaveNick = async () => {
-        if (!tempNick.trim()) {
+        const trimmedNick = tempNick.trim();
+        if (!trimmedNick) {
             alert('닉네임을 입력해주세요.');
             return;
         }
-    
-    const urls = process.env.REACT_APP_BACK_END_URL;
 
-    // 기존 닉네임과 같으면 중복검사 생략
-    if (tempNick.trim() !== form.nick) {
-        try {
-            const res = await axios.post(`${urls}/api/auth/nickCheck`, {
-                nick: tempNick.trim(),
-            });    
+        // 기존 닉네임과 같으면 중복검사 생략
+        if (trimmedNick !== form.nick) {
+            try {
+                const res = await axios.post(`${BACK_URL}/api/auth/nickCheck`, {
+                    nick: trimmedNick,
+                });
 
-            if (res.data !== 0) {
+                if (res.data !== 0) {
+                    setIsNickChecked(false);
+                    alert('이미 사용 중인 닉네임입니다.');
+                    return;
+                }
+
+                setIsNickChecked(true);
+            } catch (error) {
+                console.error(error);
                 setIsNickChecked(false);
-                alert('이미 사용 중인 닉네임입니다.');
+                alert('닉네임 확인 중 오류가 발생했습니다.');
                 return;
             }
-
-            // 사용 가능한 닉네임
+        } else {
             setIsNickChecked(true);
-
-        } catch (error) {
-            console.error(error);
-            setIsNickChecked(false);
-            alert('닉네임 확인 중 오류가 발생했습니다.');
-            return;
         }
-    } else {
-        // 기존 닉네임 그대로인 경우
-        setIsNickChecked(true);
-    }
 
-    setForm((prev) => ({
-        ...prev,
-        nick: tempNick.trim(),
-    }));
-
-    setIsEditingNick(false);
+        setForm((prev) => ({
+            ...prev,
+            nick: trimmedNick,
+        }));
+        setIsEditingNick(false);
     };
 
     // 카카오 우편번호 검색 완료 핸들러
@@ -200,7 +192,7 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-    const canSave =
+    const canSave = Boolean(
         form.nick.trim() &&
         form.name.trim() &&
         form.email.trim() &&
@@ -208,14 +200,12 @@ const ProfileEditPage = () => {
         form.phoneMiddle.trim() &&
         form.phoneLast.trim() &&
         form.storeaddr.trim() &&
-        isNickChecked;
+        isNickChecked
+    );
 
-    const handleSubmit = async (
-        event: React.SubmitEvent,
-    ) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        console.log("저장 직전 form 확인:", form);
         if (!form.nick.trim()) {
             alert("닉네임을 입력해주세요.");
             return;
@@ -224,7 +214,6 @@ const ProfileEditPage = () => {
             alert('휴대전화 번호를 입력해주세요.');
             return;
         }
-
         if (!form.email.trim()) {
             alert('이메일을 입력해주세요.');
             return;
@@ -235,7 +224,6 @@ const ProfileEditPage = () => {
             : form.storeaddr;
 
         try {
-
             const requestData = await axios.post(
                 `${BACK_URL}/api/member/update`,
                 {
@@ -254,18 +242,16 @@ const ProfileEditPage = () => {
 
             console.log('회원정보 수정 요청:', requestData);
             alert('기본정보가 저장되었습니다.');
-
         } catch (error) {
-
             console.error('회원정보 수정 실패:', error);
             alert('기본정보 저장에 실패했습니다.');
-
         }
     };
 
     const handleCancel = () => {
         navigate(-1);
     };
+
     const handleWithdraw = async () => {
         if (!window.confirm("정말 탈퇴하시겠습니까?")) {
             return;
@@ -282,13 +268,13 @@ const ProfileEditPage = () => {
             await logout();
 
             alert("회원 탈퇴가 완료되었습니다.");
-
             navigate("/");
         } catch (error) {
             console.error("탈퇴 실패", error);
             alert("회원 탈퇴 처리 중 오류가 발생했습니다.");
         }
     };
+
     if (loading) {
         return (
             <div
@@ -302,7 +288,6 @@ const ProfileEditPage = () => {
                     >
                         <span className="visually-hidden">로딩 중</span>
                     </div>
-
                     <p className="text-secondary mb-0">
                         회원정보를 불러오는 중입니다.
                     </p>
@@ -328,12 +313,10 @@ const ProfileEditPage = () => {
                                 >
                                     👤
                                 </div>
-
                                 <div>
                                     <h2 className="h4 fw-bold mb-1">
                                         기본정보 관리
                                     </h2>
-
                                     <p className="text-secondary mb-0">
                                         회원님의 기본정보와 수신 설정을 관리합니다.
                                     </p>
@@ -349,8 +332,7 @@ const ProfileEditPage = () => {
                                     </h3>
 
                                     <div className="border rounded-3 overflow-hidden">
-
-                                        {/* 닉네임 (수정 가능 영역) */}
+                                        {/* 닉네임 */}
                                         <div className="row g-0 border-bottom">
                                             <div className="col-md-3 bg-light px-4 py-3 fw-semibold d-flex align-items-center">
                                                 닉네임
@@ -405,7 +387,6 @@ const ProfileEditPage = () => {
                                             <div className="col-md-9 px-4 py-3">
                                                 <div className="d-flex flex-wrap align-items-center gap-3">
                                                     <span>{form.name}</span>
-
                                                     <button
                                                         type="button"
                                                         className="btn btn-outline-secondary btn-sm"
@@ -413,10 +394,8 @@ const ProfileEditPage = () => {
                                                         인적사항 변경
                                                     </button>
                                                 </div>
-
                                                 <p className="small text-secondary mt-2 mb-0">
-                                                    이름, 생년월일, 성별이 변경된 경우 본인 확인을
-                                                    통해 수정할 수 있습니다.
+                                                    이름, 생년월일, 성별이 변경된 경우 본인 확인을 통해 수정할 수 있습니다.
                                                 </p>
                                             </div>
                                         </div>
@@ -432,7 +411,6 @@ const ProfileEditPage = () => {
                                                 </span>
                                             </div>
                                         </div>
-
 
                                         {/* 지점 주소 */}
                                         <div className="row g-0 border-bottom">
@@ -480,6 +458,7 @@ const ProfileEditPage = () => {
                                     </div>
                                 </section>
 
+                                {/* 연락처 정보 */}
                                 <section className="mb-5">
                                     <h3 className="h6 fw-bold text-primary mb-3">
                                         연락처 정보
@@ -487,13 +466,9 @@ const ProfileEditPage = () => {
 
                                     <div className="row g-3">
                                         <div className="col-12">
-                                            <label
-                                                htmlFor="phoneFirst"
-                                                className="form-label fw-semibold"
-                                            >
+                                            <label htmlFor="phoneFirst" className="form-label fw-semibold">
                                                 휴대전화
                                             </label>
-
                                             <div className="row g-2">
                                                 <div className="col-4">
                                                     <select
@@ -511,7 +486,6 @@ const ProfileEditPage = () => {
                                                         <option value="019">019</option>
                                                     </select>
                                                 </div>
-
                                                 <div className="col-4">
                                                     <input
                                                         type="text"
@@ -524,7 +498,6 @@ const ProfileEditPage = () => {
                                                         placeholder="0000"
                                                     />
                                                 </div>
-
                                                 <div className="col-4">
                                                     <input
                                                         type="text"
@@ -541,13 +514,9 @@ const ProfileEditPage = () => {
                                         </div>
 
                                         <div className="col-12">
-                                            <label
-                                                htmlFor="email"
-                                                className="form-label fw-semibold"
-                                            >
+                                            <label htmlFor="email" className="form-label fw-semibold">
                                                 이메일
                                             </label>
-
                                             <input
                                                 id="email"
                                                 type="email"
@@ -562,9 +531,8 @@ const ProfileEditPage = () => {
                                     </div>
                                 </section>
 
-
+                                {/* 하단 버튼 */}
                                 <div className="d-flex align-items-center pt-3 border-top">
-
                                     <button
                                         type="button"
                                         onClick={handleCancel}
@@ -573,67 +541,28 @@ const ProfileEditPage = () => {
                                         취소
                                     </button>
 
-
-                                    <div className="ms-auto d-flex align-items-center gap-3">
-
+                                    <div className="ms-auto d-flex align-items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={handleWithdraw}
+                                            className="btn btn-link text-danger text-decoration-none px-3"
+                                        >
+                                            회원탈퇴
+                                        </button>
                                         <button
                                             type="submit"
+                                            disabled={!canSave}
                                             className="btn btn-primary px-5"
                                         >
                                             저장하기
                                         </button>
-
-
-                                        <span
-                                            onClick={handleWithdraw}
-                                            style={{
-                                                cursor: "pointer",
-                                                color: "#6c757d",
-                                                fontSize: "14px"
-                                            }}
-                                            onMouseEnter={(e) =>
-                                                e.currentTarget.style.color = "#dc3545"
-                                            }
-                                            onMouseLeave={(e) =>
-                                                e.currentTarget.style.color = "#6c757d"
-                                            }
-                                        >
-                                            회원탈퇴
-                                        </span>
-
                                     </div>
-
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/* 주소 검색 모달 */}
-            {isAddressModalOpen && (
-                <div
-                    className="modal show d-block"
-                    tabIndex={-1}
-                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-                >
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title fw-bold">주소 검색</h5>
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    onClick={() => setIsAddressModalOpen(false)}
-                                ></button>
-                            </div>
-                            <div className="modal-body p-0">
-                                <DaumPostcode onComplete={handleCompleteAddress} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </main>
     );
 };
