@@ -1,6 +1,8 @@
+import style from "./requestList.module.css"
+
 interface RequestData {
-    request: string;
-    resdate: string;
+    REQUEST: string;
+    RESDATE: string;
 }
 
 interface Props {
@@ -8,22 +10,23 @@ interface Props {
 }
 
 const RequestList: React.FC<Props> = ({ requests }) => {
+    console.log(requests);
     return (
-        <>
-            {
-                requests.length > 0 ? (
+        <ul className={style.board}>
+                {requests.length > 0 ? (
                     requests.map((item, index) => (
-                        <div 
-                            key={`${item.request}-${item.resdate}-${index}`}
+                        <li 
+                            key={index}
+                            className={style.item}
                         >
-                            <span>
-                                {item.request}
+                            <span className={style.content}>
+                                {item.REQUEST}
                             </span>
 
-                            <span>
-                                {item.resdate}
+                            <span className={style.date}>
+                                {item.RESDATE}
                             </span>
-                        </div>
+                        </li>
                     ))
                 ) : (
                     <p>
@@ -31,7 +34,7 @@ const RequestList: React.FC<Props> = ({ requests }) => {
                     </p>
                 )
             }
-        </>
+        </ul>
     );
 };
 

@@ -18,8 +18,8 @@ interface Data {
     result: SurveyResult[]
 }
 interface RequestData {
-    request: string;
-    resdate: string;
+    REQUEST: string;
+    RESDATE: string;
 }
 
 interface SurveyDate {
@@ -95,6 +95,7 @@ const SurveyManagement: React.FC = () => {
         fetchRequests();
     }, []);
 
+    //console.log(requests);
     const dataHandler = (responseData: Data) => {
 
         setCode(responseData.code);
