@@ -24,8 +24,7 @@ const FloatingButton = () => {
                     type="button"
                     className={style.floatingButton}
                     onClick={openSurveyModal}
-                >
-                    평가
+                >평가
                 </button>
 
 
