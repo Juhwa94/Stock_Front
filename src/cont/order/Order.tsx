@@ -1,72 +1,243 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Stayle from './order.module.css'
-import MyCanvasPage from './Signature'
+import Signature from './Signature'
+import axios from 'axios';
 
-interface order_form{
-  registration_number :number; //발주등록번호
 
+
+export interface OrderForm {
+    ofnum?: number;
+    mnum: string;
+    oname: string;
+    oaddr: string;
+    ophone: string;
+    ofdate: string;
+    ofcompany: string;
+    orderItem: OrderItem[];
 }
 
+interface OrderItem {
+    oinum?: number;
+    oiname: string;
+    oiprice: number;
+    oiamount: number;
+    oiSumPrice: number;
+    oipublisher: string;
+}
+
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const Order: React.FC = () => {
+    //-------Form--------------------------------
+    const [orderForm, setOrderForm] = useState<OrderForm | null>(null);
+    const [oname, setOname] = useState<string>('');
+    const [mnum, setMnum] = useState<string>('');
+    const [oaddr, setOaddr] = useState<string>('');
+    const [ofcompany, setOfcompany] = useState<string>('');
+    const [ophone, setOphone] = useState<string>('');
+    const [ofdate, setOfdate] = useState<string>('');
 
 
-  return (
-    <div>
-      <div className={Stayle.header_container}>
-        <h2 className={Stayle.header_container_text_right}>발주자 작성란</h2>
-        <h3 className={Stayle.div_text}>서명 및 발주하기</h3>
-      </div>
-      <form>
-        <div className={Stayle.header_container}>
-          <div className={Stayle.header_container_text_right}>
-            <ul className={Stayle.header_container_li}>
-              <li>대표자 : <input type="text" name='representativeName' /></li>
-              <li>주소 : <input type="text" name='address' /></li>
-              <li>상호명 : <input type="text" name='businessName' /></li>
-              <li>연락처 : <input type="text" name='phonNumber' /></li>
-              <li>발주일 : <input type="date" name='orderDate' /></li>
-            </ul>
-          </div>
-          <div className={Stayle.header_container_text_left}>
-            {/* <ul>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-          </ul> */}
+    //-----------Item---------------------------
+    const [orderItem, setOrderItem] = useState<OrderItem[]>([]);
+    const [oiname, setOiname] = useState<string>('');
+    const [oipublisher, setOipublisher] = useState<string>('');
+    const [oiprice, setOiprice] = useState<number>(0);
+    const [oiamount, setOiamount] = useState<number>(0);
+    
+    const itmeList = () => {
 
-            <MyCanvasPage />
-            {/* <input type="button" name='date'>발주하기</input> */}
-          </div>
+        let oiSumPrice = oiprice*oiamount;
+
+        const inputRowList = {
+            oiname: oiname,
+            oiprice: oiprice,
+            oipublisher: oipublisher,
+            oiamount: oiamount,
+            oiSumPrice: oiSumPrice
+        }
+        setOrderItem([...orderItem, inputRowList]);
+
+        oiSumPrice = 0;
+        setOiname('');
+        setOipublisher('');
+        setOiprice(0);
+        setOiamount(0);
+        setMnum('5');
+    }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await axios.get(`${backendUrl}/api/login/session`, {
+                    withCredentials: true,
+                });
+                setMnum(res.data.mnum);
+            } catch (error) {
+                console.error("세션 조회 실패(mnum), 더미데이터로 대체합니다(mnum : 5):", error);
+            }
+        })();
+    }, []);
+
+
+    useEffect(() => {
+        const assembledForm = {
+            mnum: mnum,
+            oname: oname,
+            oaddr: oaddr,
+            ophone: ophone,
+            ofdate: ofdate,
+            ofcompany: ofcompany,
+            orderItem: orderItem,
+        };
+        setOrderForm(assembledForm);
+    }, [orderItem]);
+
+    console.log(orderForm);
+    return (
+        <div className={Stayle.container}>
+
+            <div className={Stayle.header_title_area}>
+                <h2>발주자 작성란</h2>
+                <h3>서명 및 발주하기</h3>
+            </div>
+
+            <div className={Stayle.header_container}>
+                <div className={Stayle.header_container_text_right}>
+                    <ul className={Stayle.header_container_li}>
+                        <li>
+                            대표자 :{' '}
+                            <input
+                                type="text"
+                                name="oname"
+                                value={oname}
+                                onChange={(e) => setOname(e.target.value)}
+                            />
+                        </li>
+                        <li>
+                            주소 :{' '}
+                            <input
+                                type="text"
+                                name="oaddr"
+                                value={oaddr}
+                                onChange={(e) => setOaddr(e.target.value)}
+                            />
+                        </li>
+                        <li>
+                            법인명 :{' '}
+                            <input
+                                type="text"
+                                name="ofcompany"
+                                value={ofcompany}
+                                onChange={(e) => setOfcompany(e.target.value)}
+                            />
+                        </li>
+                        <li>
+                            연락처 :{' '}
+                            <input
+                                type="text"
+                                name="ophone"
+                                value={ophone}
+                                onChange={(e) => setOphone(e.target.value)}
+                            />
+                        </li>
+                        <li>
+                            발주일 :{' '}
+                            <input
+                                type="date"
+                                name="ofdate"
+                                value={ofdate}
+                                onChange={(e) => setOfdate(e.target.value)}
+                            />
+                        </li>
+                    </ul>
+                </div>
+                <div className={Stayle.header_container_text_left}>
+                    <Signature order={orderForm} />
+                </div>
+            </div>
+
+            <table className={Stayle.Table}>
+                <thead>
+                    <tr>
+                        <th>도서명</th>
+                        <th>출판사</th>
+                        <th>단가</th>
+                        <th>합계금액</th>
+                        <th>수량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input
+                                type="text"
+                                name="oiname"
+                                value={oiname}
+                                onChange={(e) => setOiname(e.target.value)}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                name="oipublisher"
+                                value={oipublisher}
+                                onChange={(e) => setOipublisher(e.target.value)}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                name="oiprice"
+                                value={oiprice || ''}
+                                onChange={(e) => setOiprice(parseInt(e.target.value) || 0)}
+                            />
+                        </td>
+                        <td>{(oiprice * oiamount).toLocaleString()} 원</td>
+                        <td>
+                            <input
+                                type="number"
+                                name="oiamount"
+                                value={oiamount || ''}
+                                onChange={(e) => setOiamount(parseInt(e.target.value) || 0)}
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colSpan={5}>
+                            <button type="button" onClick={itmeList}>
+                                주문리스트 추가!
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table className={Stayle.Table}>
+                <thead>
+                    <tr>
+                        <th>도서명</th>
+                        <th>출판사</th>
+                        <th>단가</th>
+                        <th>합계금액</th>
+                        <th>수량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {orderItem.map((e, i) => (
+                        <tr key={i}>
+                            <td>{e.oiname}</td>
+                            <td>{e.oipublisher}</td>
+                            <td>{e.oiprice}</td>
+                            <td>{e.oiSumPrice}</td>
+                            <td>{e.oiamount}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
-
-
-
-        <table className={Stayle.Table}>
-          <thead>
-            <tr>
-              <th>도서명</th>
-              <th>출판사</th>
-              <th>단가</th>
-              <th>합계금액</th>
-              <th>수량</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th><input type="text"></input></th>
-              <th><input type="text"></input></th>
-              <th><input type="text"></input></th>
-              <th>tsx영역, 단가x수량만큼의 값을 출력</th>
-              <th><input type="text"></input></th>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
-  )
+    )
 }
 
 export default Order

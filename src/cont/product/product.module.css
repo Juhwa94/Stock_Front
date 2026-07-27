@@ -10,79 +10,38 @@
     color: #333;
 }
 
-.header_title_area {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 12px;
-}
 
-.header_title_area h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #212529;
-    margin: 0 0 6px 0;
-}
-
-.header_title_area h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #495057;
-    margin: 0;
-}
-
-.header_container {
+.sal_div_header {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 12px;
     background-color: #f8f9fa;
-    padding: 20px;
+    padding: 14px 20px;
     border-radius: 8px;
-    margin-bottom: 24px;
-    align-items: flex-start;
+    margin-bottom: 16px;
 }
 
-.header_container_text_right {
-    flex: 1;
-}
-
-.header_container_text_left {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.header_container_li {
-    list-style: none;
-    padding: 0;
+.sal_div_header p {
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.header_container_li li {
-    display: flex;
-    align-items: center;
     font-weight: 600;
     color: #495057;
-    font-size: 0.95rem;
 }
 
-.header_container_li li input[type='text'],
-.header_container_li li input[type='date'] {
-    flex: 1;
-    margin-left: 10px;
-    padding: 8px 10px;
+.sal_div_header input[type='date'] {
+    padding: 6px 10px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     outline: none;
-    font-size: 0.95rem;
-    transition: border-color 0.2s;
 }
 
-.header_container_li li input:focus {
-    border-color: #4c6ef5;
+
+.total_price_title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 16px 0 20px 0;
 }
+
 
 .Table {
     width: 100%;
@@ -111,6 +70,7 @@
     vertical-align: middle;
     color: #495057;
 }
+
 
 .Table input[type='text'],
 .Table input[type='number'] {
@@ -144,4 +104,10 @@ button {
 
 button:hover {
     background-color: #3b5bdb;
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed #dee2e6;
+    margin: 24px 0;
 }

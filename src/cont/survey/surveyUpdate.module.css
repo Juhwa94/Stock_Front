@@ -1,0 +1,27 @@
+/* 설문 작성 폼 전체 컨테이너 */
+.container2 {
+    width: 750px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 문항 수 컨테이너 */
+.questionsContainer {
+    margin-bottom: 0px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center;
+}
+
+/* 평가항목 관리에서 input 태그 크기 조절 */
+.questionsContainer input {
+    width: 40px; 
+}
+
+/*전체 질문에 대한 input 태그 조절 */
+input {
+    width : 300px
+}

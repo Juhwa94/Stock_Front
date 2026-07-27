@@ -17,14 +17,11 @@ import Inquirecomm from '../cont/inquiry/Inquirecomm'
 import InquireList from '../cont/inquiry/InquireList'
 import InquireDetail from '../cont/inquiry/InquireDetail'
 
+import MyPage from '../cont/mypage/Mypage'
+import ProfileEditPage from '../cont/mypage/Profileeditpage'
+
 import Admin from '../cont/admin/Admin'
 import Members from '../cont/admin/Members'
-// import Management from "../cont/management/Management";
-
-import Form from "../cont/management/Form";
-import List from "../cont/management/List";
-import Detail from "../cont/management/Detail";
-import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
 import NoticeDetail from '../cont/notice/NoticeDetail'
 import CommunityDetail from '../cont/community/CommunityDetail'
@@ -61,20 +58,18 @@ AppRoutes의 구성
     ...
   </Routes>
 */}
+interface RouteItem {
+    path: string;
+    element: React.ReactElement;
+    private?: boolean;
+    role?: string;
+}
 
 const AppRoutes: React.FC = () => {
-    const routeList = [
+    const routeList: RouteItem[] = [
         // ************************ 사용법 ************************
         // { path: '/위치(url)', element: <컴포넌트명 />},
-        { path: '/', element: <Home />},
-        // 도서 재고 관리
-        {path: "/",element: <Home />,},
-        { path: "/management", element: <Form /> },
-        { path: "/management/form", element: <Form /> },
-         { path: "/management/list", element: <List /> },
-        { path: "/management/detail/:bookId", element: <Detail /> },
-        { path: "/management/form2/:bookId", element: <Form2 /> },
-        
+        { path: '/', element: <Home />},     
         { path: '/member', element: <Member />},
        
         
@@ -100,15 +95,42 @@ const AppRoutes: React.FC = () => {
         { path: '/community/form', element: <CommForm/>},
 
        
+        { path: '/stockForm', element: <StockForm />},
+        { path: '/myStockList', element: <MyStockList />},
+        { path: '/admin/stockList', element: <StockList />},
+        { path: '/stock/stockDetail/:SNUM', element: <StockDetail />},
+
+        { path: '/product', element: <Product />, private: true},
+        // { path: '/notice', element: <Notice />},
+        { path: '/order', element: <Order />, private: true},
+        { path: '/user/login', element: <Login /> },
+        { path: '/user/signup', element: <Signup /> },
+        { path: '/revenue', element: <Revenue />, private: true  },
+
+
+        { path: '/notice', element: <Notice /> },
+        { path: '/notice/detail', element: <NoticeDetail /> },
+        { path: '/admin/noticejo', element: <NoticeJo /> },
+        { path: '/admin/noticere', element: <NoticeRe /> },
+
+        { path: '/community', element: <Community /> },
+        { path: '/community/detail', element: <CommunityDetail /> },
+        { path: '/community/form', element: <CommForm />, private: true },
+        { path: '/community/comment', element: <Comment /> },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
-        
-        { path: '/inquiry', element: <InquireList/>},
-        { path: '/Inquirecomm', element: <Inquirecomm/>},
-        { path: '/InquireForm', element: <InquireForm/>},
-        { path: '/InquireDetail', element: <InquireDetail/>},
 
+        { path: '/inquiry', element: <InquireList /> },
+        { path: '/Inquirecomm', element: <Inquirecomm /> },
+        { path: '/InquireForm', element: <InquireForm /> },
+        // { path: '/InquireDetail', element: <InquireDetail/>},
+        { path: "/inquiry/detail/:num", element: <InquireDetail /> },
+        { path: "/reply/list/:num", element: <Inquirecomm /> },
+
+
+
+        { path: '/admin/member', element: <Members /> },
 
 
         { path: '/admin/member', element: <Members />},
@@ -118,23 +140,86 @@ const AppRoutes: React.FC = () => {
         
         
         
+        { path: '/mypage', element: <MyPage />, private: true },
+        { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
+
+        // { path: '/survey', element: <SurveyAddForm /> },
+        // { path: '/admin/surveymanagement', element: <SurveyManagement /> },
+        // { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
+
 
 
         // <Route path="/login" element={<Login />} />
         // <Route path="/signup" element={<Signup />} />
         // <Route path="/dashboard" element={<Dashboard />} />
 
+        // 커뮤니티
+        { path: '/community', element: <Community /> },
+        { path: '/community/detail/:num', element: <CommunityDetail />, private: true },
+
+        // 문의
+        { path: '/inquiry', element: <InquireList /> },
+        { path: '/Inquirecomm', element: <Inquirecomm /> },
+        { path: '/InquireForm', element: <InquireForm /> },
+        { path: '/InquireDetail', element: <InquireDetail /> },
+
+        // 관리자
+        { path: '/admin/member', element: <Members />, private: true },
+        { path: '/admin', element: <Admin />, private: true },
+
+        // <Route path="/login" element={<Login />} />
+        // <Route path="/signup" element={<Signup />} />
+        // <Route path="/dashboard" element={<Dashboard />} />
 
     ];
+
     return (
+
         <Routes>
             {
-                routeList.map((route, idx) => (
-                    <Route key={idx} {...route} />
-                ))}
-            
+                routeList.map((route, idx) => {
+                    console.log("Home", Home);
+                    console.log("Admin", Admin);
+                    console.log("ProtectedRoute", ProtectedRoute);
+                    console.log("Members", Members);
+
+                    console.log(
+                        "ROUTE",
+                        idx,
+                        route.path,
+                        route.element
+                    );
+                    if (!React.isValidElement(route.element)) {
+                        console.log("문제 Route 발견:", route);
+                    }
+                    if (route.private) {
+
+                        return (
+                            <Route
+                                key={idx}
+                                element={<ProtectedRoute />}
+                            >
+                                <Route
+                                    path={route.path}
+                                    element={route.element}
+                                />
+                            </Route>
+                        )
+
+                    }
+
+
+                    return (
+                        <Route
+                            key={idx}
+                            path={route.path}
+                            element={route.element}
+                        />
+                    )
+
+                })
+            }
         </Routes>
     );
 };
-
 export default AppRoutes;

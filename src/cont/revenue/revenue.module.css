@@ -1,110 +1,86 @@
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    position: relative;
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 28px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #333;
 }
 
-.header_container {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
+.main_title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 12px;
 }
 
-.header_container_text_left {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
-    margin-left: auto;
-}
-
-.header_container_text_right {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
-    margin-right: auto;
-
-}
-
-/* justify-content: space-between; */
-
-.header_container_div {
-    justify-content: space-between;
-}
-
-.header_container_btn {
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    background-color: '#4caf50';
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.header_container_btn:hover {
-    cursor: pointer;
-    color: white;
-    background-color: black;
-}
-
-/*===========================================================*/
-
-.Table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.Table th,
-.Table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.Table thead {
-    background-color: #eeeeee;
-}
-
-.titleLink {
-    text-decoration: none;
-    color: black;
-}
-
-
-li {
-    margin-bottom: 12px;
-}
-
-
-li:last-child {
-    margin-bottom: 0;
-}
-
-/* 1. 부모 상자: 플렉스를 켜고 세로 정렬을 맞춰줍니다. */
 .chart_layout_parent {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    /* 좌우 자식들의 세로 가운데 정렬 */
-    justify-content: flex-start;
-    /* 가운데로 몰아주기 */
-    gap: 40px;
-    /* 왼쪽과 오른쪽 사이의 정당한 틈새 */
-    width: 100%;
-    /* 부모 전체 너비 사용 */
+    gap: 20px;
+    background-color: #f8f9fa;
+    padding: 24px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    border: 1px solid #e9ecef;
 }
 
-/* 2. 자식 상자들: 이 속성이 좌우 공간을 50%씩 공평하게 나누는 핵심입니다. */
-.layout_child {
+
+.info_card_box {
     flex: 1;
-    /* ★ 중요: 남은 공간을 1:1 비율로 똑같이 나눠 가짐 */
-    min-width: 0;
-    /* flex 안에서 자식이 삐져나와서 깨지는 걸 방지하는 안전장치 */
+}
+
+.layout_child {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.layout_child li {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+}
+
+.layout_child input[type='month'] {
+    margin-left: 8px;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    outline: none;
+    font-size: 0.9rem;
+    color: #212529;
+    transition: border-color 0.2s;
+}
+
+.layout_child input[type='month']:focus {
+    border-color: #4c6ef5;
+}
+
+.pie_chart_wrapper {
+    width: 380px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.line_chart_container {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px 10px 10px 0px; 
 }

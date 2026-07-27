@@ -1,0 +1,207 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import style from './survey.module.css';
+
+interface SubmitData {
+  mnum: number,
+  svnum: number,
+  rating: number,
+  request: string | null;
+}
+
+interface SurveyData {
+  svnum: number,
+  code: number,
+  sub: string,
+  questions: Question[]
+}
+
+interface Question {
+  questions_text: string;
+}
+
+interface SurveyModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
+
+const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
+  
+  const [mnum, setMnum] = useState<number>(23);
+  const [svnum, setSvnum] = useState<number>(0);
+  const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
+  const [req, setReq] = useState<string>("")
+
+  const [rating, setRating] = useState<number[]>(Array(5).fill(0));
+
+  //테이블에 데이터가 존재하지 않을 시 더미데이터 자동 삽입
+  const dummy = {
+            sub: "프로그램 만족도 조사",
+            code: 5,
+            questions: [
+              {questions_text:"도서 검색 및 데이터 처리 속도에 만족하십니까?"},
+              {questions_text:"메뉴 구성과 화면 디자인이 사용하기 편리했습니까?"},
+              {questions_text:"주문 연동 및 재고 수량의 정확성에 만족하십니까?"},
+              {questions_text:"재고 부족 알림 및 모니터링 기능이 업무에 도움이 되었습니까?"},
+              {questions_text:"향후 이 프로그램을 지속적으로 사용할 의향이 있으십니까?"}
+            ]
+          };
+
+  const navigate = useNavigate();
+  //modal이 활성화 되어 렌더링 시 실행되는 useEffect
+
+  useEffect(() => {
+    //modal 컴포넌트가 열려있을 때만 api 출력
+    if (!isOpen) return;
+
+    const getSurvey = async () => {
+      try {
+        const response = await axios.get<SurveyData>(`${backendUrl}/api/survey/selectSurvey`);
+        
+        const responseData = response.data;
+
+        console.log("평가지를 불러오는데 성공하였습니다.");
+        handleData(responseData);
+
+      } catch (error) {
+        console.error("평가지를 불러오는데 실패하였습니다.", error);
+      }
+    };
+    getSurvey();
+  }, [isOpen])
+
+  useEffect(() => {
+    const getMnum = async () => {
+      try {
+        const res = await axios.get(`${backendUrl}/api/login/session`, {
+          withCredentials: true,
+        });
+        setMnum(res.data.mnum);
+      } catch (error) {
+        console.error("로그인 정보 확인 실패.", error);
+        navigate("/user/signup")
+      }};
+      
+      getMnum();
+  }, [isOpen]);
+ 
+  const surveySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const submitData: SubmitData[] = rating.map((rating) => ({
+        mnum: mnum,
+        svnum: svnum,
+        rating: rating,
+        request: req
+      }));
+
+      const response = await axios.post(`${backendUrl}/api/survey/addResult`, submitData);
+      if (response.status === 200) {
+        alert("평가해 주셔서 감사합니다. 여러분들의 소중한 평가는 더 나은 발전의 원동력이 됩니다.");
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error :", error);
+      if(!mnum) {
+        alert("로그인 정보를 가져오지 못했습니다. 로그인을 하고 평가를 남겨 주십시오.")
+        navigate("/user/login");
+      }else {
+        alert("평가 등록에 실패하였습니다. 잠시 후 다시 시도해주십시오.");
+      }
+    }
+  };
+
+  const surveyRatingChange = (index: number, score: number) => {
+    const newRatings = [...rating];
+    newRatings[index] = score;
+    setRating(newRatings);
+  };
+
+  const handleData = (responseData: SurveyData) => {
+
+    setSurveyData(responseData);
+    setSvnum(responseData.svnum);
+
+    setRating(Array(responseData.code || 5).fill(0));
+  }
+
+  const handleChange = (e: any) => {
+    setReq(e.target.value);
+  }
+
+  if (!isOpen) return null;
+
+  return (
+    <div className={style.modalOverlay} onClick={onClose}>
+      <div className={style.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div className={style.container2}>
+          <form onSubmit={surveySubmit}>
+            <div className="card w-100 shadow border-0">
+
+              {/* 제목 */}
+              <div className="card-header bg-dark text-white fw-bold py-3 text-center">
+                (회사로고){surveyData?.sub}
+              </div>
+
+              {/* 설문문항 */}
+              <ul className="list-group list-group-flush">
+                {surveyData?.questions.map((question, index) => (
+                  <li key={index} className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+
+                    {/* 질문 */}
+                    <div className="fw-bold text-dark flex-grow-1">{index + 1}. {question.questions_text}</div>
+                    <div className="d-flex align-items-center gap-3 ms-md-auto">
+                      <div className={style.starRatingContainer}>
+                        {[1, 2, 3, 4, 5].map((score) => {
+                          const isSelected = rating[index] >= score;
+                          return (
+                            <span
+                              key={score}
+                              onClick={() => surveyRatingChange(index, score)}
+                              className={`${style.starItem} ${isSelected ? style.active : ""}`}
+                            >
+                              ★
+                            </span>
+                          );
+                        })}
+                      </div>
+                      {/* 점수표시  */}
+                      <span className={`badge bg-secondary rounded-pill ${style.scoreBadge}`}>
+                        {rating[index]}점
+                      </span>
+                    </div>
+
+                  </li>
+                ))}
+                {/*추가적인 요청 사항 텍스트 박스*/}
+                <li className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                  <div className={style.textareaContainer}>
+                    <p className="fw-bold text-dark flex-grow-1">{surveyData?surveyData.code+1:""}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>
+                    <textarea
+                      className={style.textarea}
+                      rows={8}
+                      cols={85}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </li>
+              </ul>
+
+              <div className="card-footer bg-light p-3 text-center border-0 d-flex gap-2 justify-content-center">
+                <button type="submit" className="btn btn-primary fw-bold px-4 py-2">등록</button>
+                {/* <button type="button" className="btn btn-secondary px-4 py-2" onClick={() => navigate("/surveylist")}>
+              목록
+            </button> */}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SurveyAddForm;

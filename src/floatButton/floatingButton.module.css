@@ -1,12 +1,10 @@
 .floatingContainer {
     position: fixed;
-    right: 30px;
+    right: max(20px, calc((100vw - 1200px) / 2 + 20px));
     bottom: 30px;
-
     display: flex;
     flex-direction: column;
     gap: 12px;
-
     z-index: 1000;
 }
 
@@ -15,15 +13,26 @@
     justify-content: center;
     align-items: center;
 
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 
     border-radius: 50%;
-    background: #4caf50;
+    background: #4e6fff;
+    backdrop-filter: blur(8px);
     color: white;
     text-decoration: none;
     border: none;
     cursor: pointer;
+    box-shadow: 0 20px 50px rgba(26, 92, 255, 0.3);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    white-space: nowrap;
+}
 
-    box-shadow: 0 4px 10px rgba(0,0,0,.2);
+.floatingButton:hover {
+  transform: translateY(-4px) scale(1.03); 
+  background: rgba(194, 211, 255, 0.856);
+  box-shadow: 0 12px 24px rgba(26, 92, 255, 0.4), 
+              0 6px 12px rgba(252, 251, 251, 0.12);
 }

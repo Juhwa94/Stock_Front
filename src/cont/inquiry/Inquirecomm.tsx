@@ -1,52 +1,157 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
-const Inquirecomm: React.FC = () => {
-    
-    const nav = useNavigate();
-
-    const upForm = (e:React.SubmitEvent) => {
-        e.preventDefault();
-        alert("작성완료!");
-        //값을 데이터베이스에 전공할수있는 함수
-
-
-        nav("/inquiry");
-    }
-
-    /*
-        const list1 = [1,2.3.4.5.6]
-
-    
-    1*/ 
-    
-  return (
-    <div className='mt-4'>
-        <h4>Comments</h4>
-        <form className='mb-3' onSubmit={upForm}>
-            <div className='mb-2'>
-                <input type="text" placeholder='작성자' className='form-control'
-                />
-            </div>
-            <div className='mb-2'>
-                <textarea  className='form-control' placeholder='댓글' 
-                ></textarea>
-            </div>
-            <div className='text-center'>
-                <button type='submit' className='btn btn-primary'>댓글작성</button>
-            </div>
-        </form>
-        {/* 댓글 리스트  */}
-        <ul className='list-group'>
-           <li>n번댓글</li>
-           <li>n번댓글</li>
-           <li>n번댓글</li>
-           <li>n번댓글</li>
-           <li>n번댓글</li>
-        </ul>
-    </div>
-  )
+interface InquireCommProps {
+    num?: string;
 }
 
-export default Inquirecomm
+interface CommentVO {
+    membernum?: number;
+    rnum?: number;
+    rcode: number;
+    rwriter: string;
+    rcontent: string;
+    rdate?: string;
+}
+
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
+
+const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
+    // 댓글 목록
+    const [rcomments, setRComments] = useState<CommentVO[]>([]);
+
+    // 작성자
+    const [rwriter, setRWriter] = useState("");
+
+    // 댓글 내용
+    const [rcontent, setRContent] = useState("");
+
+
+    // 댓글 조회
+    const getComments = async () => {
+
+        try {
+            const url =
+                `${backendUrl}/api/reply/list?num=${num}`;
+
+            console.log(url);
+
+
+            const response = await axios.get(url);
+
+            setRComments(response.data);
+            console.log(response.data);
+
+        } catch (error) {
+
+            console.log("댓글 조회 실패");
+            console.log(error);
+
+        }
+    };
+
+    // 게시글 번호가 바뀔 때마다 조회
+    useEffect(() => {
+        getComments();
+    }, [num]);
+
+    // 댓글 등록
+    const commentSubmit = async (
+        e: React.SubmitEvent<HTMLFormElement>
+    ) => {
+        e.preventDefault();
+        const commentData = {
+            rcode: num,
+            rwriter: rwriter,
+            rcontent: rcontent
+
+        };
+
+        try {
+
+            await axios.post(
+
+                `${backendUrl}/api/reply/add`,
+                commentData,
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+
+            );
+
+            // 입력창 초기화
+            setRWriter("");
+            setRContent("");
+
+            // 다시 조회
+            getComments();
+
+        } catch (error) {
+
+            console.log("댓글 등록 실패");
+            console.log(error);
+
+        }
+    };
+
+
+    return (
+
+        <div>
+
+            <h3>댓글</h3>
+            {/* 댓글 작성 */}
+            <form onSubmit={commentSubmit}>
+
+                <input
+                    type="text"
+                    placeholder="작성자"
+                    value={rwriter}
+                    onChange={(e) =>
+                        setRWriter(e.target.value)
+
+
+                    }
+                />
+                <br />
+                <textarea style={{
+                    width: "700px",
+                    height: "180px",
+                    resize: "none"
+                }}
+                    placeholder="댓글을 입력하세요."
+                    value={rcontent}
+                    onChange={(e) =>
+                        setRContent(e.target.value)
+                    }
+                />
+                <br />
+                <button type="submit">
+                    댓글 작성
+                </button>
+            </form>
+            <hr />
+            {/* 댓글 목록 */}
+            <ul>
+                {
+                    rcomments.map((comment) => (
+                        <li key={comment.rnum}>
+                            <strong>
+                                {comment.rwriter}
+                            </strong>
+                            <p>
+                                {comment.rcontent}
+                            </p>
+                            <small>
+                                {comment.rdate}
+                            </small>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    );
+};
+export default InquireComm;

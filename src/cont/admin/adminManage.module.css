@@ -6,13 +6,82 @@
 }
 
 
-/* 사이드바 */
+/* 1. 전체 레이아웃 (오른쪽 배치 핵심!) */
+.admin_container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-height: 100vh;
+  gap: 24px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  letter-spacing: -0.3px;
+  box-sizing: border-box;
+}
+
+/* 2. 본문 (사이드바 오른쪽 영역을 꽉 채움) */
+.main_content {
+  flex: 1;
+  /* 남은 오른쪽 공간을 모두 차지 */
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  min-height: 500px;
+}
+
+/* 3. 사이드바 (깔끔한 Light Gray 스타일) */
 .sidebar {
   width: 220px;
-  background-color: #f5f5f5;
+  background-color: #f1f3f5;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+/* 사이드바 헤더 */
+.sidebar_header {
+  padding: 0 8px 12px 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.sidebar_header h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212529;
+  /* 검정색 헤더 텍스트 */
+}
+
+/* 메뉴 리스트 */
+.sidebar_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 기본 메뉴 버튼 (검정/어두운 회색 글자) */
+.nav_item {
+  display: block;
+  padding: 10px 12px;
+  color: #495057;
+  /* 진한 회색 글자 */
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
   border-radius: 8px;
-  padding: 20px 0;
-  border: 1px solid #ddd;
+  transition: all 0.15s ease-in-out;
+}
+
+.nav_item:hover,
+.active {
+  background-color: #000000 !important;
+  color: #ffffff !important;
 }
 
 
@@ -48,9 +117,10 @@
   font-size: 16px;
   transition: 0.2s;
 }
+
 .active {
-    background-color: #ddd;
-    font-weight: bold;
+  background-color: #ddd;
+  font-weight: bold;
 }
 
 
@@ -64,30 +134,39 @@
 /* 관리자 컨텐츠 */
 .admin_content {
   flex: 1;
+  min-width: 0;
   background-color: white;
   border-radius: 8px;
   padding: 30px;
   border: 1px solid #ddd;
-
+  min-height: 900px;
   display: flex;
   flex-direction: column;
 }
 
 
+.table_responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+
 /* 사용자 전환 버튼 */
-.transbtn {
+.transBtn {
+  background-color: #333333;
+  color: #ffffff;
   align-self: flex-end;
-  padding: 8px 15px;
+  padding: 12px 24px;
   border: 1px solid #555 !important;
-  border-radius: 6px;
+  border-radius: 20px;
   text-decoration: none;
-  color: #333 !important;
   margin-bottom: 20px;
 }
 
 
 /* 버튼 hover */
-.admin_content > a:hover {
+.admin_content>a:hover {
   background-color: #eee;
 }
 
@@ -100,19 +179,18 @@
 /* 회원관리 */
 .memberTable {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
-  margin-top: 20px;
   background-color: #fff;
 }
 
 
 /* 테이블 제목 */
 .memberTable th {
-  background-color: #f5f5f5;
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
-  font-weight: bold;
+  white-space: nowrap;
 }
 
 
@@ -121,6 +199,7 @@
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
+  white-space: nowrap;
 }
 
 
@@ -149,10 +228,12 @@
 /* 검색 input */
 .memberTable input {
   padding: 8px;
-  width: 200px;
+  max-width: 200px;
+  width: 100%;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
 
@@ -193,4 +274,60 @@
 
 .button:hover {
   background-color: #bbb;
+}
+
+
+.buttonContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* 버튼 스타일 */
+.customBtn {
+  background-color: #333333;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.customBtn:hover {
+  background-color: #4a4a4a;
+}
+
+
+.outer_wrapper {
+  width: 100%;
+  max-width: 1200px; /* 원하는 최대 크기 지정 */
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 768px) {
+  .admin_container {
+    flex-direction: column; /* 좌/우 배치를 위/아래 배치로 변경 */
+  }
+
+  .sidebar {
+    width: 100%;        
+    max-width: 240px;
+    min-height: 160px;     
+    margin-bottom: 20px;
+    flex-shrink: 0;        
+    box-sizing: border-box;
+  }
+
+  /* 메뉴들을 가로로 나란히 배치하고 싶다면 */
+  .sidebar_nav {
+    flex-direction: row;  /* 메뉴들을 가로로 배치 */
+    flex-wrap: wrap;       /* 공간 부족하면 다음 줄로 */
+    justify-content: center;
+  }
 }
