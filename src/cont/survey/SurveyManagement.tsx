@@ -17,9 +17,10 @@ interface Data {
     sdate: string,
     result: SurveyResult[]
 }
+
 interface RequestData {
-    request: string;
-    resdate: string;
+    REQUEST: string;
+    RESDATE: string;
 }
 
 interface SurveyDate {
@@ -95,6 +96,7 @@ const SurveyManagement: React.FC = () => {
         fetchRequests();
     }, []);
 
+    //console.log(requests);
     const dataHandler = (responseData: Data) => {
 
         setCode(responseData.code);
@@ -143,6 +145,10 @@ const SurveyManagement: React.FC = () => {
                                 </option>
                             ))}
                         </select>
+
+                        <div>
+                            ※선택하지 않을 시 가장 최근의 결과를 불러옵니다.
+                        </div>
                     </span>
                 </div>
                 <SimpleCharts

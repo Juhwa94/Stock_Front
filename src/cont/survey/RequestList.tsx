@@ -1,37 +1,65 @@
+import axios from "axios";
+import style from "./requestList.module.css"
+
 interface RequestData {
-    request: string;
-    resdate: string;
+    REQUEST: string;
+    RESDATE: string;
 }
 
 interface Props {
     requests: RequestData[];
 }
 
-const RequestList: React.FC<Props> = ({ requests }) => {
-    return (
-        <>
-            {
-                requests.length > 0 ? (
-                    requests.map((item, index) => (
-                        <div 
-                            key={`${item.request}-${item.resdate}-${index}`}
-                        >
-                            <span>
-                                {item.request}
-                            </span>
+const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
-                            <span>
-                                {item.resdate}
-                            </span>
-                        </div>
-                    ))
-                ) : (
-                    <p>
-                        등록된 요청 사항이 없습니다.
-                    </p>
-                )
+const RequestList: React.FC<Props> = ({ requests }) => {
+
+    const deleteOldRequest = async () => {
+        try {
+            const response = await axios.get(`${backendUrl}/api/survey/delOldRequest`);
+        } catch (error) {
+
+        }
+    }
+
+    return (
+        <ul className={style.board}>
+            {requests.length > 0 ? (
+                requests.map((item, index) => (
+                    <li
+                        key={index}
+                        className={style.item}
+                    >
+                        <span className={style.content}>
+                            {item.REQUEST}
+                        </span>
+
+                        <span className={style.hiddencontent}>
+                            {item.REQUEST}
+                        </span>
+
+                        <span className={style.date}>
+                            {item.RESDATE}
+                        </span>
+                    </li>
+                ))
+            ) : (
+                <p>
+                    등록된 요청 사항이 없습니다.
+                </p>
+            )
             }
-        </>
+            <li>
+                <div className={style.buttonContainer}>
+                    <button
+                        type="button"
+                        onClick={deleteOldRequest}
+                    >
+                        오래된 요청 사항 삭제
+                    </button>
+                </div>
+            </li>
+        </ul>
     );
 };
 

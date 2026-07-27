@@ -24,7 +24,7 @@ const SurveyUpdate: React.FC = () => {
             setSurveyQuestions(prev => {
                 const newArray = Array(numValue).fill("");//numValue만큼의 크기의 빈 문자열로 되어있는 배열을 만든다.
                 return newArray.map((item, index) => prev[index] || "");
-                //만든 배열의 요소를 하나씩 순화하면서 새로운 요소값으로 교체.
+                //만든 배열의 요소를 하나씩 순회하면서 새로운 요소값으로 교체.
                 //prev[index]는 같은 인덱스 위치에 기존에 작성해둔 질문이 있는지 확인하고, 이후
                 //||의 논리 or 연산자를 통해 기존 질문(prev[index])가 존재하면 그 내용을 그대로 유지하고,
                 //없거나 undefined인 경우 빈 문자열("")로 채움.

@@ -30,11 +30,11 @@ import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
 import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
-import SurveyAddForm from '../cont/survey/SurveyAddForm'
-import SurveyManagement from '../cont/survey/SurveyManagement'
-import SurveyUpdate from '../cont/survey/SurveyUpdate'
+//import SurveyAddForm from '../cont/survey/SurveyAddForm'
+//import SurveyManagement from '../cont/survey/SurveyManagement'
+//import SurveyUpdate from '../cont/survey/SurveyUpdate'
 import Product from '../cont/product/Product'
-import InquiryDetail from '../cont/inquiry/InquireDetail'
+import ProtectedRoute from "./ProtectedRoute";
 import StockForm from '../cont/stock/StockForm'
 import MyStockList from '../cont/stock/MyStockList'
 import StockList from '../cont/stock/StockList'
@@ -65,9 +65,15 @@ AppRoutes의 구성
     ...
   </Routes>
 */}
+interface RouteItem {
+    path: string;
+    element: React.ReactElement;
+    private?: boolean;
+    role?: string;
+}
 
 const AppRoutes: React.FC = () => {
-    const routeList = [
+    const routeList: RouteItem[] = [
         // ************************ 사용법 ************************
         // { path: '/위치(url)', element: <컴포넌트명 />},
         { path: '/', element: <Home />},     
@@ -76,49 +82,46 @@ const AppRoutes: React.FC = () => {
         { path: '/myStockList', element: <MyStockList />},
         { path: '/admin/stockList', element: <StockList />},
         { path: '/stock/stockDetail/:SNUM', element: <StockDetail />},
-       
-        
-      
-      
 
-        { path: '/product', element: <Product/>},
+        { path: '/product', element: <Product />, private: true},
         // { path: '/notice', element: <Notice />},
-        { path: '/order', element: <Order />},
-        { path: '/user/login', element: <Login/>},
-        { path: '/user/signup', element: <Signup />},
-        { path: '/revenue', element: <Revenue/>},
-      
-        
-        { path: '/notice', element: <Notice />},
-        { path: '/notice/detail', element: <NoticeDetail />},
-        {path: '/admin/noticejo', element: <NoticeJo />},
-        {path: '/admin/noticere', element: <NoticeRe />},
+        { path: '/order', element: <Order />, private: true},
+        { path: '/user/login', element: <Login /> },
+        { path: '/user/signup', element: <Signup /> },
+        { path: '/revenue', element: <Revenue />, private: true  },
 
-        { path: '/community', element: <Community />},
-        { path: '/community/detail', element: <CommunityDetail />},
-        { path: '/community/form', element: <CommForm/>},
-        { path: '/community/comment', element: <Comment/>},
+
+        { path: '/notice', element: <Notice /> },
+        { path: '/notice/detail', element: <NoticeDetail /> },
+        { path: '/admin/noticejo', element: <NoticeJo /> },
+        { path: '/admin/noticere', element: <NoticeRe /> },
+
+        { path: '/community', element: <Community /> },
+        { path: '/community/detail', element: <CommunityDetail /> },
+        { path: '/community/form', element: <CommForm />, private: true },
+        { path: '/community/comment', element: <Comment /> },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
-      
-        { path: '/inquiry', element: <InquireList/>},
-        { path: '/Inquirecomm', element: <Inquirecomm/>},
-        { path: '/InquireForm', element: <InquireForm/>},
+
+        { path: '/inquiry', element: <InquireList /> },
+        { path: '/Inquirecomm', element: <Inquirecomm /> },
+        { path: '/InquireForm', element: <InquireForm /> },
         // { path: '/InquireDetail', element: <InquireDetail/>},
-        {path:"/inquiry/detail/:num", element:<InquireDetail/>},
-        {path:"/reply/list/:num", element:<Inquirecomm/>},
+        { path: "/inquiry/detail/:num", element: <InquireDetail /> },
+        { path: "/reply/list/:num", element: <Inquirecomm /> },
 
 
 
-        { path: '/admin/member', element: <Members />},
-        { path: '/admin', element: <Admin />},
-        
-        { path: '/mypage', element: <MyPage />},
-        { path: '/profileeditpage', element: <ProfileEditPage/>},
+        { path: '/admin/member', element: <Members /> },
 
-        { path: '/admin/surveymanagement', element: <SurveyManagement />},
-        { path: '/admin/surveyupdate', element: <SurveyUpdate />},
+
+        { path: '/mypage', element: <MyPage />, private: true },
+        { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
+
+        // { path: '/survey', element: <SurveyAddForm /> },
+        // { path: '/admin/surveymanagement', element: <SurveyManagement /> },
+        // { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
 
 
 
@@ -126,34 +129,73 @@ const AppRoutes: React.FC = () => {
         // <Route path="/signup" element={<Signup />} />
         // <Route path="/dashboard" element={<Dashboard />} />
 
-// 커뮤니티
-{ path: '/community', element: <Community /> },
-{ path: '/community/detail/:num', element: <CommunityDetail /> },
+        // 커뮤니티
+        { path: '/community', element: <Community /> },
+        { path: '/community/detail/:num', element: <CommunityDetail />, private: true },
 
-// 문의
-{ path: '/inquiry', element: <InquireList /> },
-{ path: '/Inquirecomm', element: <Inquirecomm /> },
-{ path: '/InquireForm', element: <InquireForm /> },
-{ path: '/InquireDetail', element: <InquireDetail /> },
+        // 문의
+        { path: '/inquiry', element: <InquireList /> },
+        { path: '/Inquirecomm', element: <Inquirecomm /> },
+        { path: '/InquireForm', element: <InquireForm /> },
+        { path: '/InquireDetail', element: <InquireDetail /> },
 
-// 관리자
-{ path: '/admin/member', element: <Members /> },
-{ path: '/admin', element: <Admin /> },
+        // 관리자
+        { path: '/admin/member', element: <Members />, private: true },
+        { path: '/admin', element: <Admin />, private: true },
 
-// <Route path="/login" element={<Login />} />
-// <Route path="/signup" element={<Signup />} />
-// <Route path="/dashboard" element={<Dashboard />} />
+        // <Route path="/login" element={<Login />} />
+        // <Route path="/signup" element={<Signup />} />
+        // <Route path="/dashboard" element={<Dashboard />} />
 
     ];
+
     return (
+
         <Routes>
             {
-                routeList.map((route, idx) => (
-                    <Route key={idx} {...route} />
-                ))}
+                routeList.map((route, idx) => {
+                    console.log("Home", Home);
+                    console.log("Admin", Admin);
+                    console.log("ProtectedRoute", ProtectedRoute);
+                    console.log("Members", Members);
 
+                    console.log(
+                        "ROUTE",
+                        idx,
+                        route.path,
+                        route.element
+                    );
+                    if (!React.isValidElement(route.element)) {
+                        console.log("문제 Route 발견:", route);
+                    }
+                    if (route.private) {
+
+                        return (
+                            <Route
+                                key={idx}
+                                element={<ProtectedRoute />}
+                            >
+                                <Route
+                                    path={route.path}
+                                    element={route.element}
+                                />
+                            </Route>
+                        )
+
+                    }
+
+
+                    return (
+                        <Route
+                            key={idx}
+                            path={route.path}
+                            element={route.element}
+                        />
+                    )
+
+                })
+            }
         </Routes>
     );
 };
-
 export default AppRoutes;
