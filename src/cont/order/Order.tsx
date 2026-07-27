@@ -21,10 +21,7 @@ interface OrderItem {
     oiname: string;
     oiprice: number;
     oiamount: number;
-<<<<<<< HEAD
-=======
     oiSumPrice: number;
->>>>>>> 5ee7b0fb44037b4d85424631e0612cf09cf92419
     oipublisher: string;
 }
 
@@ -47,18 +44,6 @@ const Order: React.FC = () => {
     const [oipublisher, setOipublisher] = useState<string>('');
     const [oiprice, setOiprice] = useState<number>(0);
     const [oiamount, setOiamount] = useState<number>(0);
-<<<<<<< HEAD
-
-    const itmeList = () => {
-        const inputRowList = {
-            oiname: oiname,
-            oiprice: oiprice,
-            oipublisher: oipublisher,
-            oiamount: oiamount
-        }
-        setOrderItem([...orderItem, inputRowList]);
-
-=======
     
     const itmeList = () => {
 
@@ -74,7 +59,6 @@ const Order: React.FC = () => {
         setOrderItem([...orderItem, inputRowList]);
 
         oiSumPrice = 0;
->>>>>>> 5ee7b0fb44037b4d85424631e0612cf09cf92419
         setOiname('');
         setOipublisher('');
         setOiprice(0);
@@ -85,11 +69,7 @@ const Order: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-<<<<<<< HEAD
-                const res = await axios.get(`http://192.168.0.114/myictstudy/api/login/session`, {
-=======
                 const res = await axios.get(`${backendUrl}/api/login/session`, {
->>>>>>> 5ee7b0fb44037b4d85424631e0612cf09cf92419
                     withCredentials: true,
                 });
                 setMnum(res.data.mnum);
@@ -115,67 +95,6 @@ const Order: React.FC = () => {
 
     console.log(orderForm);
     return (
-<<<<<<< HEAD
-        <div>
-            <div className={Stayle.header_container}>
-                <h2 className={Stayle.header_container_text_right}>발주자 작성란</h2>
-                <h3 className={Stayle.div_text}>서명 및 발주하기</h3>
-            </div>
-            <form>
-                <div className={Stayle.header_container}>
-                    <div className={Stayle.header_container_text_right}>
-                        <ul className={Stayle.header_container_li}>
-                            <li>대표자 : <input type="text" name='oname' onChange={(e) => setOname(e.target.value)} /></li>
-                            <li>주소 : <input type="text" name='oaddr' onChange={(e) => setOaddr(e.target.value)} /></li>
-                            <li>법인명 : <input type="text" name='ofcompany' onChange={(e) => setOfcompany(e.target.value)} /></li>
-                            <li>연락처 : <input type="text" name='ophone' onChange={(e) => setOphone(e.target.value)} /></li>
-                            <li>발주일 : <input type="date" name='ofdate' onChange={(e) => setOfdate(e.target.value)} /></li>
-                        </ul>
-                    </div>
-                    <div className={Stayle.header_container_text_left}>
-                        {/* <ul>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-            <li>발주일 : <input type="text" name='date' /></li>
-          </ul> */}
-
-                        <Signature order={orderForm} />
-                        {/* <input type="button" name='date'>발주하기</input> */}
-                    </div>
-                </div>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>도서명</th>
-                            <th>출판사</th>
-                            <th>단가</th>
-                            <th>합계금액</th>
-                            <th>수량</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th><input type="text" name='oiname' onChange={(e) => setOiname(e.target.value)} /></th>
-                            <th><input type="text" name='oipublisher' onChange={(e) => setOipublisher(e.target.value)} /></th>
-                            <th><input type="number" name='oiprice' onChange={(e) => setOiprice(Number(e.target.value))} /></th>
-                            <th>{oiprice * oiamount} 원</th>
-                            <th><input type="number" name='oiamount' onChange={(e) => setOiamount(Number(e.target.value))} /></th>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colSpan={5}>
-                                <button type="button" onClick={itmeList}>
-                                    주문리스트 추가!
-                                </button>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </form>
-=======
         <div className={Stayle.container}>
 
             <div className={Stayle.header_title_area}>
@@ -317,7 +236,6 @@ const Order: React.FC = () => {
                     ))}
                 </tbody>
             </table>
->>>>>>> 5ee7b0fb44037b4d85424631e0612cf09cf92419
         </div>
     )
 }

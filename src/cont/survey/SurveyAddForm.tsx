@@ -30,13 +30,14 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
   
-  const [mnum, setMnum] = useState<number>(2);
+  const [mnum, setMnum] = useState<number>(23);
   const [svnum, setSvnum] = useState<number>(0);
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
   const [req, setReq] = useState<string>("")
 
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
 
+  const navigate = useNavigate()
   //modal이 활성화 되어 렌더링 시 실행되는 useEffect
   useEffect(() => {
     //modal 컴포넌트가 열려있을 때만 api 출력
@@ -68,11 +69,12 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
         setMnum(res.data.mnum);
       } catch (error) {
         console.error("로그인 정보 확인 실패.", error);
+        navigate("/user/signup")
       }};
       
       getMnum();
-  }, []);
-
+  }, [isOpen]);
+ 
   const surveySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
