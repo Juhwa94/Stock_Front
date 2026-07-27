@@ -7,27 +7,28 @@ const data = [
     { name: '만화', value: 200 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#575550','pink'];
+const COLORS = ['#0088FE', '#00C49F', '#575550', 'pink'];
 
 export default function ShareChart() {
     return (
-        <div style={{ width: 500 , height: 300 }}>
-            <ResponsiveContainer>
+        <div style={{ width: '100%', height: '100%' }}>
+            <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                     <Pie
                         data={data}
-                        cx="50%" cy="50%"
-                        innerRadius={60} // 이 값을 주면 도넛 차트가 되고, 0으로 하면 꽉 찬 원형 차트가 됩니다!
-                        outerRadius={80}
-                        paddingAngle={5}
+                        cx="50%"
+                        cy="45%"
+                        innerRadius={55}
+                        outerRadius={75}
+                        paddingAngle={4}
                         dataKey="value"
                     >
                         {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                     </Pie>
-                    <Tooltip /> {/* 마우스 올렸을 때 점유율 정보 팝업 */}
-                    <Legend />  {/* 하단에 컬러별 범례 표시 */}
+                    <Tooltip />
+                    <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
             </ResponsiveContainer>
         </div>
