@@ -1,13 +1,17 @@
 .board {
     width: 100%;
-}
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-.list {
-    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .item {
     display: flex;
+    align-items: center;
+
     justify-content: space-between;
     padding: 12px;
     border-bottom: 1px solid #eee;
@@ -18,6 +22,9 @@
 }
 
 .date {
+    flex-shrink: 0;
+    margin-left: 20px;
+
     color: gray;
     font-size: 14px;
 }

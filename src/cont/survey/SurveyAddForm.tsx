@@ -161,7 +161,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
                 {/*추가적인 요청 사항 텍스트 박스*/}
                 <li className="list-group-item p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                   <div className={style.textareaContainer}>
-                    <p className="fw-bold text-dark flex-grow-1">{surveyData?.code}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>
+                    <p className="fw-bold text-dark flex-grow-1">{surveyData?surveyData.code+1:""}. 추가로 요청하실 사안이 있으시다면 자유롭게 작성해주세요.</p>
                     <textarea
                       className={style.textarea}
                       rows={8}
