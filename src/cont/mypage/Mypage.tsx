@@ -10,54 +10,44 @@ interface UserInfo {
   grade: string;
   storeaddr: string;
   regdate: string;
-
-  //수정하기
-  postCount: number;//게시물, postlist
-  commentCount: number;//댓글
+  postCount: number;
+  commentCount: number;
 }
 
 const MyPage: React.FC = () => {
   const { member } = useAuth(); 
   const navigate = useNavigate();
-  const { member } = useAuth(); // AuthProvider에서 로그인 유저 정보 가져오기
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const BACK_URL = process.env.REACT_APP_BACK_END_URL;
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [form, setForm] = useState<UserInfo>({
+    nick: '',
+    name: '',
+    grade: '',
+    storeaddr: '',
+    regdate: '',
+    postCount: 0,
+    commentCount: 0,
+  });
 
   useEffect(() => {
-    const getMyInfo = async () => {
-    
-      if (!member?.email) return;
+    const fetchUserData = async () => {
+      // 로그인된 회원 정보(email)가 없으면 처리 중단
+      if (!member?.email) {
+        setLoading(false);
+        return;
+      }
 
       try {
-        const res = await axios.get(
-          `${BACK_URL}/api/member/mypage`,
-          {
-            params: { email: member.email },
-            withCredentials: true
-          }
-        );
-
-        console.log("마이페이지 데이터", res.data);
-
-        setUserInfo({
-          nick: res.data.nick,
-          name: res.data.name,
-          grade: res.data.grade,
-          storeaddr: res.data.storeaddr,
-          regdate: res.data.regdate,
-          postCount: res.data.postCount ?? 0,
-          commentCount: res.data.commentCount ?? 0
+        // ProfileEditPage와 동일한 백엔드 API 경로로 요청
+        const response = await axios.get(`${BACK_URL}/api/member/mypage`, {
+          params: {
+            email: member?.email,
+          },
         });
 
         const data = response.data;
@@ -90,8 +80,7 @@ const MyPage: React.FC = () => {
     }
   };
 
-
-  if (!userInfo) {
+  if (loading) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -150,13 +139,9 @@ const MyPage: React.FC = () => {
 
           {/* 사용자 정보 */}
           <div>
-            <h2 className='fw-bold mb-2'>{userInfo.nick}</h2>
-            <p className='text-muted mb-1 small'>
-              {userInfo.name} ({userInfo.grade})
-            </p>
-            <p className='mb-1'>{userInfo.storeaddr}</p>
-            <p className='text-muted mb-0'>
-              가입일 : {userInfo.regdate}
+            <h2 className="fw-bold mb-2">{form.nick || '닉네임 없음'}</h2>
+            <p className="text-muted mb-1 small">
+              {form.name} {form.grade ? `(${form.grade})` : ''}
             </p>
             <p className="mb-1">{form.storeaddr}</p>
             <p className="text-muted mb-0">가입일 : {form.regdate}</p>
