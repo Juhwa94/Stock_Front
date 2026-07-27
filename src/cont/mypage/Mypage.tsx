@@ -5,26 +5,23 @@ import axios from "axios";
 import { useAuth } from '../../comp/AuthProvider';
 
 interface UserInfo {
-  nickname: string;
+  nick: string;
   name: string;
   grade: string;
-  location: string;
-  joinDate: string;
+  storeaddr: string;
+  regdate: string;
+  
   postCount: number;
   commentCount: number;
 }
 
 const MyPage: React.FC = () => {
-  // ✅ 1. useAuth Hook을 컴포넌트 내부로 이동
   const { member } = useAuth(); 
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -35,7 +32,7 @@ const MyPage: React.FC = () => {
 
   useEffect(() => {
     const getMyInfo = async () => {
-      // member.email이 아직 로드되지 않은 경우 방어 대책
+    
       if (!member?.email) return;
 
       try {
@@ -50,11 +47,11 @@ const MyPage: React.FC = () => {
         console.log("마이페이지 데이터", res.data);
 
         setUserInfo({
-          nickname: res.data.nick,
+          nick: res.data.nick,
           name: res.data.name,
           grade: res.data.grade,
-          location: res.data.storeaddr,
-          joinDate: res.data.regdate,
+          storeaddr: res.data.storeaddr,
+          regdate: res.data.regdate,
           postCount: res.data.postCount ?? 0,
           commentCount: res.data.commentCount ?? 0
         });
@@ -67,7 +64,7 @@ const MyPage: React.FC = () => {
     getMyInfo();
   }, [member?.email, BACK_URL]);
 
-  // ✅ 2. userInfo가 null일 때(데이터 로딩 중) 화면 처리
+
   if (!userInfo) {
     return (
       <div className="container my-5 text-center">
@@ -124,13 +121,13 @@ const MyPage: React.FC = () => {
 
           {/* 사용자 정보 */}
           <div>
-            <h2 className='fw-bold mb-2'>{userInfo.nickname}</h2>
+            <h2 className='fw-bold mb-2'>{userInfo.nick}</h2>
             <p className='text-muted mb-1 small'>
               {userInfo.name} ({userInfo.grade})
             </p>
-            <p className='mb-1'>{userInfo.location}</p>
+            <p className='mb-1'>{userInfo.storeaddr}</p>
             <p className='text-muted mb-0'>
-              가입일 : {userInfo.joinDate}
+              가입일 : {userInfo.regdate}
             </p>
           </div>
         </div>
