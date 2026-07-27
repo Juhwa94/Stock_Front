@@ -10,9 +10,10 @@ interface UserInfo {
   grade: string;
   storeaddr: string;
   regdate: string;
-  
-  postCount: number;
-  commentCount: number;
+
+  //수정하기
+  postCount: number;//게시물, postlist
+  commentCount: number;//댓글
 }
 
 const MyPage: React.FC = () => {

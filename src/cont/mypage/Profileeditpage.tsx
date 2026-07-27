@@ -200,23 +200,22 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-    const canSave =
-        form.nick.trim() &&
-        form.name.trim() &&
-        form.email.trim() &&
-        form.phoneFirst.trim() &&
-        form.phoneMiddle.trim() &&
-        form.phoneLast.trim() &&
-        form.storeaddr.trim() &&
-        isNickChecked;
-
+const canSave =
+    (form.nick ?? "").trim() &&
+    (form.name ?? "").trim() &&
+    (form.email ?? "").trim() &&
+    (form.phoneFirst ?? "").trim() &&
+    (form.phoneMiddle ?? "").trim() &&
+    (form.phoneLast ?? "").trim() &&
+    (form.storeaddr ?? "").trim() &&
+    isNickChecked;
     const handleSubmit = async (
         event: React.SubmitEvent,
     ) => {
         event.preventDefault();
 
         console.log("저장 직전 form 확인:", form);
-        if (!form.nick.trim()) {
+        if (!(form.nick ?? "").trim()) {
             alert("닉네임을 입력해주세요.");
             return;
         }
@@ -225,7 +224,7 @@ const ProfileEditPage = () => {
             return;
         }
 
-        if (!form.email.trim()) {
+        if (!(form.email ?? "").trim()) {
             alert('이메일을 입력해주세요.');
             return;
         }
