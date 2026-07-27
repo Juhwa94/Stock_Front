@@ -26,10 +26,10 @@ import Detail from "../cont/management/Detail";
 import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
 
-import NoticeB from '../cont/notice/NoticeB'
-import NoticeJoin from '../cont/notice/NoticeJoin'
-import MyPage from '../cont/mypage/Mypage'
-import ProfileEditPage from '../cont/mypage/Profileeditpage'
+import notice from '../cont/notice/Notice'
+import NoticeJoin from '../cont/notice/NoticeJo'
+import MyPage from '../cont/mypage/mypage'
+import ProfileEditPage from '../cont/mypage/profileeditpage'
 import NoticeJo from '../cont/notice/NoticeJo'
 import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
