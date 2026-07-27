@@ -19,11 +19,6 @@ import InquireDetail from '../cont/inquiry/InquireDetail'
 
 import Admin from '../cont/admin/Admin'
 import Members from '../cont/admin/Members'
-
-import Form from "../cont/management/Form";
-import List from "../cont/management/List";
-import Detail from "../cont/management/Detail";
-import Form2 from "../cont/management/Form2";
 import InquireForm from '../cont/inquiry/InquireForm'
 
 import MyPage from '../cont/mypage/Mypage'
@@ -40,6 +35,10 @@ import SurveyManagement from '../cont/survey/SurveyManagement'
 import SurveyUpdate from '../cont/survey/SurveyUpdate'
 import Product from '../cont/product/Product'
 import InquiryDetail from '../cont/inquiry/InquireDetail'
+import StockForm from '../cont/stock/StockForm'
+import MyStockList from '../cont/stock/MyStockList'
+import StockList from '../cont/stock/StockList'
+import StockDetail from '../cont/stock/StockDetail'
 
 
 // 라우터란
@@ -71,16 +70,12 @@ const AppRoutes: React.FC = () => {
     const routeList = [
         // ************************ 사용법 ************************
         // { path: '/위치(url)', element: <컴포넌트명 />},
-        { path: '/', element: <Home />},
-        // 도서 재고 관리
-        {path: "/",element: <Home />,},
-        { path: "/management", element: <Form /> },
-        { path: "/management/form", element: <Form /> },
-        { path: "/management/list", element: <List /> },
-        { path: "/management/detail/:bookId", element: <Detail /> },
-        { path: "/management/form2/:bookId", element: <Form2 /> },
-        
+        { path: '/', element: <Home />},     
         { path: '/member', element: <Member />},
+        { path: '/stockForm', element: <StockForm />},
+        { path: '/myStockList', element: <MyStockList />},
+        { path: '/admin/stockList', element: <StockList />},
+        { path: '/stock/stockDetail/:SNUM', element: <StockDetail />},
        
         
       
