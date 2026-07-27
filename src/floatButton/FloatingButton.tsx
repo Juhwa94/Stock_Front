@@ -11,7 +11,6 @@ const FloatingButton = () => {
                 만약 scheck가 false라면 설문조사를 1달 이내로 하지않았다는 것이므로 설문조사 버튼이 구현되어야 하고,
                 true라면 설문조사를 1달 이내로 하였다는 것이므로 설문조사 버튼이 구현되지 않아야 한다.
             */}
-
             <Link to="/mypage" className={style.floatingButton}>
                 <BsPeopleFill size={30}/>
             </Link>
