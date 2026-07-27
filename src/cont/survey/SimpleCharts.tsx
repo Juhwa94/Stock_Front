@@ -9,7 +9,6 @@ interface Result {
 export default function SimpleCharts(props:Result) {{/*props:ResDataprops 를 매개변수로 넣는다.*/}
   
   const qList = Array(props.code).fill("").map((_, index) => `q${index +1}`);
-  console.log(props)
   return (
     <BarChart
       xAxis={[

@@ -15,7 +15,9 @@ interface SalesData {
     date: string;  // 가로축 (예: '6월 1주차')
     sales: number; // 세로축 매출 (예: 5000000)
 }
-
+// 비즈니스 로직 : 백엔드에서 작업추천 
+// 1.DB에서 받은 시작일~마감일의 범위값을 7단위로 나누기
+// 2.남는 일은 마지막 주에 더하는거로 예외처리
 const data: SalesData[] = [
     { date: '6월 1주차', sales: 1500000 },
     { date: '6월 2주차', sales: 3200000 },
@@ -35,33 +37,35 @@ const Chart: React.FC = () => {
 
     return (
         <div role="img" aria-label="6월 주차별 매출 추이를 보여주는 선형 차트">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={320}>
                 <LineChart
                     data={data}
-                    /* Recharts가 요구하는 정석 객체 구조 유지 */
-                    margin={{ top: 16, right: 24, left: 8, bottom: 8 }}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
 
-                    <XAxis dataKey="date" tickFormatter={formatXAxis} />
-                    <YAxis tickFormatter={formatYAxis} />
+                    <XAxis
+                        dataKey="date"
+                        tickFormatter={formatXAxis}
+                        dy={10}
+                        tick={{ fontSize: 13, fill: '#6c757d' }}
+                    />
+                    <YAxis
+                        tickFormatter={formatYAxis}
+                        dx={-5}
+                        tick={{ fontSize: 13, fill: '#6c757d' }}
+                    />
 
-                    {/* 3. Tooltip 내부 매개변수들에 확실하게 타입 지정을 해주거나 기본 추론을 활용 */}
-                    {/* <Tooltip
-                        formatter={(value: number | string | Array<number | string>) =>
-                            typeof value === 'number' ? `${value.toLocaleString()}원` : value
-                        }
-                        labelFormatter={(label: string) => `날짜: ${label}`}
-                    /> */}
-
-                    <Legend />
+                    <Tooltip />
+                    <Legend wrapperStyle={{ paddingTop: 10 }} />
 
                     <Line
                         type="monotone"
                         dataKey="sales"
-                        stroke="#8884d8"
-                        strokeWidth={2}
-                        dot={false}
+                        stroke="#4c6ef5" 
+                        strokeWidth={3}
+                        dot={{ r: 4, fill: '#4c6ef5' }}
+                        activeDot={{ r: 6 }}
                         name="매출"
                     />
                 </LineChart>

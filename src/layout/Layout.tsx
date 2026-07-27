@@ -137,12 +137,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </li>
 
                   <li>
-                    <NavLink to="/admin/noticejo" className={linkClass}>
+                    <NavLink to="/admin/noticejo" className={`${styles.nav_item}`}>
                       공지 등록
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/admin/noticere" className={linkClass}>
+                    <NavLink to="/admin/noticere" className={`${styles.nav_item}`}>
                       공지 수정
                     </NavLink>
                   </li>
