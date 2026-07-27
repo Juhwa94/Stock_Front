@@ -59,9 +59,7 @@ const ProfileEditPage = () => {
                 const response = await axios.get(
                     `${BACK_URL}/api/member/mypage`,
                     {
-                        params: {
-                            email: member?.email
-                        }
+                        withCredentials: true
                     }
                 );
 
