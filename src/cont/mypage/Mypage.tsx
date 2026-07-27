@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
+import { useAuth } from '../../comp/AuthProvider';
 
 interface UserInfo {
   nickname: string;
@@ -13,19 +15,15 @@ interface UserInfo {
 }
 
 const MyPage: React.FC = () => {
+  // ✅ 1. useAuth Hook을 컴포넌트 내부로 이동
+  const { member } = useAuth(); 
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  const userInfo: UserInfo = {
-    nickname: '닉네임',
-    name: '홍길동',
-    grade: 'A등급',
-    location: '매장의 위치가 들어갈 자리입니다',
-    joinDate: '2026-04-15',
-    postCount: 0,
-    commentCount: 0,
-  };
+  const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,6 +32,51 @@ const MyPage: React.FC = () => {
       setProfileImage(imageUrl);
     }
   };
+
+  useEffect(() => {
+    const getMyInfo = async () => {
+      // member.email이 아직 로드되지 않은 경우 방어 대책
+      if (!member?.email) return;
+
+      try {
+        const res = await axios.get(
+          `${BACK_URL}/api/member/mypage`,
+          {
+            params: { email: member.email },
+            withCredentials: true
+          }
+        );
+
+        console.log("마이페이지 데이터", res.data);
+
+        setUserInfo({
+          nickname: res.data.nick,
+          name: res.data.name,
+          grade: res.data.grade,
+          location: res.data.storeaddr,
+          joinDate: res.data.regdate,
+          postCount: res.data.postCount ?? 0,
+          commentCount: res.data.commentCount ?? 0
+        });
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getMyInfo();
+  }, [member?.email, BACK_URL]);
+
+  // ✅ 2. userInfo가 null일 때(데이터 로딩 중) 화면 처리
+  if (!userInfo) {
+    return (
+      <div className="container my-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='container my-5' style={{ maxWidth: '900px' }}>
