@@ -16,7 +16,7 @@ const RequestList: React.FC<Props> = ({ requests }) => {
 
     const deleteOldRequest = async () => {
         try {
-            const response = await axios.get(`${backendUrl}/api/survey/delOldRequest`);
+            const response = await axios.delete(`${backendUrl}/api/survey/delOldRequest`);
         } catch (error) {
 
         }
