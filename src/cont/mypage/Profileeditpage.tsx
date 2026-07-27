@@ -200,15 +200,6 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-const canSave =
-    (form.nick ?? "").trim() &&
-    (form.name ?? "").trim() &&
-    (form.email ?? "").trim() &&
-    (form.phoneFirst ?? "").trim() &&
-    (form.phoneMiddle ?? "").trim() &&
-    (form.phoneLast ?? "").trim() &&
-    (form.storeaddr ?? "").trim() &&
-    isNickChecked;
     const handleSubmit = async (
         event: React.SubmitEvent,
     ) => {
