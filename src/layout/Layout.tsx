@@ -162,6 +162,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       평가 관리
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink to="/admin/stockList" className={styles.nav_item}>
+                      전체 재고
+                    </NavLink>
+                  </li>
                 </ul>
               </nav>
             </aside>
