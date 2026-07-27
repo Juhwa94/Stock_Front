@@ -37,8 +37,22 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
 
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
 
-  const navigate = useNavigate()
+  //테이블에 데이터가 존재하지 않을 시 더미데이터 자동 삽입
+  const dummy = {
+            sub: "프로그램 만족도 조사",
+            code: 5,
+            questions: [
+              {questions_text:"도서 검색 및 데이터 처리 속도에 만족하십니까?"},
+              {questions_text:"메뉴 구성과 화면 디자인이 사용하기 편리했습니까?"},
+              {questions_text:"주문 연동 및 재고 수량의 정확성에 만족하십니까?"},
+              {questions_text:"재고 부족 알림 및 모니터링 기능이 업무에 도움이 되었습니까?"},
+              {questions_text:"향후 이 프로그램을 지속적으로 사용할 의향이 있으십니까?"}
+            ]
+          };
+
+  const navigate = useNavigate();
   //modal이 활성화 되어 렌더링 시 실행되는 useEffect
+
   useEffect(() => {
     //modal 컴포넌트가 열려있을 때만 api 출력
     if (!isOpen) return;
@@ -46,11 +60,10 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
     const getSurvey = async () => {
       try {
         const response = await axios.get<SurveyData>(`${backendUrl}/api/survey/selectSurvey`);
-
+        
         const responseData = response.data;
 
         console.log("평가지를 불러오는데 성공하였습니다.");
-
         handleData(responseData);
 
       } catch (error) {
@@ -87,12 +100,17 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
 
       const response = await axios.post(`${backendUrl}/api/survey/addResult`, submitData);
       if (response.status === 200) {
-        alert("평가해 주셔서 감사합니다. 여러분들의 평가는 저희의 발전의 원동력이 됩니다.");
+        alert("평가해 주셔서 감사합니다. 여러분들의 소중한 평가는 더 나은 발전의 원동력이 됩니다.");
         onClose();
       }
     } catch (error) {
       console.error("Error :", error);
-      alert("평가 등록에 실패하였습니다. 잠시 후 다시 시도해주십시오.");
+      if(!mnum) {
+        alert("로그인 정보를 가져오지 못했습니다. 로그인을 하고 평가를 남겨 주십시오.")
+        navigate("/user/login");
+      }else {
+        alert("평가 등록에 실패하였습니다. 잠시 후 다시 시도해주십시오.");
+      }
     }
   };
 

@@ -15,11 +15,14 @@ interface UserInfo {
 }
 
 const MyPage: React.FC = () => {
+  // ✅ 1. useAuth Hook을 컴포넌트 내부로 이동
+  const { member } = useAuth(); 
   const navigate = useNavigate();
   const { member } = useAuth(); // AuthProvider에서 로그인 유저 정보 가져오기
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
