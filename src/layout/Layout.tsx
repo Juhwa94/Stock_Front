@@ -14,7 +14,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigate = useNavigate();
-  const { isLoggedIn, logout  } = useAuth();
+  const { member, isLoggedIn, logout } = useAuth();
   const { pathname } = useLocation();
   // /user 로 시작하는 모든 페이지
   const isSimpleLayout = pathname.startsWith('/user');
@@ -26,7 +26,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     // 활성화가 된 상태이면 style.active를 추가한다.
     isActive ? `${styles.link} ${styles.active}` : styles.link;
-
+  const handleLogout = async () => {
+    await logout();
+    alert('로그아웃 되었습니다.');
+    navigate('/');
+  };
 
 
   return (
@@ -67,22 +71,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </h1>
 
             <div className={styles.buttonContainer}>
-              <button type="button" className={styles.customBtn} onClick={() => navigate('/admin')}>
-                관리자 전환
-              </button>
+              {member?.authority === 'ADMIN' && (
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/admin')}>
+                  관리자 전환
+                </button>
+              )}
 
               {!isLoggedIn && (<>
-                  <button type="button" className={styles.customBtn} onClick={() => navigate('/user/login')}>
-                로그인
-              </button>
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/user/login')}>
+                  로그인
+                </button>
 
-                  <button type="button" className={styles.customBtn} onClick={() => navigate('/user/signup')}>
-                회원가입
+                <button type="button" className={styles.customBtn} onClick={() => navigate('/user/signup')}>
+                  회원가입
                 </button></>
               )}
               {isLoggedIn && (
-                <button type="button" className={styles.customBtn} onClick={logout}>
-                로그아웃
+                <button type="button" className={styles.customBtn} onClick={handleLogout}>
+                  로그아웃
                 </button>
               )}
             </div>
@@ -117,6 +123,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className={styles.admin_container}>
             {/* 사이드바 */}
             <aside className={styles.sidebar}>
+
               <div className={styles.sidebar_header}>
                 <h3>관리자 메뉴</h3>
               </div>
@@ -124,15 +131,30 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <nav className={styles.sidebar_nav}>
                 <ul>
                   <li>
-                    <NavLink to="/admin/member" className={`${styles.nav_item} ${styles.active}`}>
+                    <NavLink to="/admin/member" className={`${styles.nav_item}`}>
                       회원 관리
                     </NavLink>
                   </li>
 
                   <li>
-                    <NavLink to="/admin/noticejoin" className={styles.nav_item}>
+                    <NavLink to="/admin/noticejo" className={linkClass}>
                       공지 등록
                     </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/admin/noticere" className={linkClass}>
+                      공지 수정
+                    </NavLink>
+                  </li>
+                  <li>
+                    {/* <NavLink to="/admin/communityjo" className={linkClass}>
+                    게시글 등록
+                  </NavLink>
+                </li>
+                    <li>
+                  <NavLink to="/admin/communityre" className={linkClass}>
+                    게시글 수정
+                  </NavLink> */}
                   </li>
 
                   <li>

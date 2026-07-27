@@ -6,11 +6,9 @@ import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 
 interface ProfileForm {
-    id: string;
     nick: string;
     name: string;
     grade: string;
-    storecode: string;
     storeaddr: string;
     storeaddrDetail: string;
     phoneFirst: string;
@@ -34,11 +32,9 @@ const ProfileEditPage = () => {
     const [tempNick, setTempNick] = useState('');
 
     const [form, setForm] = useState<ProfileForm>({
-        id: '',
         nick: '',
         name: '',
         grade: '',
-        storecode: '',
         storeaddr: '',
         storeaddrDetail: '',
         phoneFirst: '010',
@@ -50,27 +46,20 @@ const ProfileEditPage = () => {
         regdate: ''
     });
 
-
-    const generateRandomStoreCode = () => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = 'ST-';
-        for (let i = 0; i < 8; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    };
-
     useEffect(() => {
 
         const fetchProfile = async () => {
-
+            if (!member?.email) {
+                setLoading(false);
+                return;
+            }
             try {
 
                 const response = await axios.get(
                     `${BACK_URL}/api/member/mypage`,
                     {
                         params: {
-                            id: member?.id
+                            email: member?.email
                         }
                     }
                 );
@@ -78,11 +67,9 @@ const ProfileEditPage = () => {
                 const data = response.data;
 
                 setForm({
-                    id: data.id,
                     nick: data.nick,
                     name: data.name,
                     grade: data.grade,
-                    storecode: data.storecode ?? '',
                     storeaddr: data.storeaddr ?? '',
                     storeaddrDetail: '',
                     phoneFirst: '010',
@@ -95,25 +82,16 @@ const ProfileEditPage = () => {
                 });
 
             } catch (error) {
-
                 console.error(error);
                 alert("회원정보 조회 실패");
-
             } finally {
-
                 setLoading(false);
-
             }
-
         };
 
-
-        if (member?.id) {
-            fetchProfile();
-        }
+        fetchProfile();
 
     }, [member]);
-
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
@@ -200,6 +178,11 @@ const ProfileEditPage = () => {
     ) => {
         event.preventDefault();
 
+        console.log("저장 직전 form 확인:", form);
+        if (!form.nick.trim()) {
+            alert("닉네임을 입력해주세요.");
+            return;
+        }
         if (!form.phoneMiddle || !form.phoneLast) {
             alert('휴대전화 번호를 입력해주세요.');
             return;
@@ -214,27 +197,32 @@ const ProfileEditPage = () => {
             ? `${form.storeaddr} ${form.storeaddrDetail.trim()}`
             : form.storeaddr;
 
-        const requestData = await axios.post(`${BACK_URL}/api/member/update`, {
-            id: form.id,
-            nick: form.nick,
-            mphone: [
-                form.phoneFirst,
-                form.phoneMiddle,
-                form.phoneLast,
-            ].join('-'),
-            email: form.email.trim(),
-            storecode: form.storecode,
-            storeaddr: fullStoreAddress,
-            smsAgree: form.smsAgree ? 'Y' : 'N',
-            emailAgree: form.emailAgree ? 'Y' : 'N',
-        });
-
         try {
+
+            const requestData = await axios.post(
+                `${BACK_URL}/api/member/update`,
+                {
+                    nick: form.nick,
+                    mphone: [
+                        form.phoneFirst,
+                        form.phoneMiddle,
+                        form.phoneLast,
+                    ].join('-'),
+                    email: form.email.trim(),
+                    storeaddr: fullStoreAddress,
+                    smsAgree: form.smsAgree ? 'Y' : 'N',
+                    emailAgree: form.emailAgree ? 'Y' : 'N',
+                }
+            );
+
             console.log('회원정보 수정 요청:', requestData);
             alert('기본정보가 저장되었습니다.');
+
         } catch (error) {
+
             console.error('회원정보 수정 실패:', error);
             alert('기본정보 저장에 실패했습니다.');
+
         }
     };
 
@@ -245,7 +233,6 @@ const ProfileEditPage = () => {
         if (!window.confirm("정말 탈퇴하시겠습니까?")) {
             return;
         }
-
         try {
             await axios.delete(
                 `${BACK_URL}/api/member/withdraw`,
@@ -255,8 +242,7 @@ const ProfileEditPage = () => {
                     }
                 }
             );
-
-            await logout();   // 세션 제거 + member=null
+            await logout();
 
             alert("회원 탈퇴가 완료되었습니다.");
 
@@ -326,15 +312,6 @@ const ProfileEditPage = () => {
                                     </h3>
 
                                     <div className="border rounded-3 overflow-hidden">
-                                        {/* 아이디 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold">
-                                                아이디
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                {form.id}
-                                            </div>
-                                        </div>
 
                                         {/* 닉네임 (수정 가능 영역) */}
                                         <div className="row g-0 border-bottom">
@@ -419,32 +396,6 @@ const ProfileEditPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* 지점 코드 & QR 코드 */}
-                                        <div className="row g-0 border-bottom">
-                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold d-flex align-items-center">
-                                                지점 코드
-                                            </div>
-                                            <div className="col-md-9 px-4 py-3">
-                                                <div className="d-flex align-items-center gap-3">
-                                                    <span className="font-monospace fw-bold fs-5 text-dark">
-                                                        {form.storecode}
-                                                    </span>
-
-                                                    {form.storecode && (
-                                                        <div
-                                                            className="p-1 bg-white border rounded d-inline-flex align-items-center justify-content-center shadow-sm"
-                                                            title={`QR 코드: ${form.storecode}`}
-                                                        >
-                                                            <QRCodeSVG
-                                                                value={form.storecode}
-                                                                size={42}
-                                                                level="M"
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         {/* 지점 주소 */}
                                         <div className="row g-0 border-bottom">
@@ -574,73 +525,6 @@ const ProfileEditPage = () => {
                                     </div>
                                 </section>
 
-                                <section className="mb-5">
-                                    <h3 className="h6 fw-bold text-primary mb-3">
-                                        수신 동의 설정
-                                    </h3>
-
-                                    <div className="row g-3">
-                                        <div className="col-md-6">
-                                            <div className="card h-100 border">
-                                                <div className="card-body">
-                                                    <div className="form-check form-switch">
-                                                        <input
-                                                            id="smsAgree"
-                                                            type="checkbox"
-                                                            name="smsAgree"
-                                                            checked={form.smsAgree}
-                                                            onChange={handleCheckboxChange}
-                                                            className="form-check-input"
-                                                            role="switch"
-                                                        />
-
-                                                        <label
-                                                            htmlFor="smsAgree"
-                                                            className="form-check-label fw-semibold"
-                                                        >
-                                                            SMS 수신 동의
-                                                        </label>
-                                                    </div>
-
-                                                    <p className="small text-secondary mt-3 mb-0">
-                                                        재고조회, 매출조회 등 주요 안내를
-                                                        휴대전화 문자로 받아볼 수 있습니다.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <div className="card h-100 border">
-                                                <div className="card-body">
-                                                    <div className="form-check form-switch">
-                                                        <input
-                                                            id="emailAgree"
-                                                            type="checkbox"
-                                                            name="emailAgree"
-                                                            checked={form.emailAgree}
-                                                            onChange={handleCheckboxChange}
-                                                            className="form-check-input"
-                                                            role="switch"
-                                                        />
-
-                                                        <label
-                                                            htmlFor="emailAgree"
-                                                            className="form-check-label fw-semibold"
-                                                        >
-                                                            이메일 수신 동의
-                                                        </label>
-                                                    </div>
-
-                                                    <p className="small text-secondary mt-3 mb-0">
-                                                        마케팅, 홍보 및 서비스 관련 정보를
-                                                        이메일로 받아볼 수 있습니다.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
 
                                 <div className="d-flex align-items-center pt-3 border-top">
 

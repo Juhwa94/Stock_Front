@@ -15,7 +15,7 @@ interface ProductItem {
     piprice: number; //단가
     piamount: number; //수량
     pisumprice: number; //1행의 합계 가격 (가격*수량)
-    piunitCost: number; //원가
+    piunitCost: number; //원가    
 }
 
 
@@ -69,6 +69,7 @@ const Product: React.FC = () => {
             };
             //혹시몰라서 useState setter깔아둡니다 이 부분은 지우셔도 무방합니다
             setProductForm(assembledForm);
+            console.log(assembledForm);
             try {
                 // 서버에 보낼 데이터 json화
                 // 주의: productForm를 보내지않는 이유 
@@ -77,7 +78,7 @@ const Product: React.FC = () => {
                 const productData = JSON.stringify(assembledForm);
 
                 //백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
-                const res = await fetch(`${backendUrl}/api/productForm`, {
+                const res = await fetch(`${backendUrl}/api/product/productForm`, {
                     method: 'POST',
                     //header-Type은 application/json : 백엔드에 보낼 데이터가 순수한 json형태(포맷)이기 때문
                     headers: {
@@ -88,7 +89,7 @@ const Product: React.FC = () => {
 
                 //전송결과 출력
                 if (res.ok) {
-                    nav("/revenue");
+                    //nav("/revenue");
                 } else {
                     alert("전송 실패 서버 에러");
                 }
@@ -144,7 +145,7 @@ const Product: React.FC = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="piisbn" value={piisbn} onChange={(e) => setPiisbn(e.target.value)} /></td>
+                        <td><input type="text" name="piisbn" onChange={(e) => setPiisbn(e.target.value)} /></td>
                         <td><input type="text" name="piname" value={piname} onChange={(e) => setPiname(e.target.value)} /></td>
                         <td><input type="number" name="piunitCost" value={piunitCost || ''} onChange={(e) => setpiunitCost(parseInt(e.target.value) || 0)} /></td>
                         <td><input type="number" name="piprice" value={piprice || ''} onChange={(e) => setPiprice(parseInt(e.target.value) || 0)} /></td>
