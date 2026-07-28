@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import style from './survey.module.css';
 
+import { useAuth } from "../../comp/AuthProvider";
+
 interface SubmitData {
   mnum: number,
   svnum: number,
@@ -30,12 +32,13 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
   
-  const [mnum, setMnum] = useState<number>(0);
   const [svnum, setSvnum] = useState<number>(0);
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
   const [req, setReq] = useState<string>("")
 
   const [rating, setRating] = useState<number[]>(Array(5).fill(0));
+
+  const { member } = useAuth();
 
   const navigate = useNavigate();
   //modal이 활성화 되어 렌더링 시 실행되는 useEffect
@@ -59,27 +62,13 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
     };
     getSurvey();
   }, [isOpen])
-
-  useEffect(() => {
-    const getMnum = async () => {
-      try {
-        const res = await axios.get(`${backendUrl}/api/login/session`, {
-          withCredentials: true,
-        });
-        setMnum(res.data.mnum);
-      } catch (error) {
-        console.error("로그인 정보 확인 실패.", error);
-        navigate("/user/signup")
-      }};
-      
-      getMnum();
-  }, [isOpen]);
  
   const surveySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     try {
       const submitData: SubmitData[] = rating.map((rating) => ({
-        mnum: mnum,
+        mnum: Number(member?.mnum),
         svnum: svnum,
         rating: rating,
         request: req
@@ -92,7 +81,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
       }
     } catch (error) {
       console.error("Error :", error);
-      if(!mnum) {
+      if(!Number(member?.mnum)) {
         alert("로그인 정보를 가져오지 못했습니다. 로그인을 하고 평가를 남겨 주십시오.")
         navigate("/user/login");
       }else {
