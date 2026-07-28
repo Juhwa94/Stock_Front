@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DaumPostcode, { Address } from 'react-daum-postcode';   // npm install react-daum-postcode 설치하면 됨
-import { QRCodeSVG } from 'qrcode.react';   // npm install qrcode.react 설치하면 됨
+import DaumPostcode, { Address } from 'react-daum-postcode';   
 import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 
@@ -31,6 +30,7 @@ const ProfileEditPage = () => {
     const [isEditingNick, setIsEditingNick] = useState(false);
     const [tempNick, setTempNick] = useState('');
 
+    const [isNickChecked, setIsNickChecked] = useState(false);
     const [form, setForm] = useState<ProfileForm>({
         nick: '',
         name: '',
@@ -48,6 +48,8 @@ const ProfileEditPage = () => {
 
     useEffect(() => {
 
+        console.log("member =", member);
+
         const fetchProfile = async () => {
             if (!member?.email) {
                 setLoading(false);
@@ -58,9 +60,7 @@ const ProfileEditPage = () => {
                 const response = await axios.get(
                     `${BACK_URL}/api/member/mypage`,
                     {
-                        params: {
-                            email: member?.email
-                        }
+                        withCredentials: true
                     }
                 );
 
@@ -130,24 +130,50 @@ const ProfileEditPage = () => {
     const handleStartNickEdit = () => {
         setTempNick(form.nick);
         setIsEditingNick(true);
+        setIsNickChecked(false); ///////
     };
 
-    const handleSaveNick = () => {
+    const handleSaveNick = async () => {
         if (!tempNick.trim()) {
             alert('닉네임을 입력해주세요.');
             return;
         }
+    
+    const urls = process.env.REACT_APP_BACK_END_URL;
 
-        setForm((prev) => ({
-            ...prev,
-            nick: tempNick.trim(),
-        }));
-        setIsEditingNick(false);
-    };
+    // 기존 닉네임과 같으면 중복검사 생략
+    if (tempNick.trim() !== form.nick) {
+        try {
+            const res = await axios.post(`${urls}/api/auth/nickCheck`, {
+                nick: tempNick.trim(),
+            });    
 
-    const handleCancelNickEdit = () => {
-        setTempNick('');
-        setIsEditingNick(false);
+            if (res.data !== 0) {
+                setIsNickChecked(false);
+                alert('이미 사용 중인 닉네임입니다.');
+                return;
+            }
+
+            // 사용 가능한 닉네임
+            setIsNickChecked(true);
+
+        } catch (error) {
+            console.error(error);
+            setIsNickChecked(false);
+            alert('닉네임 확인 중 오류가 발생했습니다.');
+            return;
+        }
+    } else {
+        // 기존 닉네임 그대로인 경우
+        setIsNickChecked(true);
+    }
+
+    setForm((prev) => ({
+        ...prev,
+        nick: tempNick.trim(),
+    }));
+
+    setIsEditingNick(false);
     };
 
     // 카카오 우편번호 검색 완료 핸들러
@@ -179,7 +205,7 @@ const ProfileEditPage = () => {
         event.preventDefault();
 
         console.log("저장 직전 form 확인:", form);
-        if (!form.nick.trim()) {
+        if (!(form.nick ?? "").trim()) {
             alert("닉네임을 입력해주세요.");
             return;
         }
@@ -188,7 +214,7 @@ const ProfileEditPage = () => {
             return;
         }
 
-        if (!form.email.trim()) {
+        if (!(form.email ?? "").trim()) {
             alert('이메일을 입력해주세요.');
             return;
         }
@@ -339,7 +365,7 @@ const ProfileEditPage = () => {
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            onClick={handleCancelNickEdit}
+                                                            onClick={() => setIsEditingNick(false)}
                                                             className="btn btn-outline-secondary btn-sm text-nowrap"
                                                         >
                                                             취소
