@@ -114,17 +114,17 @@
     width: 140px;
     padding: 10px 0;
     border: 1px solid #000;
-    background: white;
+    background: rgb(2, 2, 2);
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
     transition: .2s;
 }
 
-.button:hover {
+/* .button:hover {
     background: #000;
     color: #fff;
-}
+} */
 
 .footer {
     border-top: 1px solid #333;

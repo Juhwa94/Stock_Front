@@ -132,7 +132,6 @@ const MyPage: React.FC = () => {
               ) : (
                 <div className="text-center text-secondary">
                   <div style={{ fontSize: '50px' }}>👤</div>
-                  <small>사진 추가</small>
                 </div>
               )}
             </div>
