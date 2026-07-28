@@ -43,7 +43,7 @@ const CommForm: React.FC = () => {
 
             try {
 
-                const url = `${backendUrl}/api/community/detail?num=${num}`;
+                const url = `${backendUrl}/api/community/codetail?num=${num}`;
 
                 const resp = await axios.get(url);
 
@@ -132,6 +132,7 @@ const CommForm: React.FC = () => {
         data.append("membernum", String(formData.membernum));
 
         if (formData.mfile) {
+            console.log(formData.mfile);
             data.append("mfile", formData.mfile);
         }
 
@@ -142,7 +143,7 @@ const CommForm: React.FC = () => {
         try {
 
             const url = num
-                ? `${backendUrl}/api/community/communityUpdate`
+                ? `${backendUrl}/api/community/coUpdate`
                 : `${backendUrl}/api/community/commAdd`;
 
             await axios.post(url, data, {

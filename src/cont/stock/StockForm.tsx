@@ -133,11 +133,11 @@ const StockForm: React.FC = () => {
                     onChange={handleChange} className={styles.input}
                     placeholder="저자"
                 />
-                <input type='text' id='samount' name='samount'
+                <input type='number' id='samount' name='samount'
                     onChange={handleChange} className={styles.input}
                     placeholder="수량"
                 />
-                <input type='text' id='sprice' name='sprice'
+                <input type='number' id='sprice' name='sprice'
                     onChange={handleChange} className={styles.input}
                     placeholder="개당 가격"
                 />
