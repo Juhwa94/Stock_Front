@@ -84,9 +84,9 @@ const Revenue: React.FC = () => {
                 </div>
             </div>
 
-            <div className={Stayle.line_chart_container}>
+            {/* <div className={Stayle.line_chart_container}>
                 <Chart />
-            </div>
+            </div> */}
         </div>
     );
 }
