@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DaumPostcode, { Address } from 'react-daum-postcode';   // npm install react-daum-postcode 설치하면 됨
-import { QRCodeSVG } from 'qrcode.react';   // npm install qrcode.react 설치하면 됨
+import DaumPostcode, { Address } from 'react-daum-postcode';   
 import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 

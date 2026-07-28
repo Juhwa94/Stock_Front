@@ -10,10 +10,9 @@ interface UserInfo {
   grade: string;
   storeaddr: string;
   regdate: string;
-
   membernum: number;
   mypost: number;
-  commentCount: number;
+
 }
 
 const MyPage: React.FC = () => {
@@ -54,11 +53,8 @@ const MyPage: React.FC = () => {
           grade: res.data.grade || '',
           storeaddr: res.data.storeaddr || '',
           regdate: res.data.regdate || '',
-
-
           membernum: res.data.membernum,
           mypost: res.data.mypost ?? 0,
-          commentCount: res.data.commentCount ?? 0
         });
 
       } catch (error) {
@@ -81,8 +77,6 @@ const MyPage: React.FC = () => {
             withCredentials: true
           }
         );
-
-        console.log(res.data);
         console.log("여기");
         setMypost(res.data);
 
