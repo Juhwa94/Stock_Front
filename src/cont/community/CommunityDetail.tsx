@@ -70,6 +70,8 @@ const CommunityDetail: React.FC = () => {
 
     }, [num, backendUrl]);
 
+    console.log(community?.cnum);
+
 
 
 

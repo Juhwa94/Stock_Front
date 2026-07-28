@@ -40,7 +40,7 @@ const Comments: React.FC<CommentsProps> = ({ communityNum }) => {
                 `${backendUrl}/api/comments/toList`,
                 {
                     params: {
-                        num: communityNum,
+                        communitynum: communityNum,
                         cPage: page
                     }
                 }
