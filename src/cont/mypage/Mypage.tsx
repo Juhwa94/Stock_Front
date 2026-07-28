@@ -45,9 +45,7 @@ const MyPage: React.FC = () => {
       try {
         // ProfileEditPage와 동일한 백엔드 API 경로로 요청
         const response = await axios.get(`${BACK_URL}/api/member/mypage`, {
-          params: {
-            email: member?.email,
-          },
+            withCredentials: true,
         });
 
         const data = response.data;
