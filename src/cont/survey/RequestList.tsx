@@ -18,7 +18,7 @@ const RequestList: React.FC<Props> = ({ requests }) => {
         try {
             const response = await axios.delete(`${backendUrl}/api/survey/delOldRequest`);
         } catch (error) {
-
+            console.log("삭제하는데 오류가 생겼습니다.", error);
         }
     }
 

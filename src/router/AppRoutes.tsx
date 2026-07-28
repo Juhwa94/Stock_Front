@@ -36,6 +36,8 @@ import StockDetail from '../cont/stock/StockDetail'
 import Product from '../cont/product/Product'
 import Comments from '../cont/community/Comments'
 import ProtectedRoute from './ProtectedRoute'
+import SurveyManagement from '../cont/survey/SurveyManagement'
+import SurveyUpdate from '../cont/survey/SurveyUpdate'
 
 
 
@@ -147,9 +149,9 @@ const AppRoutes: React.FC = () => {
         { path: '/mypage', element: <MyPage />, private: true },
         { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
 
-        // { path: '/survey', element: <SurveyAddForm /> },
-        // { path: '/admin/surveymanagement', element: <SurveyManagement /> },
-        // { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
+  
+        { path: '/admin/surveymanagement', element: <SurveyManagement /> },
+        { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
 
 
 
