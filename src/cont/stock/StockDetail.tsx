@@ -122,8 +122,7 @@ const StockDetail: React.FC = () => {
                                 >수정</button>
                                 <button onClick={handleDelete}>삭제</button>
                             </>)}
-                            <Link style={{}} to="/">목록</Link>
-
+                            <Link to="/" className={styles.listLink}>목록</Link>
                         </td>
                     </tr>
                 </tfoot>
