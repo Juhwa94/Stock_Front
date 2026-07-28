@@ -87,6 +87,8 @@
 .starRatingContainer {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   gap: 6px;       
   padding: 5px 0;
 }
@@ -103,13 +105,18 @@
 
 .starItem:hover {
   transform: scale(1.2);  
-  color: #ffda6a;       
+  
 }
 
 /* 클릭 후 선택 완료된 별*/
 .starItem.active {
   color: #ffc107;         
   text-shadow: 0 0 4px rgba(255, 193, 7, 0.4); 
+}
+
+/* 마우스를 올린 별과 그 뒤에 오는 별들(시각적으로는 왼쪽 별들)의 색상 동시 변경*/
+.starItem:hover, .starItem:hover ~ .starItem {
+  color: #ffda6a
 }
 
 /* 점수를 숫자로 보여주는 배지  */
