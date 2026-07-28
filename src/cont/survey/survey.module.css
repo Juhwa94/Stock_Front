@@ -87,6 +87,8 @@
 .starRatingContainer {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   gap: 6px;       
   padding: 5px 0;
 }
@@ -100,15 +102,21 @@
   transition: color 0.15s ease, transform 0.1s ease; 
 }
 
+
 .starItem:hover {
   transform: scale(1.2);  
-  color: #ffda6a;       
+  
 }
 
 /* 클릭 후 선택 완료된 별*/
 .starItem.active {
   color: #ffc107;         
   text-shadow: 0 0 4px rgba(255, 193, 7, 0.4); 
+}
+
+/* 마우스를 올린 별과 그 뒤에 오는 별들(시각적으로는 왼쪽 별들)의 색상 동시 변경*/
+.starItem:hover, .starItem:hover ~ .starItem {
+  color: #ffda6a
 }
 
 /* 점수를 숫자로 보여주는 배지  */
@@ -119,7 +127,36 @@
   font-size: 0.85rem;
   padding: 5px 8px;
 }
+
 /* 텍스트 상자 크기 고정 */
 .textarea {
+  width: 100%;
   resize: none;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* 최상단 레이어 위치 */
+}
+
+/* 모달 본체 박스 */
+.modalContent {
+  width: 90%;
+  max-width: 700px; /* 적절한 최대 너비 설정 */
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../comp/AuthProvider';
 
 interface InquireCommProps {
     num?: string;
@@ -17,30 +18,28 @@ interface CommentVO {
 const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
+
+    // 로그인한 회원 정보 가져오기
+    const { member, isLoggedIn } = useAuth();
+    console.log("member =", member);
+console.log("isLoggedIn =", isLoggedIn);
+
     // 댓글 목록
     const [rcomments, setRComments] = useState<CommentVO[]>([]);
-
-    // 작성자
-    const [rwriter, setRWriter] = useState("");
 
     // 댓글 내용
     const [rcontent, setRContent] = useState("");
 
-
     // 댓글 조회
     const getComments = async () => {
-
         try {
+
             const url =
                 `${backendUrl}/api/reply/list?num=${num}`;
-
-                console.log(url);
-
 
             const response = await axios.get(url);
 
             setRComments(response.data);
-            console.log(response.data);
 
         } catch (error) {
 
@@ -55,14 +54,24 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
         getComments();
     }, [num]);
 
+
     // 댓글 등록
     const commentSubmit = async (
         e: React.SubmitEvent<HTMLFormElement>
     ) => {
+
         e.preventDefault();
+
+        // 로그인 확인
+        if (!isLoggedIn) {
+            alert("로그인 후 댓글을 작성할 수 있습니다.");
+            return;
+        }
+
         const commentData = {
-            rcode: num,
-            rwriter: rwriter,
+
+            rcode: Number(num),
+            rwriter: member?.nick,
             rcontent: rcontent
 
         };
@@ -82,10 +91,9 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
             );
 
             // 입력창 초기화
-            setRWriter("");
             setRContent("");
 
-            // 다시 조회
+            // 댓글 다시 조회
             getComments();
 
         } catch (error) {
@@ -102,31 +110,42 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
         <div>
 
             <h3>댓글</h3>
+
             {/* 댓글 작성 */}
             <form onSubmit={commentSubmit}>
 
+                {/* 로그인한 회원의 닉네임 표시 */}
                 <input
                     type="text"
-                    placeholder="작성자"
-                    value={rwriter}
-                    onChange={(e) =>
-                        setRWriter(e.target.value)
-                    }
+                    value={member?.nick || ""}
+                    readOnly
                 />
+
                 <br />
-                <textarea style={{}}
-                    placeholder="댓글을 입력하세요."
+
+                <textarea
+                    style={{
+                        width: "700px",
+                        height: "180px",
+                        resize: "none"
+                    }}
+                    placeholder="비방, 욕설, 광고성 댓글은 사전 통보 없이 삭제될 수 있습니다."
                     value={rcontent}
                     onChange={(e) =>
                         setRContent(e.target.value)
                     }
                 />
+
                 <br />
+
                 <button type="submit">
                     댓글 작성
                 </button>
+
             </form>
+
             <hr />
+
             {/* 댓글 목록 */}
             <ul>
                 {
@@ -135,9 +154,11 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
                             <strong>
                                 {comment.rwriter}
                             </strong>
+
                             <p>
                                 {comment.rcontent}
                             </p>
+
                             <small>
                                 {comment.rdate}
                             </small>
@@ -145,7 +166,9 @@ const InquireComm: React.FC<InquireCommProps> = ({ num }) => {
                     ))
                 }
             </ul>
+
         </div>
     );
 };
+
 export default InquireComm;
