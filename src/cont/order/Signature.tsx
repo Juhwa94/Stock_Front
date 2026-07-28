@@ -29,7 +29,7 @@ export default function Signature({ order }: SignatureProps) {
         }
 
         //주문서를 작성하지 않고 제출한 케이스에 대해 예외처리
-        if (!order) {
+        if (!(order?.ofcompany && order?.oaddr && order?.oname && order?.ophone && order?.ofdate)) {
             alert("주문서 정보가 없습니다.");
             return;
         }

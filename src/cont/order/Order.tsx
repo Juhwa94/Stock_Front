@@ -40,14 +40,19 @@ const Order: React.FC = () => {
 
     //-----------Item---------------------------
     const [orderItem, setOrderItem] = useState<OrderItem[]>([]);
-    const [oiname, setOiname] = useState<string>('');
-    const [oipublisher, setOipublisher] = useState<string>('');
+    const [oiname, setOiname] = useState<string >("");
+    const [oipublisher, setOipublisher] = useState<string >("");
     const [oiprice, setOiprice] = useState<number>(0);
     const [oiamount, setOiamount] = useState<number>(0);
-    
-    const itmeList = () => {
 
-        let oiSumPrice = oiprice*oiamount;
+    const itmeList = () => {
+        let oiSumPrice = oiprice * oiamount;
+
+        // 발주품중 빈칸을 제출한 케이스에 대해 예외처리
+        if(!(oiname && oiprice && oipublisher && oiamount && oiSumPrice)) {
+            alert("빈칸을 허용하지 않습니다");
+            return;
+        }
 
         const inputRowList = {
             oiname: oiname,
@@ -56,6 +61,7 @@ const Order: React.FC = () => {
             oiamount: oiamount,
             oiSumPrice: oiSumPrice
         }
+
         setOrderItem([...orderItem, inputRowList]);
 
         oiSumPrice = 0;
@@ -90,6 +96,7 @@ const Order: React.FC = () => {
             ofcompany: ofcompany,
             orderItem: orderItem,
         };
+
         setOrderForm(assembledForm);
     }, [orderItem]);
 

@@ -33,7 +33,7 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 const Revenue: React.FC = () => {
     const [searchParams] = useSearchParams();
     const pso_rmonth = searchParams.get("rmonth") || "";
-    const [rmonth, setRmonth] = useState(pso_rmonth);
+    const [rmonth, setRmonth] = useState(pso_rmonth||"2026-07");
 
     const [revenue, setRevenue] = useState<RevenueVO>();
 
@@ -65,7 +65,7 @@ const Revenue: React.FC = () => {
                             <input
                                 type="month"
                                 name="rmonth"
-                                defaultValue={pso_rmonth}
+                                defaultValue={pso_rmonth? pso_rmonth:"2026-07"}
                                 onChange={(e) => {
                                     setRmonth(e.target.value);
                                     console.log(e.target.value);

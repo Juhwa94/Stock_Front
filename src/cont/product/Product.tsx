@@ -57,11 +57,8 @@ const Product: React.FC = () => {
             alert("시작일과 마감일을 모두 선택해 주세요.");
             return;
         }
-        // 판매정보를 등록하지 않고 제출한 케이스에 대해 예외처리
-        if (!productItem || productItem.length === 0) {
-            alert("등록할 상품을 최소 하나 이상 추가해 주세요.");
-            return;
-        }
+
+        
 
         const isConfirmed = window.confirm("수정이 불가합니다.\n정말 등록하시겠습니까?\n(수락시 매출관리 페이지로 이동됩니다.)");
 
@@ -108,6 +105,11 @@ const Product: React.FC = () => {
 
     // productItem조립을 위한 함수
     const addItem = () => {
+        // 예외처리
+        if(!(piisbn && piprice && piamount && pisumprice && piunitCost && category)) {
+            alert("빈칸을 허용하지 않습니다");
+            return;
+        }
         //조립된 데이터
         const inputRowList = {
             piname: piname,
@@ -180,6 +182,7 @@ const Product: React.FC = () => {
                         <th>판매단가</th>
                         <th>수량</th>
                         <th>합계금액</th>
+                        <th>도서분류</th>
                     </tr>
                 </thead>
                 <tbody>
