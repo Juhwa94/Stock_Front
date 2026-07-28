@@ -177,16 +177,6 @@ const MyPage: React.FC = () => {
         </button>
       </div>
 
-      {/* 중앙 통계 영역 */}
-      <div className="row text-center py-5">
-        <div className="col-6">
-          <div className="fs-2 fw-bold">게시물 : {mypost.length}</div>
-        </div>
-        <div className="col-6">
-          <div className="fs-2 fw-bold">댓글 : {userInfo.commentCount}</div>
-        </div>
-      </div>
-
       {/* 하단 콘텐츠 영역 */}
       <div
         className="border rounded p-4 position-relative"
