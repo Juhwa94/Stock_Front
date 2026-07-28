@@ -34,7 +34,6 @@ import MyStockList from '../cont/stock/MyStockList'
 import StockList from '../cont/stock/StockList'
 import StockDetail from '../cont/stock/StockDetail'
 import Product from '../cont/product/Product'
-import Comments from '../cont/community/Comments'
 import ProtectedRoute from './ProtectedRoute'
 
 
@@ -89,17 +88,9 @@ const AppRoutes: React.FC = () => {
         { path: '/revenue', element: <Revenue/>},
       
         
-        { path: '/notice', element: <Notice />},
-        { path: '/notice/detail/:num', element: <NoticeDetail />},
-       
-        { path: "/admin/notice", element: <AdminNotice /> },
-        { path: "/admin/notice/form", element: <NommForm /> },
-        { path: "/admin/notice/update/:num", element: <NommForm /> },
-        
+      
 
-        { path: '/community', element: <Community />},
-        { path: '/community/detail/:num', element: <CommunityDetail />},
-        { path: '/community/form', element: <CommForm/>},
+       
 
        
         { path: '/stockForm', element: <StockForm />},
@@ -115,12 +106,12 @@ const AppRoutes: React.FC = () => {
         { path: '/revenue', element: <Revenue />, private: true  },
 
 
-        { path: '/notice', element: <Notice /> },
-        { path: '/notice/detail', element: <NoticeDetail /> },
+        // { path: '/notice', element: <Notice /> },
+        // { path: '/notice/detail', element: <NoticeDetail /> },
 
-        { path: '/community', element: <Community /> },
-        { path: '/community/detail', element: <CommunityDetail /> },
-        { path: '/community/form', element: <CommForm />, private: true },
+        // { path: '/community', element: <Community /> },
+        // { path: '/community/detail', element: <CommunityDetail /> },
+        // { path: '/community/form', element: <CommForm />, private: true },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
@@ -158,9 +149,20 @@ const AppRoutes: React.FC = () => {
         // <Route path="/dashboard" element={<Dashboard />} />
 
         // 커뮤니티
-        { path: '/community', element: <Community /> },
-        { path: '/community/detail/:num', element: <CommunityDetail />, private: true },
+        { path: '/community', element: <Community />},
+        { path: '/community/detail/:num', element: <CommunityDetail />},
+        { path: '/community/form', element: <CommForm/>},
+        // { path: '/community', element: <Community /> },
+        // { path: '/community/detail/:num', element: <CommunityDetail />, private: true },
 
+        // 공지사항
+        { path: '/notice', element: <Notice />},
+        { path: '/notice/detail/:num', element: <NoticeDetail />},
+       
+        { path: "/admin/notice", element: <AdminNotice /> },
+        { path: "/admin/notice/form", element: <NommForm /> },
+        { path: "/admin/notice/update/:num", element: <NommForm /> },
+        
         // 문의
         { path: '/inquiry', element: <InquireList /> },
         { path: '/Inquirecomm', element: <Inquirecomm /> },
