@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import styles from './stock.module.css'
 import StockUpdate from './StockUpdate';
+import { useAuth } from '../../comp/AuthProvider';
 
 interface StockVO {
     SNUM: number;
@@ -23,6 +24,7 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 const StockDetail: React.FC = () => {
     const [stock, setStock] = useState<StockVO[]>([]);
     const { SNUM } = useParams<{ SNUM: string }>();
+    const { member } = useAuth();
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
@@ -115,9 +117,11 @@ const StockDetail: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={2}>
-                            <button onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true); }}
-                            >수정</button>
-                            <button onClick={handleDelete}>삭제</button>
+                            {stock[0]?.MEMBERNUM === member?.mnum && (<>
+                                <button onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true); }}
+                                >수정</button>
+                                <button onClick={handleDelete}>삭제</button>
+                            </>)}
                             <Link style={{}} to="/">목록</Link>
 
                         </td>
