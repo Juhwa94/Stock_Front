@@ -425,9 +425,9 @@ const Signup: React.FC = () => {
 
         {/* 주소 입력란 */}
         <div className="mb-3 row">
-          <label htmlFor="addr" className="col-sm-3 col-form-label fw-bold">주소</label>
+          <label htmlFor="storeaddr" className="col-sm-3 col-form-label fw-bold">주소</label>
           <div className="col-sm-9">
-            <input type="text" name="addr" className="form-control" placeholder="도로명 주소를 입력하세요"
+            <input type="text" name="storeaddr" className="form-control" placeholder="도로명 주소를 입력하세요"
               value={form.storeaddr} onChange={handleChange} required={form.authority === 'MEMBER'} />
           </div>
         </div>
