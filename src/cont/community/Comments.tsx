@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./comments.module.css";
+import { useAuth } from "../../comp/AuthProvider";
 
 interface CommentsVO {
     cnum: number;
@@ -18,7 +19,8 @@ const Comments: React.FC<CommentsProps> = ({ communityNum }) => {
 
     const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
-    const loginMember = JSON.parse(localStorage.getItem("loginMember") || "null");
+    const { member } = useAuth();
+
 
     const [commentsList, setCommentsList] = useState<CommentsVO[]>([]);
     const [content, setContent] = useState("");
@@ -78,7 +80,7 @@ const Comments: React.FC<CommentsProps> = ({ communityNum }) => {
     // 댓글 등록
     const addComment = async () => {
 
-        if (!loginMember) {
+        if (!member) {
             alert("로그인 후 이용해주세요.");
             return;
         }
@@ -93,8 +95,8 @@ const Comments: React.FC<CommentsProps> = ({ communityNum }) => {
             const formData = new FormData();
 
             formData.append("communitynum", String(communityNum));
-            formData.append("membernum", String(loginMember.mnum));
-            formData.append("cwriter", loginMember.nick);
+            formData.append("membernum", String(member?.mnum));
+            formData.append("cwriter", String(member?.nick));
             formData.append("ccontent", content);
 
             await axios.post(

@@ -25,10 +25,10 @@ const CommForm: React.FC = () => {
 
     const [formData, setFormData] = useState<CommunityVO>({
         ctitle: "",
-        cwriter: "나",
+        cwriter: "임깡깡",
         ccontent: "",
         cimgn: "",
-        membernum: 4,
+        membernum: 1,
         mfile: null
     });
 
@@ -83,29 +83,34 @@ const CommForm: React.FC = () => {
     };
 
     // 파일 선택
-    const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-        if (!e.target.files) return;
+    const files = e.target.files;
 
-        const file = e.target.files[0];
+    if (!files || files.length === 0) {
+        return;
+    }
 
-        const reader = new FileReader();
+    const file = files[0];
 
-        reader.onloadend = () => {
+    if (!(file instanceof File)) {
+        console.log(file);
+        return;
+    }
 
-            setPreview(reader.result);
+    const reader = new FileReader();
 
-        };
-
-        reader.readAsDataURL(file);
-
-        setFormData({
-            ...formData,
-            mfile: file
-        });
-
+    reader.onloadend = () => {
+        setPreview(reader.result);
     };
 
+    reader.readAsDataURL(file);
+
+    setFormData(prev => ({
+        ...prev,
+        mfile: file
+    }));
+};
     // 이미지 삭제
     const removeImage = () => {
 
