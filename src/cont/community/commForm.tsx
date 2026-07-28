@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./commForm.module.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../comp/AuthProvider";
 
 interface CommunityVO {
     cnum?: number;
@@ -17,6 +18,8 @@ interface CommunityVO {
 
 const CommForm: React.FC = () => {
 
+    const { member } = useAuth();
+
     const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
     const navigate = useNavigate();
@@ -25,7 +28,7 @@ const CommForm: React.FC = () => {
 
     const [formData, setFormData] = useState<CommunityVO>({
         ctitle: "",
-        cwriter: "임깡깡",
+        cwriter: "",
         ccontent: "",
         cimgn: "",
         membernum: 1,
@@ -132,7 +135,7 @@ const CommForm: React.FC = () => {
         const data = new FormData();
 
         data.append("ctitle", formData.ctitle);
-        data.append("cwriter", formData.cwriter);
+        data.append("cwriter",  String(member?.nick));
         data.append("ccontent", formData.ccontent);
         data.append("membernum", String(formData.membernum));
 
