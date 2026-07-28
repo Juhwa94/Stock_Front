@@ -17,31 +17,31 @@ import Inquirecomm from '../cont/inquiry/Inquirecomm'
 import InquireList from '../cont/inquiry/InquireList'
 import InquireDetail from '../cont/inquiry/InquireDetail'
 
+import MyPage from '../cont/mypage/Mypage'
+import ProfileEditPage from '../cont/mypage/Profileeditpage'
+
 import Admin from '../cont/admin/Admin'
 import Members from '../cont/admin/Members'
 import InquireForm from '../cont/inquiry/InquireForm'
-
-import MyPage from '../cont/mypage/Mypage'
-import ProfileEditPage from '../cont/mypage/Profileeditpage'
-import NoticeJo from '../cont/notice/NoticeJo'
-import NoticeRe from '../cont/notice/NoticeRe'
 import NoticeDetail from '../cont/notice/NoticeDetail'
 import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
-import Comment from '../cont/community/Comment'
 import Community from '../cont/community/Community'
-//import SurveyAddForm from '../cont/survey/SurveyAddForm'
-//import SurveyManagement from '../cont/survey/SurveyManagement'
-//import SurveyUpdate from '../cont/survey/SurveyUpdate'
-import Product from '../cont/product/Product'
-import ProtectedRoute from "./ProtectedRoute";
+import NommForm from '../cont/notice/nommForm'
+import AdminNotice from '../cont/notice/AdminNotice'
 import StockForm from '../cont/stock/StockForm'
 import MyStockList from '../cont/stock/MyStockList'
 import StockList from '../cont/stock/StockList'
 import StockDetail from '../cont/stock/StockDetail'
+import Product from '../cont/product/Product'
+import Comments from '../cont/community/Comments'
+import ProtectedRoute from './ProtectedRoute'
 
 
-// 라우터란
+
+
+
+// 라우터란?
 // 사용자가 입력한 주소를 감지하는 역할을 하며, 
 // 여러 환경에서 동작할 수 있도록 여러 종유의 라우터 컴포넌트를 제공
 // 라우터 기본 구성
@@ -78,6 +78,30 @@ const AppRoutes: React.FC = () => {
         // { path: '/위치(url)', element: <컴포넌트명 />},
         { path: '/', element: <Home />},     
         { path: '/member', element: <Member />},
+       
+        
+      
+      
+
+        { path: '/order', element: <Order />},
+        { path: '/user/login', element: <Login/>},
+        { path: '/user/signup', element: <Signup />},
+        { path: '/revenue', element: <Revenue/>},
+      
+        
+        { path: '/notice', element: <Notice />},
+        { path: '/notice/detail/:num', element: <NoticeDetail />},
+       
+        { path: "/admin/notice", element: <AdminNotice /> },
+        { path: "/admin/notice/form", element: <NommForm /> },
+        { path: "/admin/notice/update/:num", element: <NommForm /> },
+        
+
+        { path: '/community', element: <Community />},
+        { path: '/community/detail/:num', element: <CommunityDetail />},
+        { path: '/community/form', element: <CommForm/>},
+
+       
         { path: '/stockForm', element: <StockForm />},
         { path: '/myStockList', element: <MyStockList />},
         { path: '/admin/stockList', element: <StockList />},
@@ -93,13 +117,10 @@ const AppRoutes: React.FC = () => {
 
         { path: '/notice', element: <Notice /> },
         { path: '/notice/detail', element: <NoticeDetail /> },
-        { path: '/admin/noticejo', element: <NoticeJo /> },
-        { path: '/admin/noticere', element: <NoticeRe /> },
 
         { path: '/community', element: <Community /> },
         { path: '/community/detail', element: <CommunityDetail /> },
         { path: '/community/form', element: <CommForm />, private: true },
-        { path: '/community/comment', element: <Comment /> },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
@@ -116,6 +137,13 @@ const AppRoutes: React.FC = () => {
         { path: '/admin/member', element: <Members /> },
 
 
+        { path: '/admin/member', element: <Members />},
+        { path: '/admin', element: <Admin />},
+       
+
+        
+        
+        
         { path: '/mypage', element: <MyPage />, private: true },
         { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
 

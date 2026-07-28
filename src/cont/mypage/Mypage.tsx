@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface UserInfo {
   nick: string;
@@ -10,19 +10,21 @@ interface UserInfo {
   grade: string;
   storeaddr: string;
   regdate: string;
-  postCount: number;
+
+  membernum: number;
+  mypost: number;
   commentCount: number;
 }
 
 const MyPage: React.FC = () => {
-  const { member } = useAuth(); 
+  const { member } = useAuth();
   const navigate = useNavigate();
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-
+  const [mypost, setMypost] = useState<any[]>([]);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -52,7 +54,10 @@ const MyPage: React.FC = () => {
           grade: res.data.grade || '',
           storeaddr: res.data.storeaddr || '',
           regdate: res.data.regdate || '',
-          postCount: res.data.postCount ?? 0,
+
+
+          membernum: res.data.membernum,
+          mypost: res.data.mypost ?? 0,
           commentCount: res.data.commentCount ?? 0
         });
 
@@ -63,7 +68,32 @@ const MyPage: React.FC = () => {
 
     getMyInfo();
   }, [member?.email, BACK_URL]);
+  useEffect(() => {
 
+    const getMyPosts = async () => {
+      try {
+        const res = await axios.get(
+          `${BACK_URL}/api/community/mypost`,
+          {
+            params: {
+              membernum: member?.mnum
+            },
+            withCredentials: true
+          }
+        );
+
+        console.log(res.data);
+        console.log("여기");
+        setMypost(res.data);
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getMyPosts();
+
+  }, []);
   // 로딩 상태 (데이터 불러오기 전)
   if (!userInfo) {
     return (
@@ -150,7 +180,7 @@ const MyPage: React.FC = () => {
       {/* 중앙 통계 영역 */}
       <div className="row text-center py-5">
         <div className="col-6">
-          <div className="fs-2 fw-bold">게시물 : {userInfo.postCount}</div>
+          <div className="fs-2 fw-bold">게시물 : {mypost.length}</div>
         </div>
         <div className="col-6">
           <div className="fs-2 fw-bold">댓글 : {userInfo.commentCount}</div>
@@ -167,12 +197,40 @@ const MyPage: React.FC = () => {
         </span>
 
         <div
-          className="d-flex justify-content-center align-items-center h-100"
+          className="d-flex flex-column align-items-start"
           style={{ minHeight: '220px' }}
         >
-          <h3 className="fw-bold text-dark mb-0">
-            회원이 작성한 글 목록 리스트
-          </h3>
+          <div className="mt-3">
+            {mypost.length === 0 ? (
+              <div className="text-center text-muted py-5">
+                작성한 게시글이 없습니다.
+              </div>
+            ) : (
+              mypost.map((post) => (
+                <div
+                  key={post.cnum}
+                  className="border-bottom py-3 d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <Link
+                      to={`/community/detail/${post.cnum}`}
+                      className="text-decoration-none fw-bold text-dark"
+                    >
+                      {post.ctitle}
+                    </Link>
+
+                    <div className="text-muted small mt-1">
+                      {post.cdate}
+                    </div>
+                  </div>
+
+                  <div className="text-muted">
+                    조회수 {post.chit}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
