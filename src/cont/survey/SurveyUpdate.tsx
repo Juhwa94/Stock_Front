@@ -42,7 +42,7 @@ const SurveyUpdate: React.FC = () => {
     const surveySubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         try {
-            // JSON으로 객체를 전송할 데이터 형식 만들어 놓기 , sub, code ,surveyTitle.map
+            // JSON으로 객체를 전송할 데이터 형식 만들어 놓기
             const surveyData = {
                 sub,
                 code: parseInt(code),
@@ -50,7 +50,6 @@ const SurveyUpdate: React.FC = () => {
                     questions_text: questions,
                 }))
             };
-            //postman에서 테스트 한 것처럼 구현 - axios.post방식
             const response = await axios.post(`${backendUrl}/api/survey/addSurvey`, surveyData);
             if (response.status === 200) {
 

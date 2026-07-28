@@ -30,7 +30,7 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
   
-  const [mnum, setMnum] = useState<number>(23);
+  const [mnum, setMnum] = useState<number>(0);
   const [svnum, setSvnum] = useState<number>(0);
   const [surveyData, setSurveyData] = useState<SurveyData | null>(null);
   const [req, setReq] = useState<string>("")
