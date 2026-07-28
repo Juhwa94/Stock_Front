@@ -35,6 +35,7 @@ import StockList from '../cont/stock/StockList'
 import StockDetail from '../cont/stock/StockDetail'
 import Product from '../cont/product/Product'
 import Comments from '../cont/community/Comments'
+import ProtectedRoute from './ProtectedRoute'
 import SurveyManagement from '../cont/survey/SurveyManagement'
 import SurveyUpdate from '../cont/survey/SurveyUpdate'
 
@@ -79,16 +80,20 @@ const AppRoutes: React.FC = () => {
         // { path: '/위치(url)', element: <컴포넌트명 />},
         { path: '/', element: <Home />},     
         { path: '/member', element: <Member />},
-    
+       
+        
+      
+      
+
         { path: '/order', element: <Order />},
         { path: '/user/login', element: <Login/>},
         { path: '/user/signup', element: <Signup />},
         { path: '/revenue', element: <Revenue/>},
-    
+      
         
         { path: '/notice', element: <Notice />},
         { path: '/notice/detail/:num', element: <NoticeDetail />},
-    
+       
         { path: "/admin/notice", element: <AdminNotice /> },
         { path: "/admin/notice/form", element: <NommForm /> },
         { path: "/admin/notice/update/:num", element: <NommForm /> },
@@ -114,13 +119,10 @@ const AppRoutes: React.FC = () => {
 
         { path: '/notice', element: <Notice /> },
         { path: '/notice/detail', element: <NoticeDetail /> },
-        //{ path: '/admin/noticejo', element: <NoticeJo /> },
-        //{ path: '/admin/noticere', element: <NoticeRe /> },
 
         { path: '/community', element: <Community /> },
         { path: '/community/detail', element: <CommunityDetail /> },
         { path: '/community/form', element: <CommForm />, private: true },
-        //{ path: '/community/comment', element: <Comments /> },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},
@@ -147,7 +149,7 @@ const AppRoutes: React.FC = () => {
         { path: '/mypage', element: <MyPage />, private: true },
         { path: '/profileeditpage', element: <ProfileEditPage />, private: true },
 
-        
+  
         { path: '/admin/surveymanagement', element: <SurveyManagement /> },
         { path: '/admin/surveyupdate', element: <SurveyUpdate /> },
 
@@ -184,7 +186,7 @@ const AppRoutes: React.FC = () => {
                 routeList.map((route, idx) => {
                     console.log("Home", Home);
                     console.log("Admin", Admin);
-                    // console.log("ProtectedRoute", ProtectedRoute);
+                    console.log("ProtectedRoute", ProtectedRoute);
                     console.log("Members", Members);
 
                     console.log(
@@ -201,7 +203,7 @@ const AppRoutes: React.FC = () => {
                         return (
                             <Route
                                 key={idx}
-                                
+                                element={<ProtectedRoute />}
                             >
                                 <Route
                                     path={route.path}
