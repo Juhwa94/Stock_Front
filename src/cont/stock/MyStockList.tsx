@@ -89,7 +89,7 @@ const MyStockList: React.FC = () => {
     return (
         <div className={`${styles.stockContainer} ${styles.table_responsive}`}>
 
-            <h2>회원관리</h2>
+            <h2>재고관리</h2>
 
             <table className={styles.stockTable}>
                 <thead>
