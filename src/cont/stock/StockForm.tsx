@@ -62,12 +62,12 @@ const StockForm: React.FC = () => {
             stockFormData.append('images', file);
         });
         try {
-            const repsonse = await fetch(
+            await fetch(
                 `${backendUrl}/api/stock/addStock`, {
                 method: 'POST',
                 body: stockFormData
             });
-            navigate('/');
+            navigate('/myStockList');
         } catch (error) {
             console.error(error);
         }

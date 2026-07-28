@@ -28,13 +28,14 @@ import CommunityDetail from '../cont/community/CommunityDetail'
 import CommForm from '../cont/community/commForm'
 import Community from '../cont/community/Community'
 import NommForm from '../cont/notice/nommForm'
-import AdminNotice from '../cont/notice/AdminNotice'
+// import AdminNotice from '../cont/notice/AdminNotice'
 import StockForm from '../cont/stock/StockForm'
 import MyStockList from '../cont/stock/MyStockList'
 import StockList from '../cont/stock/StockList'
 import StockDetail from '../cont/stock/StockDetail'
 import Product from '../cont/product/Product'
 import ProtectedRoute from './ProtectedRoute'
+import SurveyAddForm from '../cont/survey/SurveyAddForm'
 import SurveyManagement from '../cont/survey/SurveyManagement'
 import SurveyUpdate from '../cont/survey/SurveyUpdate'
 
@@ -161,7 +162,7 @@ const AppRoutes: React.FC = () => {
         { path: '/notice', element: <Notice />},
         { path: '/notice/detail/:num', element: <NoticeDetail />},
        
-        { path: "/admin/notice", element: <AdminNotice /> },
+        // { path: "/admin/notice", element: <AdminNotice /> },
         { path: "/admin/notice/form", element: <NommForm /> },
         { path: "/admin/notice/update/:num", element: <NommForm /> },
         

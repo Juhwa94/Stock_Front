@@ -81,12 +81,12 @@ return (
         <div className={styles.header}>
             <h2 className={styles.title}>공지 사항</h2>
 
-            <Link
+            {/* <Link
                 to="/commForm"
                 className={styles.writeButton}
             >
                 공지 등록
-            </Link>
+            </Link> */}
         </div>
 
         {/* 게시글 목록 */}

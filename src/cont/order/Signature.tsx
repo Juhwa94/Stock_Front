@@ -29,7 +29,7 @@ export default function Signature({ order }: SignatureProps) {
         }
 
         //주문서를 작성하지 않고 제출한 케이스에 대해 예외처리
-        if (!order) {
+        if (!(order?.ofcompany && order?.oaddr && order?.oname && order?.ophone && order?.ofdate)) {
             alert("주문서 정보가 없습니다.");
             return;
         }
@@ -94,8 +94,8 @@ export default function Signature({ order }: SignatureProps) {
             </div>
 
             <div style={{ display: 'flex', gap: '10px' }}>
-                <button className={Stayle.Signature_btn1} onClick={handleClear}>재서명</button>
-                <button className={Stayle.Signature_btn2} onClick={handleSubmit} style={{ backgroundColor: '#0088FE', color: '#fff' }}>
+                <button className={Stayle.button_oeder}  onClick={handleClear}>재서명</button>
+                <button className={Stayle.button_oeder}  onClick={handleSubmit} style={{ backgroundColor: '#0088FE', color: '#fff' }}>
                     (서명)
                 </button>
             </div>

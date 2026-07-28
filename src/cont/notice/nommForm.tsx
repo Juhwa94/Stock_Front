@@ -3,6 +3,8 @@ import styles from "./nommForm.module.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "../../comp/AuthProvider";
+
 
 interface NoticeVO {
 
@@ -19,6 +21,7 @@ interface NoticeVO {
 
 const NommForm: React.FC = () => {
 
+    const { member } = useAuth();
 
     const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
@@ -172,7 +175,7 @@ const NommForm: React.FC = () => {
 
         formData.append(
             "membernum",
-            String(notice.membernum)
+            String(member?.mnum)
         );
 
 
@@ -236,7 +239,7 @@ const NommForm: React.FC = () => {
 
 
 
-            navigate("/admin/notice");
+            navigate("/notice");
 
 
 
