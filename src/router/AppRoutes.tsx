@@ -29,6 +29,13 @@ import CommForm from '../cont/community/commForm'
 import Community from '../cont/community/Community'
 import NommForm from '../cont/notice/nommForm'
 import AdminNotice from '../cont/notice/AdminNotice'
+import StockForm from '../cont/stock/StockForm'
+import MyStockList from '../cont/stock/MyStockList'
+import StockList from '../cont/stock/StockList'
+import StockDetail from '../cont/stock/StockDetail'
+import Product from '../cont/product/Product'
+import Comments from '../cont/community/Comments'
+import ProtectedRoute from './ProtectedRoute'
 
 
 
@@ -110,13 +117,10 @@ const AppRoutes: React.FC = () => {
 
         { path: '/notice', element: <Notice /> },
         { path: '/notice/detail', element: <NoticeDetail /> },
-        { path: '/admin/noticejo', element: <NoticeJo /> },
-        { path: '/admin/noticere', element: <NoticeRe /> },
 
         { path: '/community', element: <Community /> },
         { path: '/community/detail', element: <CommunityDetail /> },
         { path: '/community/form', element: <CommForm />, private: true },
-        { path: '/community/comment', element: <Comment /> },
 
         // { path: '/communityform', element: <UpCommunityForm/>},
         // { path: '/communityform', element: <UpCommunityForm/>},

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { useAuth } from '../../comp/AuthProvider'; // ProfileEditPage와 동일한 경로로 맞춰주세요!
+import { useAuth } from '../../comp/AuthProvider';
 
 interface UserInfo {
   nick: string;
@@ -10,22 +10,19 @@ interface UserInfo {
   grade: string;
   storeaddr: string;
   regdate: string;
-
-  //수정하기
-  postCount: number;//게시물, postlist
-  commentCount: number;//댓글
+  postCount: number;
+  commentCount: number;
 }
 
 const MyPage: React.FC = () => {
   const { member } = useAuth(); 
   const navigate = useNavigate();
-  const { member } = useAuth(); // AuthProvider에서 로그인 유저 정보 가져오기
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const BACK_URL = process.env.REACT_APP_BACK_END_URL;
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -36,7 +33,6 @@ const MyPage: React.FC = () => {
 
   useEffect(() => {
     const getMyInfo = async () => {
-    
       if (!member?.email) return;
 
       try {
@@ -51,46 +47,24 @@ const MyPage: React.FC = () => {
         console.log("마이페이지 데이터", res.data);
 
         setUserInfo({
-          nick: res.data.nick,
-          name: res.data.name,
-          grade: res.data.grade,
-          storeaddr: res.data.storeaddr,
-          regdate: res.data.regdate,
+          nick: res.data.nick || '',
+          name: res.data.name || '',
+          grade: res.data.grade || '',
+          storeaddr: res.data.storeaddr || '',
+          regdate: res.data.regdate || '',
           postCount: res.data.postCount ?? 0,
           commentCount: res.data.commentCount ?? 0
         });
 
-        const data = response.data;
-
-        // 백엔드에서 받은 데이터 세팅
-        setForm({
-          nick: data.nick || '',
-          name: data.name || '',
-          grade: data.grade || '',
-          storeaddr: data.storeaddr || '',
-          regdate: data.regdate || '',
-          postCount: data.postCount ?? 0,
-          commentCount: data.commentCount ?? 0,
-        });
       } catch (error) {
         console.error('사용자 정보 조회 실패:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchUserData();
-  }, [member, BACK_URL]);
+    getMyInfo();
+  }, [member?.email, BACK_URL]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
-
-
+  // 로딩 상태 (데이터 불러오기 전)
   if (!userInfo) {
     return (
       <div
@@ -150,16 +124,12 @@ const MyPage: React.FC = () => {
 
           {/* 사용자 정보 */}
           <div>
-            <h2 className='fw-bold mb-2'>{userInfo.nick}</h2>
-            <p className='text-muted mb-1 small'>
+            <h2 className="fw-bold mb-2">{userInfo.nick}</h2>
+            <p className="text-muted mb-1 small">
               {userInfo.name} ({userInfo.grade})
             </p>
-            <p className='mb-1'>{userInfo.storeaddr}</p>
-            <p className='text-muted mb-0'>
-              가입일 : {userInfo.regdate}
-            </p>
-            <p className="mb-1">{form.storeaddr}</p>
-            <p className="text-muted mb-0">가입일 : {form.regdate}</p>
+            <p className="mb-1">{userInfo.storeaddr}</p>
+            <p className="text-muted mb-0">가입일 : {userInfo.regdate}</p>
           </div>
         </div>
 
@@ -180,10 +150,10 @@ const MyPage: React.FC = () => {
       {/* 중앙 통계 영역 */}
       <div className="row text-center py-5">
         <div className="col-6">
-          <div className="fs-2 fw-bold">게시물 : {form.postCount}</div>
+          <div className="fs-2 fw-bold">게시물 : {userInfo.postCount}</div>
         </div>
         <div className="col-6">
-          <div className="fs-2 fw-bold">댓글 : {form.commentCount}</div>
+          <div className="fs-2 fw-bold">댓글 : {userInfo.commentCount}</div>
         </div>
       </div>
 
