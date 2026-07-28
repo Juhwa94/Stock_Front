@@ -4,6 +4,11 @@ import { useAuth } from '../../comp/AuthProvider';
 import styles from "./stock.module.css";
 import axios from 'axios';
 
+interface StockUpdateProps {
+    snum: number;
+    onClose: () => void;
+}
+
 interface FormData {
     snum: number;
     sname: string;
@@ -16,12 +21,11 @@ interface FormData {
     membernum: number;
 }
 
-const StockUpdate: React.FC = () => {
+const StockUpdate: React.FC<StockUpdateProps> = ({ snum, onClose }) => {
 
     const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
     const { member } = useAuth();
-    const { snum } = useParams();
 
     const navigate = useNavigate();
 
@@ -39,68 +43,58 @@ const StockUpdate: React.FC = () => {
     });
 
 
-    // 기존 데이터 가져오기
-    useEffect(() => {
-
-        fetch(`${backendUrl}/api/stock/stockDetail?snum=${snum}`)
-            .then(res => res.json())
-            .then(data => {
-
-                setFormData({
-                    snum: data.snum,
-                    sname: data.sname,
-                    sisbn: data.sisbn,
-                    scategory: data.scategory,
-                    spublisher: data.spublisher,
-                    sauthor: data.sauthor,
-                    samount: data.samount,
-                    sprice: data.sprice,
-                    membernum: data.membernum
-                });
-
-            })
-            .catch(err => console.log(err));
-
-    }, [snum]);
-
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]:
                 name === "samount" || name === "sprice"
-                ? Number(value)
-                : value
+                    ? Number(value)
+                    : value
         }));
 
     }
-    const updateSubmit = async (
-    e: React.SubmitEvent
-) => {
+    const updateSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    e.preventDefault();
+        const data = new FormData();
 
-    try {
+        data.append("snum", String(snum));
+        data.append("sisbn", formData.sisbn);
+        data.append("sname", formData.sname);
+        data.append("scategory", formData.scategory);
+        data.append("spublisher", formData.spublisher);
+        data.append("sauthor", formData.sauthor);
+        data.append("samount", String(formData.samount));
+        data.append("sprice", String(formData.sprice));
+        data.append("membernum", String(member?.mnum));
 
-        const response = await axios.put(
-            `${backendUrl}/api/stock/updateStock`,
-            formData,
-            {
-                headers:{
-                    "Content-Type":"application/json"
+
+        try {
+            const response = await axios.put(
+                `${backendUrl}/api/stock/updateStock`,
+                data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
                 }
+            );
+
+            if (response.status === 200) {
+                alert("수정 완료");
+                onClose();           // 모달 닫기
+                navigate(`/stock/stockDetail/${snum}`);
+                window.location.reload();
             }
-        );
-        if(response.status === 200){
-            alert("수정 완료");
-            navigate("/stock");
+
+        } catch (error) {
+            console.error(error);
+            alert("수정 실패");
         }
-    } catch(error){
-        console.error(error);
-    }
-}
+    };
 
 
 
@@ -108,7 +102,7 @@ const StockUpdate: React.FC = () => {
         <div className={styles.container}>
             <form className={styles.form} onSubmit={updateSubmit}>
                 <input className={styles.input} name="sname" value={formData.sname}
-                    onChange={handleChange} placeholder="도서명"/>
+                    onChange={handleChange} placeholder="도서명" />
                 <input
                     className={styles.input}
                     name="sisbn"
