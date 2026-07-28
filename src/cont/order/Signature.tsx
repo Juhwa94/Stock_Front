@@ -94,8 +94,8 @@ export default function Signature({ order }: SignatureProps) {
             </div>
 
             <div style={{ display: 'flex', gap: '10px' }}>
-                <button className={Stayle.Signature_btn1} onClick={handleClear}>재서명</button>
-                <button className={Stayle.Signature_btn2} onClick={handleSubmit} style={{ backgroundColor: '#0088FE', color: '#fff' }}>
+                <button className={Stayle.button_oeder}  onClick={handleClear}>재서명</button>
+                <button className={Stayle.button_oeder}  onClick={handleSubmit} style={{ backgroundColor: '#0088FE', color: '#fff' }}>
                     (서명)
                 </button>
             </div>

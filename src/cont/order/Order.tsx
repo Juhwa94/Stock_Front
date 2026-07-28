@@ -214,7 +214,7 @@ const Order: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={5}>
-                            <button type="button" onClick={itmeList}>
+                            <button className={Stayle.button_oeder} type="button" onClick={itmeList}>
                                 주문리스트 추가!
                             </button>
                         </td>
