@@ -142,7 +142,7 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
                     <div className="fw-bold text-dark flex-grow-1">{index + 1}. {question.questions_text}</div>
                     <div className="d-flex align-items-center gap-3 ms-md-auto">
                       <div className={style.starRatingContainer}>
-                        {[1, 2, 3, 4, 5].map((score) => {
+                        {[5, 4, 3, 2, 1].map((score) => {
                           const isSelected = rating[index] >= score;
                           return (
                             <span
@@ -160,7 +160,6 @@ const SurveyAddForm: React.FC<SurveyModalProps> = ({ isOpen, onClose }) => {
                         {rating[index]}점
                       </span>
                     </div>
-
                   </li>
                 ))}
                 {/*추가적인 요청 사항 텍스트 박스*/}
