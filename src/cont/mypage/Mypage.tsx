@@ -17,7 +17,7 @@ interface UserInfo {
 }
 
 const MyPage: React.FC = () => {
-  const { member } = useAuth(); 
+  
   const navigate = useNavigate();
   const { member } = useAuth(); // AuthProvider에서 로그인 유저 정보 가져오기
   const BACK_URL = process.env.REACT_APP_BACK_END_URL;
@@ -25,22 +25,16 @@ const MyPage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const BACK_URL = process.env.REACT_APP_BACK_END_URL;
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
+  const [loading, setLoading] = useState<boolean>(true);
 
+  
   useEffect(() => {
     const getMyInfo = async () => {
     
       if (!member?.email) return;
 
       try {
-        const res = await axios.get(
+        const response = await axios.get(
           `${BACK_URL}/api/member/mypage`,
           {
             params: { email: member.email },
@@ -48,22 +42,12 @@ const MyPage: React.FC = () => {
           }
         );
 
-        console.log("마이페이지 데이터", res.data);
-
-        setUserInfo({
-          nick: res.data.nick,
-          name: res.data.name,
-          grade: res.data.grade,
-          storeaddr: res.data.storeaddr,
-          regdate: res.data.regdate,
-          postCount: res.data.postCount ?? 0,
-          commentCount: res.data.commentCount ?? 0
-        });
+        console.log("마이페이지 데이터", response.data);
 
         const data = response.data;
-
+      
         // 백엔드에서 받은 데이터 세팅
-        setForm({
+        setUserInfo({
           nick: data.nick || '',
           name: data.name || '',
           grade: data.grade || '',
@@ -78,8 +62,7 @@ const MyPage: React.FC = () => {
         setLoading(false);
       }
     };
-
-    fetchUserData();
+    getMyInfo();
   }, [member, BACK_URL]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +72,6 @@ const MyPage: React.FC = () => {
       setProfileImage(imageUrl);
     }
   };
-
 
   if (!userInfo) {
     return (
@@ -158,8 +140,8 @@ const MyPage: React.FC = () => {
             <p className='text-muted mb-0'>
               가입일 : {userInfo.regdate}
             </p>
-            <p className="mb-1">{form.storeaddr}</p>
-            <p className="text-muted mb-0">가입일 : {form.regdate}</p>
+            <p className="mb-1">{userInfo.storeaddr}</p>
+            <p className="text-muted mb-0">가입일 : {userInfo.regdate}</p>
           </div>
         </div>
 
@@ -180,10 +162,10 @@ const MyPage: React.FC = () => {
       {/* 중앙 통계 영역 */}
       <div className="row text-center py-5">
         <div className="col-6">
-          <div className="fs-2 fw-bold">게시물 : {form.postCount}</div>
+          <div className="fs-2 fw-bold">게시물 : {userInfo.postCount}</div>
         </div>
         <div className="col-6">
-          <div className="fs-2 fw-bold">댓글 : {form.commentCount}</div>
+          <div className="fs-2 fw-bold">댓글 : {userInfo.commentCount}</div>
         </div>
       </div>
 
