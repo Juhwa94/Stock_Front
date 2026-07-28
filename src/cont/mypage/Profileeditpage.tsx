@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DaumPostcode, { Address } from 'react-daum-postcode';   // npm install react-daum-postcode 설치하면 됨
-import { QRCodeSVG } from 'qrcode.react';   // npm install qrcode.react 설치하면 됨
+import DaumPostcode, { Address } from 'react-daum-postcode';   
 import axios from 'axios';
 import { useAuth } from '../../comp/AuthProvider';
 
@@ -61,9 +60,7 @@ const ProfileEditPage = () => {
                 const response = await axios.get(
                     `${BACK_URL}/api/member/mypage`,
                     {
-                        params: {
-                            email: member?.email
-                        }
+                        withCredentials: true
                     }
                 );
 
@@ -202,15 +199,6 @@ const ProfileEditPage = () => {
         setIsAddressModalOpen(false);
     };
 
-const canSave =
-    (form.nick ?? "").trim() &&
-    (form.name ?? "").trim() &&
-    (form.email ?? "").trim() &&
-    (form.phoneFirst ?? "").trim() &&
-    (form.phoneMiddle ?? "").trim() &&
-    (form.phoneLast ?? "").trim() &&
-    (form.storeaddr ?? "").trim() &&
-    isNickChecked;
     const handleSubmit = async (
         event: React.SubmitEvent,
     ) => {
