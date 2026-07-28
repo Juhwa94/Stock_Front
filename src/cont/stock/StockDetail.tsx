@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import styles from './stock.module.css'
+import StockUpdate from './StockUpdate';
 
 interface StockVO {
     SNUM: number;
@@ -26,6 +27,9 @@ const StockDetail: React.FC = () => {
 
     const [showModal, setShowModal] = useState(false);
 
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [selectedSnum, setSelectedSnum] = useState<number | null>(null);
+
     useEffect(() => {
         const detailServer = async () => {
 
@@ -37,30 +41,27 @@ const StockDetail: React.FC = () => {
         }
 
         detailServer();
-        console.log(stock);
-        console.log(SNUM);
     }, [SNUM]);
 
-    // 잠시 주석 (삭제 작업 예정)
-    // const handleDelete = async () => {
+    const handleDelete = async () => {
 
-    //     if (!window.confirm("정말 삭제하시겠습니까?")) {
-    //         return;
-    //     }
+        if (!window.confirm("정말 삭제하시겠습니까?")) {
+            return;
+        }
 
-    //     try {
-    //         await axios.delete(
-    //             `${backendUrl}/api/inquiry/delete?num=${num}`
-    //         );
+        try {
+            await axios.delete(
+                `${backendUrl}/api/stock/deleteStock?snum=${SNUM}`
+            );
 
-    //         alert("삭제 완료");
-    //         navigate("/inquiry");
+            alert("삭제 완료");
+            navigate("/");
 
-    //     } catch (error) {
-    //         console.log(error);
-    //         alert("삭제 실패");
-    //     }
-    // };
+        } catch (error) {
+            console.log(error);
+            alert("삭제 실패");
+        }
+    };
 
     const imageBasePath = `${backendUrl}/imgfile/`;
 
@@ -114,8 +115,9 @@ const StockDetail: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={2}>
-
-                            {/* <button onClick={handleDelete}>삭제</button> */}
+                            <button onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true); }}
+                            >수정</button>
+                            <button onClick={handleDelete}>삭제</button>
                             <Link style={{}} to="/">목록</Link>
 
                         </td>
@@ -154,6 +156,25 @@ const StockDetail: React.FC = () => {
                     </div>
                 )
             }
+            {
+                showUpdateModal && selectedSnum && (
+                    <div
+                        className={styles.modalBackground}
+                        onClick={() => setShowUpdateModal(false)}
+                    >
+                        <div
+                            className={styles.modalContent}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <StockUpdate
+                                snum={selectedSnum}
+                                onClose={() => setShowUpdateModal(false)}
+                            />
+                        </div>
+                    </div>
+                )
+            }
+
         </div>
     )
 }
