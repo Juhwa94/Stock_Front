@@ -90,7 +90,7 @@
 }
 
 
-button {
+.button_product {
     background-color: #4c6ef5;
     color: white;
     border: none;
@@ -102,11 +102,11 @@ button {
     transition: background-color 0.2s;
 }
 
-button:hover {
+.button_product:hover {
     background-color: #3b5bdb;
 }
 
-hr {
+.hr_product {
     border: none;
     border-top: 1px dashed #dee2e6;
     margin: 24px 0;
