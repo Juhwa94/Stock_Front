@@ -2,352 +2,185 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "./nommDetail.module.css";
-
+import { useAuth } from "../../comp/AuthProvider";
 
 interface NoticeVO {
-
     nnum: number;
     ntitle: string;
     nwriter: string;
     ncontent: string;
     nhit: number;
     ndate: string;
-
 }
 
-
-
-const NoticeDetail:React.FC =()=>{
-
+const NoticeDetail: React.FC = () => {
 
     const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
     const navigate = useNavigate();
 
-    const { num } = useParams<{num:string}>();
+    const { num } = useParams<{ num: string }>();
 
+    const { member } = useAuth();
 
-    const [notice,setNotice] = useState<NoticeVO | null>(null);
+    const isAdmin = member?.authority === "ADMIN";
 
-
-
-    // 로그인 회원 확인
-
-    const loginMember =
-        JSON.parse(
-            localStorage.getItem("loginMember") || "null"
-        );
-
-
-    const isAdmin =
-        loginMember?.authority === "ADMIN";
-
-
-
+    const [notice, setNotice] = useState<NoticeVO | null>(null);
 
     // 상세 조회
+    useEffect(() => {
 
-    useEffect(()=>{
+        if (!num) return;
 
+        const getNotice = async () => {
 
-        if(!num){
-            return;
-        }
-
-
-        const getNotice = async()=>{
-
-
-            try{
-
+            try {
 
                 const response = await axios.get(
-
                     `${backendUrl}/api/notice/noDetail`,
-
                     {
-                        params:{
+                        params: {
                             num
                         }
                     }
-
                 );
-
 
                 setNotice(response.data);
 
+            } catch (error) {
 
-
-            }catch(error){
-
-                console.error(
-                    "공지 상세 조회 실패",
-                    error
-                );
+                console.error("공지 상세 조회 실패", error);
 
             }
 
-
         };
-
-
 
         getNotice();
 
-
-
-    },[num,backendUrl]);
-
-
-
-
-
-
+    }, [num, backendUrl]);
 
     // 삭제
+    const deleteNotice = async () => {
 
-    const deleteNotice = async()=>{
+        if (!notice) return;
 
-
-        if(!notice){
+        if (!window.confirm("공지사항을 삭제하시겠습니까?")) {
             return;
         }
 
-
-
-        const check =
-            window.confirm(
-                "공지사항을 삭제하시겠습니까?"
-            );
-
-
-        if(!check){
-            return;
-        }
-
-
-
-        try{
-
+        try {
 
             await axios.delete(
-
                 `${backendUrl}/api/notice/noDelete`,
-
                 {
-
-                    params:{
-                        num:notice.nnum
+                    params: {
+                        num: notice.nnum
                     }
-
                 }
-
             );
 
+            alert("삭제되었습니다.");
 
+            navigate("/notice");
 
-            alert(
-                "삭제되었습니다."
-            );
+        } catch (error) {
 
+            console.error("공지 삭제 실패", error);
 
-            navigate("/admin/notice");
-
-
-
-        }catch(error){
-
-
-            console.error(
-                "공지 삭제 실패",
-                error
-            );
-
-
-            alert(
-                "삭제 실패"
-            );
-
+            alert("삭제 중 오류가 발생했습니다.");
 
         }
-
 
     };
 
+    // 수정 페이지 이동
+    const updateNotice = () => {
 
+        if (!notice) return;
 
+        navigate(`/admin/notice/update/${notice.nnum}`);
 
+    };
 
-
-    if(!notice){
-
+    if (!notice) {
         return (
-
             <div>
                 공지사항 정보를 불러오는 중입니다.
             </div>
-
         );
-
     }
 
-
-
-
-
-    return(
-
+    return (
 
         <div className={styles.container}>
 
-
             <div className={styles.category}>
-
                 [ 공지사항 ]
-
             </div>
 
-
-
-
-            {/* 제목 */}
-
             <h2 className={styles.title}>
-
                 {notice.ntitle}
-
             </h2>
 
-
-
-
-
-
-            {/* 정보 */}
-
             <div className={styles.info}>
-
 
                 <span>
                     작성자 : {notice.nwriter}
                 </span>
 
-
                 <span>
                     작성일 : {notice.ndate}
                 </span>
-
 
                 <span>
                     조회수 : {notice.nhit}
                 </span>
 
-
             </div>
-
-
-
-
-
-
-
-            {/* 내용 */}
 
             <div className={styles.content}>
-
                 {notice.ncontent}
-
             </div>
-
-
-
-
-
-
-
-            {/* 버튼 */}
 
             <div className={styles.buttonArea}>
 
-
                 <Link
-
                     to="/notice"
-
                     className={styles.button}
-
                 >
-
                     목록
-
                 </Link>
 
-
-
-
-
-                {
-
-                    isAdmin &&
+                {isAdmin && (
 
                     <>
 
-
                         <button
-
+                            type="button"
                             className={styles.button}
-
-                            onClick={()=>{
-
-                                navigate(
-                                    `/admin/notice/update/${notice.nnum}`
-                                );
-
-                            }}
-
+                            onClick={updateNotice}
                         >
-
                             수정
-
                         </button>
-
-
-
 
                         <button
-
+                            type="button"
                             className={styles.deleteButton}
-
                             onClick={deleteNotice}
-
                         >
-
                             삭제
-
                         </button>
-
-
 
                     </>
 
-                }
-
-
+                )}
 
             </div>
 
-
-
-
-
         </div>
-
 
     );
 
-
 };
-
-
 
 export default NoticeDetail;
