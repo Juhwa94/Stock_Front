@@ -167,7 +167,7 @@ const Product: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={6}>
-                            <button type="button" onClick={addItem}>입력하기</button>
+                            <button className={Stayle.button_product} type="button" onClick={addItem}>입력하기</button>
                         </td>
                     </tr>
                 </tfoot>
@@ -201,7 +201,7 @@ const Product: React.FC = () => {
                 <tfoot>
                     <tr>
                         <td colSpan={6}>
-                            <button type="button" onClick={productSumit}>결산확정</button>
+                            <button className={Stayle.button_product} type="button" onClick={productSumit}>결산확정</button>
                         </td>
                     </tr>
                 </tfoot>
