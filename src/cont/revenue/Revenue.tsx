@@ -40,20 +40,16 @@ const Revenue: React.FC = () => {
     useEffect(() => {
         (async () => {
             const rmonthData = JSON.stringify(rmonth);
-
             try {
                 //백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
                 const res = await axios.get(`${backendUrl}/api/revenue/revenueDataSet`, {
                     params: { rmonth: rmonthData }
                 });
                 setRevenue(res.data);
-                //전송결과 출력
-                if (!res) {
-                    alert("전송 실패 서버 에러");
-                }
             } catch (error) {
-                alert("판매를 아직 안하셨습니다.")
+                alert("전송 실패 서버 에러");
             }
+
         })();
     }, [rmonth]);
 
