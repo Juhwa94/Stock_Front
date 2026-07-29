@@ -29,6 +29,7 @@ const CommunityDetail: React.FC = () => {
     const [mfile, setMfile] = useState<File | null>(null);
     // 이미지 미리보기
     const [preview, setPreview] = useState<string>("");
+
     // 상세 조회
     useEffect(() => {
         if (!num) return;
@@ -159,7 +160,6 @@ const CommunityDetail: React.FC = () => {
 
             alert("수정 완료");
 
-
             setIsEdit(false);
 
 
@@ -184,7 +184,7 @@ const CommunityDetail: React.FC = () => {
             if (resp.data.cimgn) {
 
                 setPreview(
-                    `${backendUrl}/imgfile/${resp.data.cimgn}`
+                    `${backendUrl}/imgfile/${resp.data.cimgn}?t=${Date.now()}`
                 );
 
             }
@@ -369,7 +369,7 @@ const CommunityDetail: React.FC = () => {
         </div>
 
         {/* 댓글 컴포넌트 */}
-        <Comments communityNum={community.cnum!} />
+        {!isEdit && <Comments communityNum={community.cnum!} />}
 
         {/* 하단 버튼 (목록으로 돌아가기) */}
         <div className={styles.buttonArea}>

@@ -31,7 +31,7 @@ const CommForm: React.FC = () => {
         cwriter: "",
         ccontent: "",
         cimgn: "",
-        membernum: 1,
+        membernum: member?.mnum,
         mfile: null
     });
 
@@ -86,34 +86,34 @@ const CommForm: React.FC = () => {
     };
 
     // 파일 선택
-   const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-    const files = e.target.files;
+        const files = e.target.files;
 
-    if (!files || files.length === 0) {
-        return;
-    }
+        if (!files || files.length === 0) { //의심1
+            return;
+        }
 
-    const file = files[0];
+        const file = files[0];
 
-    if (!(file instanceof File)) {
-        console.log(file);
-        return;
-    }
+        if (!(file instanceof File)) { //의심2
+            console.log(file);
+            return;
+        }
 
-    const reader = new FileReader();
+        const reader = new FileReader();
 
-    reader.onloadend = () => {
-        setPreview(reader.result);
+        reader.onloadend = () => {
+            setPreview(reader.result);
+        };
+
+        reader.readAsDataURL(file);
+
+        setFormData(prev => ({
+            ...prev,
+            mfile: file
+        }));
     };
-
-    reader.readAsDataURL(file);
-
-    setFormData(prev => ({
-        ...prev,
-        mfile: file
-    }));
-};
     // 이미지 삭제
     const removeImage = () => {
 
@@ -135,10 +135,10 @@ const CommForm: React.FC = () => {
         const data = new FormData();
 
         data.append("ctitle", formData.ctitle);
-        data.append("cwriter",  String(member?.nick));
+        data.append("cwriter", String(member?.nick));
         data.append("ccontent", formData.ccontent);
         data.append("membernum", String(formData.membernum));
-        
+
 
         if (formData.mfile) {
             console.log(formData.mfile);
