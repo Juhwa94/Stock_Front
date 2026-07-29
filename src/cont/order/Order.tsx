@@ -4,7 +4,7 @@ import Signature from './Signature'
 import axios from 'axios';
 
 import { useAuth } from '../../comp/AuthProvider';
-
+import DaumPostcode, { Address } from 'react-daum-postcode';
 
 
 export interface OrderForm {
@@ -41,10 +41,14 @@ const Order: React.FC = () => {
 
     //-----------Item---------------------------
     const [orderItem, setOrderItem] = useState<OrderItem[]>([]);
-    const [oiname, setOiname] = useState<string >("");
-    const [oipublisher, setOipublisher] = useState<string >("");
+    const [oiname, setOiname] = useState<string>("");
+    const [oipublisher, setOipublisher] = useState<string>("");
     const [oiprice, setOiprice] = useState<number>(0);
     const [oiamount, setOiamount] = useState<number>(0);
+
+    //-----------주소 API------------------------
+    const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+    const [storeaddrDetail, setStoreaddrDetail] = useState<string>('');
 
     // 세션 회원 데이터 가져오기
     const { member } = useAuth();
@@ -53,7 +57,7 @@ const Order: React.FC = () => {
         let oiSumPrice = oiprice * oiamount;
 
         // 발주품중 빈칸을 제출한 케이스에 대해 예외처리
-        if(!(oiname && oiprice && oipublisher && oiamount && oiSumPrice)) {
+        if (!(oiname && oiprice && oipublisher && oiamount && oiSumPrice)) {
             alert("빈칸을 허용하지 않습니다");
             return;
         }
@@ -77,10 +81,14 @@ const Order: React.FC = () => {
 
 
     useEffect(() => {
+        const finalAddress = storeaddrDetail
+            ? `${oaddr} ${storeaddrDetail.trim()}`
+            : oaddr;
+
         const assembledForm = {
             mnum: String(member?.mnum),
             oname: oname,
-            oaddr: oaddr,
+            oaddr: finalAddress,
             ophone: ophone,
             ofdate: ofdate,
             ofcompany: ofcompany,
@@ -91,6 +99,28 @@ const Order: React.FC = () => {
     }, [orderItem]);
 
     console.log(orderForm);
+
+
+    // 카카오 우편번호 검색 완료 핸들러
+    const handleCompleteAddress = (data: Address) => {
+        let fullAddress = data.address;
+        let extraAddress = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+        }
+
+        setOaddr(fullAddress);
+
+        setIsAddressModalOpen(false);
+    };
+
     return (
         <div className={Stayle.container}>
 
@@ -103,7 +133,7 @@ const Order: React.FC = () => {
                 <div className={Stayle.header_container_text_right}>
                     <ul className={Stayle.header_container_li}>
                         <li>
-                            대표자 :{' '}
+                            <span className={Stayle.label_text}>대표자 :</span>
                             <input
                                 type="text"
                                 name="oname"
@@ -111,17 +141,40 @@ const Order: React.FC = () => {
                                 onChange={(e) => setOname(e.target.value)}
                             />
                         </li>
-                        <li>
-                            주소 :{' '}
-                            <input
-                                type="text"
-                                name="oaddr"
-                                value={oaddr}
-                                onChange={(e) => setOaddr(e.target.value)}
-                            />
+
+                        {/* 💡 글로벌 CSS(부트스트랩)를 제거하고 모듈화된 주소 레이아웃 적용 */}
+                        <li className={Stayle.address_li}>
+                            <span className={Stayle.label_text}>주소 :</span>
+                            <div className={Stayle.address_box_group}>
+                                <div className={Stayle.address_main_row}>
+                                    <input
+                                        type="text"
+                                        name="oaddr"
+                                        value={oaddr}
+                                        readOnly
+                                        className={Stayle.bg_light}
+                                        placeholder="주소 검색 버튼을 클릭하세요"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsAddressModalOpen(true)}
+                                        className={Stayle.button_search}
+                                    >
+                                        주소 검색
+                                    </button>
+                                </div>
+                                <input
+                                    type="text"
+                                    name="storeaddrDetail"
+                                    value={storeaddrDetail}
+                                    onChange={(e) => setStoreaddrDetail(e.target.value)}
+                                    placeholder="상세주소를 입력해 주세요 (예: 101동 202호)"
+                                />
+                            </div>
                         </li>
+
                         <li>
-                            법인명 :{' '}
+                            <span className={Stayle.label_text}>법인명 :</span>
                             <input
                                 type="text"
                                 name="ofcompany"
@@ -130,7 +183,7 @@ const Order: React.FC = () => {
                             />
                         </li>
                         <li>
-                            연락처 :{' '}
+                            <span className={Stayle.label_text}>연락처 :</span>
                             <input
                                 type="text"
                                 name="ophone"
@@ -139,7 +192,7 @@ const Order: React.FC = () => {
                             />
                         </li>
                         <li>
-                            발주일 :{' '}
+                            <span className={Stayle.label_text}>발주일 :</span>
                             <input
                                 type="date"
                                 name="ofdate"
@@ -154,6 +207,7 @@ const Order: React.FC = () => {
                 </div>
             </div>
 
+            {/* ... 테이블 및 모달 영역은 동일 (하단 마크업 생략) ... */}
             <table className={Stayle.Table}>
                 <thead>
                     <tr>
@@ -233,8 +287,24 @@ const Order: React.FC = () => {
                     ))}
                 </tbody>
             </table>
+            {isAddressModalOpen && (
+                <div className={Stayle.modal_overlay}>
+                    <div className={Stayle.modal_dialog}>
+                        <div className={Stayle.modal_content}>
+                            <div className={Stayle.modal_header}>
+                                <h5>주소 검색</h5>
+                                <button type="button" onClick={() => setIsAddressModalOpen(false)}>×</button>
+                            </div>
+                            <div className={Stayle.modal_body}>
+                                <DaumPostcode onComplete={handleCompleteAddress} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
-    )
+    );
+
 }
 
 export default Order
