@@ -65,7 +65,7 @@ const StockDetail: React.FC = () => {
         }
     };
 
-    const imageBasePath = `${backendUrl}/imgfile/`;
+    const imageBasePath = `${backendUrl}/imgfile/stock/`;
 
     return (
         <div className={styles.container}>
@@ -116,67 +116,87 @@ const StockDetail: React.FC = () => {
 
                 <tfoot>
                     <tr>
-                        <td colSpan={2}>
-                            {stock[0]?.MEMBERNUM === member?.mnum && (<>
-                                <button className={styles.listLink} onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true);}}
-                                >수정</button>
-                                <button className={styles.listLink} onClick={handleDelete}>삭제</button>
-                            </>)}
-                            <Link to="/myStockList" className={styles.listLink}>목록</Link>
+                        <td colSpan={2} className={styles.buttonArea}>
+                            {stock[0]?.MEMBERNUM === member?.mnum && (
+                                <>
+                                    <button
+                                        className={`${styles.actionBtn} ${styles.editBtn}`}
+                                        onClick={() => {
+                                            setSelectedSnum(stock[0].SNUM);
+                                            setShowUpdateModal(true);
+                                        }}
+                                    >
+                                        수정
+                                    </button>
+
+                                    <button
+                                        className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                                        onClick={handleDelete}
+                                    >
+                                        삭제
+                                    </button>
+                                </>
+                            )}
+
+                            <Link
+                                to="/myStockList"
+                                className={`${styles.actionBtn} ${styles.listBtn}`}
+                            >
+                                목록
+                            </Link>
                         </td>
                     </tr>
                 </tfoot>
             </table>
-            {
-                showModal && (
+            {/* 이미지 모달 */}
+            {showModal && (
+                <div
+                    className={styles.modalBackground}
+                    onClick={() => setShowModal(false)}
+                >
                     <div
-                        className={styles.modalBackground}
-                        onClick={() => setShowModal(false)}
+                        className={styles.imageModal}
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <div
-                            className={styles.modalContent}
-                            onClick={(e) => e.stopPropagation()}
+                        {stock.map((item, index) => (
+                            <div key={index} className={styles.fileItem}>
+                                <span className={styles.fileName}>{item.STOCKIMAGE}</span>
+
+                                <img
+                                    className={styles.previewImage}
+                                    src={`${imageBasePath}${item.STOCKIMAGE}`}
+                                    alt="재고 이미지"
+                                />
+                            </div>
+                        ))}
+
+                        <button
+                            className={styles.closeBtn}
+                            onClick={() => setShowModal(false)}
                         >
-
-                            {stock.map((item, index) => (
-                                <div key={index} className={styles.fileItem}>
-                                    <span>{item.STOCKIMAGE}</span>
-
-                                    <img
-                                        src={`${imageBasePath}${item.STOCKIMAGE}`}
-                                        alt="재고 이미지"
-                                    />
-                                </div>
-                            ))}
-
-                            <button
-                                onClick={() => setShowModal(false)}
-                            >
-                                닫기
-                            </button>
-
-                        </div>
+                            닫기
+                        </button>
                     </div>
-                )
-            }
-            {
-                showUpdateModal && selectedSnum && (
+                </div>
+            )}
+
+            {/* 수정 모달 */}
+            {showUpdateModal && selectedSnum && (
+                <div
+                    className={styles.modalBackground}
+                    onClick={() => setShowUpdateModal(false)}
+                >
                     <div
-                        className={styles.modalBackground}
-                        onClick={() => setShowUpdateModal(false)}
+                        className={styles.updateModal}
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <div
-                            className={styles.modalContent}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <StockUpdate
-                                snum={selectedSnum}
-                                onClose={() => setShowUpdateModal(false)}
-                            />
-                        </div>
+                        <StockUpdate
+                            snum={selectedSnum}
+                            onClose={() => setShowUpdateModal(false)}
+                        />
                     </div>
-                )
-            }
+                </div>
+            )}
 
         </div>
     )

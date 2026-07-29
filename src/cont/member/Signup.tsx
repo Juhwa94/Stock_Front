@@ -1,6 +1,7 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DaumPostcode, { Address } from 'react-daum-postcode';   
 
 interface MemberForm {
   email: string;
@@ -38,6 +39,9 @@ const Signup: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
+
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [baseAddress, setBaseAddress] = useState("");
 
   // 약관 상태 관리
   const [agreements, setAgreements] = useState<string[]>([]);
@@ -285,6 +289,30 @@ const Signup: React.FC = () => {
     setModalContent(content);
     setShowModal(true);
   };
+
+  // 우편번호 API
+    const handleCompleteAddress = (data: Address) => {
+        let fullAddress = data.address;
+        let extraAddress = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+        }
+
+        setForm((prev) => ({
+            ...prev,
+            storeaddr: fullAddress,
+        }));
+
+        setIsAddressModalOpen(false);
+    };
+
   return (
     <div className="container mt-5" style={{ maxWidth: '650px' }}>
       <form onSubmit={handleSubmit} className="p-4 bg-light border rounded">
@@ -424,13 +452,42 @@ const Signup: React.FC = () => {
         </div>
 
         {/* 주소 입력란 */}
-        <div className="mb-3 row">
-          <label htmlFor="storeaddr" className="col-sm-3 col-form-label fw-bold">주소</label>
-          <div className="col-sm-9">
-            <input type="text" name="storeaddr" className="form-control" placeholder="도로명 주소를 입력하세요"
-              value={form.storeaddr} onChange={handleChange} required={form.authority === 'MEMBER'} />
-          </div>
-        </div>
+{/* 지점 주소 */}
+                                        <div className="row g-0 border-bottom">
+                                            <div className="col-md-3 bg-light px-4 py-3 fw-semibold">
+                                                지점 주소
+                                            </div>
+                                            <div className="col-md-9 px-4 py-3">
+                                                <div className="d-flex gap-2 mb-2">
+                                                    <input
+                                                        type="text"
+                                                        name="storeaddr"
+                                                        value={baseAddress}
+                                                        readOnly
+                                                        className="form-control bg-light"
+                                                        placeholder="주소 검색 버튼을 클릭하세요"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setIsAddressModalOpen(true)}
+                                                        className="btn btn-outline-primary text-nowrap"
+                                                    >
+                                                        주소 검색
+                                                    </button>
+                                                </div>
+                                                <input
+    type="text"
+    className="form-control"
+    placeholder="상세주소를 입력해 주세요 (예: 101동 202호)"
+    onChange={(e) =>
+        setForm((prev) => ({
+            ...prev,
+            storeaddr: `${baseAddress} ${e.target.value}`.trim(),
+        }))
+    }
+/>
+                                            </div>
+                                        </div>
         {/* 약관동의  */}
         <div className="mb-4 p-3 border rounded bg-white">
           <div className="form-check mb-2 pb-2 border-bottom fw-bold">
@@ -509,6 +566,29 @@ const Signup: React.FC = () => {
           <button type="submit" className="btn btn-primary">회원가입</button>
         </div>
       </form>
+      {isAddressModalOpen && (
+                <div
+                    className="modal show d-block"
+                    tabIndex={-1}
+                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title fw-bold">주소 검색</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setIsAddressModalOpen(false)}
+                                ></button>
+                            </div>
+                            <div className="modal-body p-0">
+                                <DaumPostcode onComplete={handleCompleteAddress} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
       {showModal && (
         <>
           {/* 모달 창 본체 */}
