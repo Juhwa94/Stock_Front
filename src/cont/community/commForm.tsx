@@ -31,7 +31,7 @@ const CommForm: React.FC = () => {
         cwriter: "",
         ccontent: "",
         cimgn: "",
-        membernum: 1,
+        membernum: member?.mnum,
         mfile: null
     });
 
