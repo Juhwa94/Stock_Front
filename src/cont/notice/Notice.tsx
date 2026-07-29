@@ -195,9 +195,7 @@ return (
                     key={page}
                     onClick={() => pageChange(page)}
                     className={
-                        page === currentPage
-                            ? styles.activePage
-                            : styles.pageButton
+                        page === currentPage ? styles.activePage  : styles.pageButton
                     }
                 >
                     {page}

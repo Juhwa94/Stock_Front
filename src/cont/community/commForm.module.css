@@ -86,22 +86,39 @@
     flex-direction: column;
     gap: 10px;
 }
- 
+
+/* ===================================================
+   [수정됨] 이미지 버튼 (.smallButton) 스타일을 하단 버튼과 일치
+   =================================================== */
 .smallButton {
     width: 120px;
-    padding: 8px;
-    border: 1px solid #000;
-    background: white;
+    height: 38px; /* 높이를 일정하게 고정하고 싶을 때 사용 */
+    padding: 0; /* flex 중앙 정렬을 위해 여백 제거 */
+    border: none;
+    background: #000000;
+    color: #ffffff;
     cursor: pointer;
     font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
     transition: 0.2s;
+
+    /* ===================================================
+       [추가] 텍스트가 정중앙에 오도록 Flexbox 정렬 적용
+       =================================================== */
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center;     /* 세로 가운데 정렬 */
+    text-align: center;      /* 텍스트 정렬 */
 }
 
 .smallButton:hover {
-    background: #201f1f;
-    color: white;
+    opacity: 0.85;
 }
 
+/* ===================================================
+   하단 등록 / 취소 버튼 (.button)
+   =================================================== */
 .buttonArea {
     display: flex;
     justify-content: center;
@@ -112,20 +129,24 @@
 
 .button {
     width: 140px;
-    padding: 10px 0;
-    border: 1px solid #000;
-    background: rgb(2, 2, 2);
+    padding: 12px 0;
+    border: none;
+    background: #000000;
+    color: #ffffff;
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
-    transition: .2s;
+    border-radius: 6px; /* 이미지 속 하단 버튼 특유의 둥근 모서리 적용 */
+    transition: 0.2s;
 }
 
 .button:hover {
-    background: #000;
-    color: #fff;
+    opacity: 0.85;
 }
 
+/* ===================================================
+   푸터 영역
+   =================================================== */
 .footer {
     border-top: 1px solid #333;
     margin-top: 50px;

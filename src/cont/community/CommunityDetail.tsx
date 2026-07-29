@@ -270,225 +270,115 @@ const CommunityDetail: React.FC = () => {
 
 
 
-    return (
+ return (
+    <div className={styles.container}>
+        {/* 카테고리 */}
+        <div className={styles.category}>[ 게시글 ]</div>
 
-        <div className={styles.container}>
+        {/* 제목 (일반 / 수정모드) */}
+        {isEdit ? (
+            <input
+                className={styles.titleInput}
+                name="ctitle"
+                value={community.ctitle}
+                onChange={changeValue}
+            />
+        ) : (
+            <h2 className={styles.title}>{community.ctitle}</h2>
+        )}
 
-
-            <div className={styles.category}>
-                [ 게시글 ]
-            </div>
-
-
-
-
-            {/* 제목 */}
-
-            {
-                isEdit ?
-
-                    <input
-
-                        className={styles.title}
-
-                        name="ctitle"
-
-                        value={community.ctitle}
-
-                        onChange={changeValue}
-
-                    />
-
-                    :
-
-                    <h2 className={styles.title}>
-
-                        {community.ctitle}
-
-                    </h2>
-
-            }
-
-
-
-
-
+        {/* 작성 정보 및 상단 수정/삭제 버튼 영역 */}
+        <div className={styles.metaHeader}>
             <div className={styles.info}>
-
-                <span>
-                    작성자 : {community.cwriter}
-                </span>
-
-                <span>
-                    작성일 : {community.cdate}
-                </span>
-
-                <span>
-                    조회수 : {community.chit}
-                </span>
-
-
+                <span>작성자 : {community.cwriter}</span>
+                <span className={styles.divider}>|</span>
+                <span>작성일 : {community.cdate}</span>
+                <span className={styles.divider}>|</span>
+                <span>조회수 : {community.chit}</span>
             </div>
 
-
-
-
-
-            {/* 내용 */}
-
-            {
-
-                isEdit ?
-
-                    <textarea
-
-                        className={styles.content}
-
-                        name="ccontent"
-
-                        value={community.ccontent}
-
-                        onChange={changeValue}
-
-                    />
-
-
-                    :
-
-                    <div className={styles.content}>
-
-                        {community.ccontent}
-
-                    </div>
-
-            }
-
-
-
-
-
-            {/* 이미지 */}
-
-            <div className={styles.imageBox}>
-
-
-                {
-
-                    preview &&
-
-                    <img
-
-                        src={preview}
-
-                        alt={community.ctitle}
-
-                        className={styles.image}
-
-                    />
-
-                }
-
-
-
-                {
-
-                    isEdit &&
-
-                    <input
-
-                        type="file"
-
-                        onChange={changeFile}
-
-                    />
-
-                }
-
-
-            </div>
-
-            <Comments communityNum={community.cnum!} />
-
-
-
-            {/* 버튼 */}
-
-            <div className={styles.buttonArea}>
-
-
-                <Link
-
-                    to="/community"
-
-                    className={styles.button}
-
-                >
-
-                    목록
-
-                </Link>
-
-
-
-                {
-
-                    isEdit ?
-
+            {/* 상단 우측 수정 / 삭제 (대안 A) */}
+            <div className={styles.actionGroup}>
+                {isEdit ? (
+                    <>
                         <button
-
+                            type="button"
                             onClick={updateCommunity}
-
-                            className={styles.button}
-
+                            className={styles.actionTextBtn}
                         >
-
                             저장
-
                         </button>
-
-
-                        :
-
+                        <span className={styles.divider}>|</span>
                         <button
-
-                            onClick={() => setIsEdit(true)}
-
-                            className={styles.button}
-
+                            type="button"
+                            onClick={() => setIsEdit(false)}
+                            className={styles.actionTextBtn}
                         >
-
-                            수정
-
+                            취소
                         </button>
-
-
-                }
-
-
-
-
-
-                <button
-
-                    onClick={deleteCommunity}
-
-                    className={styles.deleteButton}
-
-                >
-
-                    삭제
-
-                </button>
-
-
-
+                    </>
+                ) : (
+                    <>
+                        <button
+                            type="button"
+                            onClick={() => setIsEdit(true)}
+                            className={styles.actionTextBtn}
+                        >
+                            수정
+                        </button>
+                        <span className={styles.divider}>|</span>
+                        <button
+                            type="button"
+                            onClick={deleteCommunity}
+                            className={`${styles.actionTextBtn} ${styles.delete}`}
+                        >
+                            삭제
+                        </button>
+                    </>
+                )}
             </div>
-
-
-
         </div>
 
-    );
+        {/* 내용 (일반 / 수정모드) */}
+        {isEdit ? (
+            <textarea
+                className={styles.contentTextarea}
+                name="ccontent"
+                value={community.ccontent}
+                onChange={changeValue}
+            />
+        ) : (
+            <div className={styles.content}>{community.ccontent}</div>
+        )}
+
+        {/* 이미지 */}
+        <div className={styles.imageBox}>
+            {preview && (
+                <img
+                    src={preview}
+                    alt={community.ctitle}
+                    className={styles.image}
+                />
+            )}
+
+            {isEdit && (
+                <div style={{ marginTop: '15px' }}>
+                    <input type="file" onChange={changeFile} />
+                </div>
+            )}
+        </div>
+
+        {/* 댓글 컴포넌트 */}
+        <Comments communityNum={community.cnum!} />
+
+        {/* 하단 버튼 (목록으로 돌아가기) */}
+        <div className={styles.buttonArea}>
+            <Link to="/community" className={styles.button}>
+                목록
+            </Link>
+        </div>
+    </div>
+);
 
 };
 

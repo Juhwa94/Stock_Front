@@ -114,7 +114,7 @@
     width: 140px;
     padding: 10px 0;
     border: 1px solid #000;
-    background: white;
+    background: rgb(0, 0, 0);
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
