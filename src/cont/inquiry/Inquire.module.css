@@ -1,5 +1,5 @@
 /*****************************************
-            Layout + CSS Variables
+                Layout
 *****************************************/
 
 .container {
@@ -25,7 +25,7 @@
 
 
 /*****************************************
-            Title
+                Title
 *****************************************/
 
 .title {
@@ -49,7 +49,7 @@
 
 
 /*****************************************
-            Form
+                Form
 *****************************************/
 
 .form {
@@ -66,7 +66,7 @@
 
 
 /*****************************************
-            Board Table
+              Board Table
 *****************************************/
 
 .boardTable {
@@ -103,7 +103,7 @@
 
 
 /*****************************************
-            Input
+                Input
 *****************************************/
 
 .input {
@@ -129,7 +129,7 @@
 
 
 /*****************************************
-            Textarea
+              Textarea
 *****************************************/
 
 .textarea {
@@ -154,7 +154,7 @@
 
 
 /*****************************************
-            File Input
+              File Input
 *****************************************/
 
 .fileInput {
@@ -164,7 +164,7 @@
 
 
 /*****************************************
-            Secret Checkbox
+           Secret Checkbox
 *****************************************/
 
 .secretBox {
@@ -172,7 +172,6 @@
   align-items: center;
   gap: 10px;
   font-size: 15px;
-  color: var(--text-main);
 }
 
 .secretBox input[type="checkbox"] {
@@ -202,42 +201,54 @@
 
 
 /*****************************************
-            Buttons
+                Buttons
 *****************************************/
 
 .button,
 .button:link,
 .button:visited {
-  display: flex;
+
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+
   min-width: 110px;
   height: 45px;
   padding: 0 24px;
+
   border: none;
   border-radius: 10px;
+
   background: linear-gradient(
-      135deg,
-      var(--primary-color),
-      #7d6ef0
+    135deg,
+    var(--primary-color),
+    #7d6ef0
   );
+
   color: white;
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
+
   cursor: pointer;
+
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+
+  box-shadow:
+    0 4px 12px rgba(108, 92, 231, 0.25);
 }
 
 .button:hover {
   background: linear-gradient(
-      135deg,
-      var(--primary-hover),
-      var(--primary-color)
+    135deg,
+    var(--primary-hover),
+    var(--primary-color)
   );
+
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(108, 92, 231, 0.35);
+
+  box-shadow:
+    0 8px 18px rgba(108, 92, 231, 0.35);
 }
 
 .button:active {
@@ -250,25 +261,28 @@
 *****************************************/
 
 .buttonArea {
+
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 20px;
+
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 
 /*****************************************
-            Comment
+                Comment
 *****************************************/
 
-.comment-content {
+.commentContent {
   width: 100%;
   min-height: 150px;
 }
 
 
 /*****************************************
-            Detail Image
+             Detail Image
 *****************************************/
 
 .detail img {

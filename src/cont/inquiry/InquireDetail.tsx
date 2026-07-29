@@ -137,21 +137,23 @@ const InquiryDetail: React.FC = () => {
                     <tr>
                         <td colSpan={2}>
 
-                            <button onClick={handleDelete}>
-                                삭제
-                            </button>
+                            <div className={styles.buttonArea}>
 
-                            <button>
+                                <button
+                                    className={styles.button}
+                                    onClick={handleDelete}
+                                >
+                                    삭제
+                                </button>
+
                                 <Link
-                                    style={{
-                                        color: "white",
-                                        gap: "50px"
-                                    }}
                                     to="/inquiry"
+                                    className={styles.button}
                                 >
                                     목록
                                 </Link>
-                            </button>
+
+                            </div>
 
                         </td>
                     </tr>
