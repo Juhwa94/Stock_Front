@@ -1,4 +1,4 @@
-
+/* 기존 컨테이너 및 헤더 스타일 유지 */
 .container {
     max-width: 1000px;
     margin: 20px auto;
@@ -37,15 +37,15 @@
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 24px;
-    align-items: flex-start;
+    align-items: stretch; /* 서명패드와 높이 균형 조정 */
 }
 
 .header_container_text_right {
-    flex: 1;
+    flex: 1.2; /* 입력 폼 공간 확보 */
 }
 
 .header_container_text_left {
-    flex: 1;
+    flex: 0.8;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,33 +57,84 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+}
+
+/* 💡 공통 라벨 스타일 부여로 정렬 균격 통일 */
+.label_text {
+    width: 65px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+    text-align: left;
 }
 
 .header_container_li li {
     display: flex;
     align-items: center;
-    font-weight: 600;
-    color: #495057;
-    font-size: 0.95rem;
 }
 
+/* 주소 행 정렬 대응을 위해 상단 정렬 배치 */
+.header_container_li .address_li {
+    align-items: flex-start;
+}
+
+/* 모든 일반 인풋 테두리 및 폰트 규격 적용 */
 .header_container_li li input[type='text'],
-.header_container_li li input[type='date'] {
+.header_container_li li input[type='date'],
+.address_box_group input[type='text'] {
     flex: 1;
-    margin-left: 10px;
     padding: 8px 10px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     outline: none;
     font-size: 0.95rem;
     transition: border-color 0.2s;
+    font-family: inherit;
 }
 
-.header_container_li li input:focus {
+.header_container_li li input:focus,
+.address_box_group input:focus {
     border-color: #4c6ef5;
 }
 
+/* 💡 새로 정의된 주소 전용 모듈형 CSS */
+.address_box_group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 메인주소와 상세주소 사이 간격 */
+}
+
+.address_main_row {
+    display: flex;
+    gap: 8px; /* 메인주소창과 검색버튼 사이 간격 */
+}
+
+.bg_light {
+    background-color: #e9ecef;
+    color: #495057;
+    cursor: not-allowed;
+}
+
+.button_search {
+    background-color: #fff;
+    color: #4c6ef5;
+    border: 1px solid #4c6ef5;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.button_search:hover {
+    background-color: #edf2ff;
+}
+
+/* 테이블 스타일 */
 .Table {
     width: 100%;
     border-collapse: collapse;
@@ -129,7 +180,6 @@
     outline: none;
 }
 
-
 .button_oeder {
     background-color: #4c6ef5;
     color: white;
@@ -144,4 +194,57 @@
 
 .button_oeder:hover {
     background-color: #3b5bdb;
+}
+
+/* 💡 부트스트랩 완전 대체를 위한 모달 커스텀 CSS 모듈 구조 */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+.modal_dialog {
+    width: 100%;
+    max-width: 500px;
+    margin: 1.75rem;
+}
+
+.modal_content {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal_header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.modal_header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #adb5bd;
+}
+
+.modal_body {
+    padding: 0;
 }
