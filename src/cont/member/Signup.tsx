@@ -28,7 +28,6 @@ const Signup: React.FC = () => {
 
   const [code, setCode] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
-  const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [nickMessage, setNickMessage] = useState('');
   const [isNickChecked, setIsNickChecked] = useState(false);
@@ -49,21 +48,10 @@ const Signup: React.FC = () => {
 
     //  이메일 인증 상태 초기화
     if (name === 'email') {
-      setIsEmailChecked(false);
       setIsEmailVerified(false);
       setEmailMessage('');
     }
   };
-
-  useEffect(() => {
-    if (!form.email.trim()) {
-      setEmailMessage('');
-      setIsEmailChecked(false);
-      return;
-    }
-
-  }, [form.email]);
-  // 이메일 인증 요청
   const emailCheck = async () => {
     try {
       const res = await axios.get(`${urls}/api/member/emailCheck`, {
@@ -74,15 +62,13 @@ const Signup: React.FC = () => {
 
       if (res.data === 0) {
         setEmailMessage('사용 가능한 이메일입니다.');
-        setIsEmailChecked(true);
+        //setIsEmailChecked(true);
         await sendEmailCode();
       } else {
         setEmailMessage('이미 사용 중인 이메일입니다.');
-        setIsEmailChecked(false);
       }
 
     } catch (error) {
-      console.error(error);
     }
   };
   // 인증번호 발송
@@ -95,11 +81,9 @@ const Signup: React.FC = () => {
         }
       );
 
-      console.log(res.data);
       setEmailMessage('인증번호를 발송했습니다.');
 
     } catch (error) {
-      console.error(error);
       setEmailMessage('메일 발송 오류');
     }
   };
@@ -127,7 +111,6 @@ const Signup: React.FC = () => {
       }
     } catch (err) {
       alert('인증번호 확인 오류');
-      console.error(err);
     }
   };
   // 닉네임 입력 시 실시간 중복 체크
@@ -153,7 +136,7 @@ const Signup: React.FC = () => {
         }
 
       } catch (error) {
-        console.error(error);
+
         setNickMessage('닉네임 확인 오류');
         setIsNickChecked(false);
       }
@@ -241,7 +224,6 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       alert('회원가입 처리 중 오류가 발생했습니다.');
-      console.error(error);
     }
   };
   const handleCompleteAddress = (data: Address) => {
