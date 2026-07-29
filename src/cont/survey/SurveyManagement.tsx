@@ -28,10 +28,8 @@ interface SurveyDate {
     SDATE: string
 }
 
-const backendUrl = process.env.REACT_APP_BACK_END_URL;
-
 const SurveyManagement: React.FC = () => {
-
+    const backendUrl = process.env.REACT_APP_BACK_END_URL;
     const [result, setResult] = useState<number[]>([]);
     const [code, setCode] = useState<number>(0);
     const [sdate, setSdate] = useState<string>("");
@@ -39,29 +37,39 @@ const SurveyManagement: React.FC = () => {
     const [surveyDates, setSurveyDates] = useState<SurveyDate[]>([]);
     const [selectedSvnum, setSelectedSvnum] = useState<number>(0);
     const [requests, setRequests] = useState<RequestData[]>([]);
+    const [questions, setQuestions] = useState<string[]>([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchResult = async () => {
             try {
-                const response = await axios.get(`${backendUrl}/api/survey/getAvgs`, {
-                    params: {
-                        svnum: selectedSvnum
-                    }
-                });
-                if (response.status === 200) {
+                const [response1, response2] = await Promise.all([
+                    axios.get(`${backendUrl}/api/survey/getAvgs`, {
+                        params: {
+                            svnum: selectedSvnum,
+                        },
+                    }),
 
-                    const responseData: Data = response.data;
+                    axios.get(`${backendUrl}/api/survey/getQuestions`, {
+                        params: {
+                            svnum: selectedSvnum,
+                        },
+                    }),
+                ]);
 
-                    await dataHandler(responseData);
+                const responseData: Data = response1.data;
+                
+                const questionData = response2.data;
 
-                } else {
-                    console.log("데이터를 불러오는데 실패했습니다.");
-                }
+                dataHandler(responseData);
+                questionsHandler(questionData);
+                
             } catch (error) {
                 console.error("데이터를 불러오는데 실패했습니다.", error);
             }
         };
+
         fetchResult();
     }, [selectedSvnum]);
 
@@ -121,6 +129,10 @@ const SurveyManagement: React.FC = () => {
         return surveyDates;
     }
 
+    const questionsHandler = (questionData:string[]) => {
+        setQuestions(questionData);
+        return questionData;
+    }
     return (
         <div className={styles.managementContainer}>
             <button
@@ -155,12 +167,13 @@ const SurveyManagement: React.FC = () => {
                     code={code}
                     avg={result}
                     sdate={sdate}
+                    questions={questions}
                 />
             </div>
             <div className={styles.resultContainer}>
                 <h3>추가 요청 사항</h3>
-                
-                <RequestList 
+
+                <RequestList
                     requests={requests}
                 />
             </div>
