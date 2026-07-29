@@ -20,12 +20,12 @@ import { useSearchParams } from 'react-router-dom'
 */
 
 export interface RevenueVO {
-  rmonth: string;         // 매출 기준 월 (예: "2026-08-01" 또는 "2026-08")
-  rtotalqty: number;      // 총 판매 수량
-  rtotalsales: number;    // 총 매출액
-  rtotalcost: number;     // 총 원가
-  rtotalmargin: number;   // 총 마진
-  pfnum: number;          // 상품폼 번호 (대표값 등)
+    rmonth: string;         // 매출 기준 월 (예: "2026-08-01" 또는 "2026-08")
+    rtotalqty: number;      // 총 판매 수량
+    rtotalsales: number;    // 총 매출액
+    rtotalcost: number;     // 총 원가
+    rtotalmargin: number;   // 총 마진
+    pfnum: number;          // 상품폼 번호 (대표값 등)
 }
 
 const backendUrl = process.env.REACT_APP_BACK_END_URL;
@@ -33,23 +33,23 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 const Revenue: React.FC = () => {
     const [searchParams] = useSearchParams();
     const pso_rmonth = searchParams.get("rmonth") || "";
-    const [rmonth, setRmonth] = useState(pso_rmonth||"2026-07");
+    const [rmonth, setRmonth] = useState(pso_rmonth || "2026-07");
 
     const [revenue, setRevenue] = useState<RevenueVO>();
 
     useEffect(() => {
         (async () => {
             const rmonthData = JSON.stringify(rmonth);
-
-            //백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
-            const res = await axios.get(`${backendUrl}/api/revenue/revenueDataSet`, {
-                params: { rmonth: rmonthData }
-            });
-            setRevenue(res.data);
-            //전송결과 출력
-            if (!res) {
+            try {
+                //백엔드로 전송 (fetch 사용), pa)axios사용해 보실 분들은 저한테 말하고 바꾸셔도 됩니다!
+                const res = await axios.get(`${backendUrl}/api/revenue/revenueDataSet`, {
+                    params: { rmonth: rmonthData }
+                });
+                setRevenue(res.data);
+            } catch (error) {
                 alert("전송 실패 서버 에러");
             }
+
         })();
     }, [rmonth]);
 
@@ -65,7 +65,7 @@ const Revenue: React.FC = () => {
                             <input
                                 type="month"
                                 name="rmonth"
-                                defaultValue={pso_rmonth? pso_rmonth:"2026-07"}
+                                defaultValue={pso_rmonth ? pso_rmonth : "2026-07"}
                                 onChange={(e) => {
                                     setRmonth(e.target.value);
                                     console.log(e.target.value);
@@ -80,7 +80,7 @@ const Revenue: React.FC = () => {
                 </div>
 
                 <div className={Stayle.pie_chart_wrapper}>
-                    <ShareChart rmonth={rmonth}/>
+                    <ShareChart rmonth={rmonth} />
                 </div>
             </div>
 
