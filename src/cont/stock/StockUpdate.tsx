@@ -101,52 +101,90 @@ const StockUpdate: React.FC<StockUpdateProps> = ({ snum, onClose }) => {
     return (
         <div className={styles.container}>
             <form className={styles.form} onSubmit={updateSubmit}>
-                <input className={styles.input} name="sname" value={formData.sname}
-                    onChange={handleChange} placeholder="도서명" />
-                <input
-                    className={styles.input}
-                    name="sisbn"
-                    value={formData.sisbn}
-                    onChange={handleChange}
-                    placeholder="ISBN"
-                />
-                <input
-                    className={styles.input}
-                    name="scategory"
-                    value={formData.scategory}
-                    onChange={handleChange}
-                    placeholder="카테고리"
-                />
-                <input
-                    className={styles.input}
-                    name="spublisher"
-                    value={formData.spublisher}
-                    onChange={handleChange}
-                    placeholder="출판사"
-                />
-                <input
-                    className={styles.input}
-                    name="sauthor"
-                    value={formData.sauthor}
-                    onChange={handleChange}
-                    placeholder="저자"
-                />
-                <input
-                    className={styles.input}
-                    type="number"
-                    name="samount"
-                    value={formData.samount}
-                    onChange={handleChange}
-                    placeholder="수량"
-                />
-                <input
-                    className={styles.input}
-                    type="number"
-                    name="sprice"
-                    value={formData.sprice}
-                    onChange={handleChange}
-                    placeholder="가격"
-                />
+                <div className={styles.inputGroup}>
+                    <label>도서명</label>
+                    <input
+                        className={styles.input}
+                        name="sname"
+                        value={formData.sname}
+                        onChange={handleChange}
+                        placeholder="도서명"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>ISBN</label>
+                    <input
+                        className={styles.input}
+                        name="sisbn"
+                        value={formData.sisbn}
+                        onChange={handleChange}
+                        placeholder="ISBN"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>카테고리</label>
+                    <input
+                        className={styles.input}
+                        name="scategory"
+                        value={formData.scategory}
+                        onChange={handleChange}
+                        placeholder="카테고리"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>출판사</label>
+                    <input
+                        className={styles.input}
+                        name="spublisher"
+                        value={formData.spublisher}
+                        onChange={handleChange}
+                        placeholder="출판사"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>저자</label>
+                    <input
+                        className={styles.input}
+                        name="sauthor"
+                        value={formData.sauthor}
+                        onChange={handleChange}
+                        placeholder="저자"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>수량</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        name="samount"
+                        value={formData.samount}
+                        onChange={handleChange}
+                        placeholder="수량"
+                    />
+                </div>
+
+
+                <div className={styles.inputGroup}>
+                    <label>가격</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        name="sprice"
+                        value={formData.sprice}
+                        onChange={handleChange}
+                        placeholder="가격"
+                    />
+                </div>
                 <button
                     type="submit"
                     className={styles.button}

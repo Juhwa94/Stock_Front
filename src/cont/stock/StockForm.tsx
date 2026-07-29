@@ -115,35 +115,103 @@ const StockForm: React.FC = () => {
     return (
         <div className={styles.container}>
             <form className={styles.form} onSubmit={stockFormSubmit}>
-                <input className={styles.input} type="text" placeholder="도서명"
-                    onChange={handleChange} required name='sname' id="sname"
-                />
-                <input className={styles.input} type="text" placeholder="isbn"
-                    onChange={handleChange} required name='sisbn' id="sisbn"
-                />
-                <input type='text' id='scategory' name='scategory' onChange={handleChange}
-                    className={styles.input}
-                    placeholder="카테고리"
-                />
-                <input type='text' id='spublisher' name='spublisher'
-                    onChange={handleChange} className={styles.input}
-                    placeholder="출판사"
-                />
-                <input type='text' id='sauthor' name='sauthor'
-                    onChange={handleChange} className={styles.input}
-                    placeholder="저자"
-                />
-                <input type='number' id='samount' name='samount'
-                    onChange={handleChange} className={styles.input}
-                    placeholder="수량"
-                />
-                <input type='number' id='sprice' name='sprice'
-                    onChange={handleChange} className={styles.input}
-                    placeholder="개당 가격"
-                />
-                <input className={styles.input} type="file" placeholder="이미지 URL 입력"
-                    onChange={handleChange} required name='images' multiple
-                />
+                <div className={styles.inputGroup}>
+                    <label htmlFor="sname">도서명</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        placeholder="도서명"
+                        onChange={handleChange}
+                        required
+                        name="sname"
+                        id="sname"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="sisbn">도서번호</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        placeholder="ISBN"
+                        onChange={handleChange}
+                        required
+                        name="sisbn"
+                        id="sisbn"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="scategory">카테고리</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        id="scategory"
+                        name="scategory"
+                        onChange={handleChange}
+                        placeholder="카테고리"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="spublisher">출판사</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        id="spublisher"
+                        name="spublisher"
+                        onChange={handleChange}
+                        placeholder="출판사"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="sauthor">저자</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        id="sauthor"
+                        name="sauthor"
+                        onChange={handleChange}
+                        placeholder="저자"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="samount">수량</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        id="samount"
+                        name="samount"
+                        onChange={handleChange}
+                        placeholder="수량"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="sprice">단가</label>
+                    <input
+                        className={styles.input}
+                        type="number"
+                        id="sprice"
+                        name="sprice"
+                        onChange={handleChange}
+                        placeholder="개당 가격"
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label>이미지</label>
+                    <input
+                        className={styles.input}
+                        type="file"
+                        onChange={handleChange}
+                        required
+                        name="images"
+                        multiple
+                    />
+                </div>
                 {formData.images.length > 0 && (
                     <>
                         {formData.images.map((file, index) => (

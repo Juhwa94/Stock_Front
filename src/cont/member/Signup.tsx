@@ -256,6 +256,30 @@ const Signup: React.FC = () => {
     setModalContent(content);
     setShowModal(true);
   };
+
+  // 우편번호 API
+    const handleCompleteAddress = (data: Address) => {
+        let fullAddress = data.address;
+        let extraAddress = '';
+
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+        }
+
+        setForm((prev) => ({
+            ...prev,
+            storeaddr: fullAddress,
+        }));
+
+        setIsAddressModalOpen(false);
+    };
+
   return (
     <div className="container mt-5" style={{ maxWidth: '650px' }}>
       <form onSubmit={handleSubmit} className="p-4 bg-light border rounded">
@@ -517,6 +541,29 @@ const Signup: React.FC = () => {
           <button type="submit" className="btn btn-primary">회원가입</button>
         </div>
       </form>
+      {isAddressModalOpen && (
+                <div
+                    className="modal show d-block"
+                    tabIndex={-1}
+                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title fw-bold">주소 검색</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setIsAddressModalOpen(false)}
+                                ></button>
+                            </div>
+                            <div className="modal-body p-0">
+                                <DaumPostcode onComplete={handleCompleteAddress} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
       {showModal && (
         <>
           {/* 모달 창 본체 */}
