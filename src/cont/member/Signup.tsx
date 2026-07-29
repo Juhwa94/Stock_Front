@@ -257,29 +257,6 @@ const Signup: React.FC = () => {
     setShowModal(true);
   };
 
-  // 우편번호 API
-    const handleCompleteAddress = (data: Address) => {
-        let fullAddress = data.address;
-        let extraAddress = '';
-
-        if (data.addressType === 'R') {
-            if (data.bname !== '') {
-                extraAddress += data.bname;
-            }
-            if (data.buildingName !== '') {
-                extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-            }
-            fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-        }
-
-        setForm((prev) => ({
-            ...prev,
-            storeaddr: fullAddress,
-        }));
-
-        setIsAddressModalOpen(false);
-    };
-
   return (
     <div className="container mt-5" style={{ maxWidth: '650px' }}>
       <form onSubmit={handleSubmit} className="p-4 bg-light border rounded">
