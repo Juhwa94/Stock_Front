@@ -129,10 +129,16 @@
 
 .button {
     width: 140px;
+<<<<<<< HEAD
     padding: 12px 0;
     border: none;
     background: #000000;
     color: #ffffff;
+=======
+    padding: 10px 0;
+    border: 1px solid #000;
+    background: rgb(2, 2, 2);
+>>>>>>> bffe134613025d35a59753cd84500affd35c9ff5
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
@@ -140,9 +146,16 @@
     transition: 0.2s;
 }
 
+<<<<<<< HEAD
 .button:hover {
     opacity: 0.85;
 }
+=======
+/* .button:hover {
+    background: #000;
+    color: #fff;
+} */
+>>>>>>> bffe134613025d35a59753cd84500affd35c9ff5
 
 /* ===================================================
    푸터 영역

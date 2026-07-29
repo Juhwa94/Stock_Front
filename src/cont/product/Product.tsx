@@ -16,6 +16,7 @@ interface ProductItem {
     piamount: number; //수량
     pisumprice: number; //1행의 합계 가격 (가격*수량)
     piunitCost: number; //원가    
+    picategory: string; //도서분류    
 }
 
 
@@ -38,34 +39,36 @@ const Product: React.FC = () => {
     const [piprice, setPiprice] = useState<number>(0);
     const [piamount, setPiamount] = useState<number>(0);
     const [piunitCost, setpiunitCost] = useState<number>(0);
+    const [category, setCategory] = useState<string>("");
     const pisumprice = (piprice && piamount) ? (piprice * piamount) : 0;
 
     //useNavigate
     const nav = useNavigate();
 
+    //필요한 재료들
+    const rmonth = pstartdate.substring(0, 7);
+    console.log(rmonth);
+
     // 트리거함수
     const productSumit = async () => {
-        
+
         //날짜를 선택하지 않고 제출한 케이스에 대해 예외처리
         if (!pstartdate || !penddate) {
             alert("시작일과 마감일을 모두 선택해 주세요.");
             return;
         }
-        // 판매정보를 등록하지 않고 제출한 케이스에 대해 예외처리
-        if (!productItem || productItem.length === 0) {
-            alert("등록할 상품을 최소 하나 이상 추가해 주세요.");
-            return;
-        }
+
         
+
         const isConfirmed = window.confirm("수정이 불가합니다.\n정말 등록하시겠습니까?\n(수락시 매출관리 페이지로 이동됩니다.)");
-        
+
         //경고창의 결과값이 수락일경우 실행
         if (isConfirmed) {
             //백엔드에 보낼 데이터 조립
             const assembledForm = {
                 pstartdate: pstartdate,
                 penddate: penddate,
-                productItem: productItem,
+                productItem: productItem
             };
             //혹시몰라서 useState setter깔아둡니다 이 부분은 지우셔도 무방합니다
             setProductForm(assembledForm);
@@ -89,7 +92,7 @@ const Product: React.FC = () => {
 
                 //전송결과 출력
                 if (res.ok) {
-                    //nav("/revenue");
+                    nav(`/revenue?rmonth=${rmonth}`);
                 } else {
                     alert("전송 실패 서버 에러");
                 }
@@ -102,6 +105,11 @@ const Product: React.FC = () => {
 
     // productItem조립을 위한 함수
     const addItem = () => {
+        // 예외처리
+        if(!(piisbn && piprice && piamount && pisumprice && piunitCost && category)) {
+            alert("빈칸을 허용하지 않습니다");
+            return;
+        }
         //조립된 데이터
         const inputRowList = {
             piname: piname,
@@ -109,7 +117,8 @@ const Product: React.FC = () => {
             piprice: piprice,
             piamount: piamount,
             pisumprice: pisumprice,
-            piunitCost: piunitCost
+            piunitCost: piunitCost,
+            picategory: category
         }
 
         //조립된 데이터를 기존 데이터에 스프레드 연산
@@ -141,6 +150,7 @@ const Product: React.FC = () => {
                         <th>판매단가</th>
                         <th>수량</th>
                         <th>합계금액</th>
+                        <th>도서분류</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -151,12 +161,13 @@ const Product: React.FC = () => {
                         <td><input type="number" name="piprice" value={piprice || ''} onChange={(e) => setPiprice(parseInt(e.target.value) || 0)} /></td>
                         <td><input type="number" name="piamount" value={piamount || ''} onChange={(e) => setPiamount(parseInt(e.target.value) || 0)} /></td>
                         <td>{pisumprice.toLocaleString()}원</td>
+                        <td><input type="text" name="category" onChange={(e) => setCategory(e.target.value)} /></td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colSpan={6}>
-                            <button type="button" onClick={addItem}>입력하기</button>
+                            <button className={Stayle.button_product} type="button" onClick={addItem}>입력하기</button>
                         </td>
                     </tr>
                 </tfoot>
@@ -171,6 +182,7 @@ const Product: React.FC = () => {
                         <th>판매단가</th>
                         <th>수량</th>
                         <th>합계금액</th>
+                        <th>도서분류</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -182,13 +194,14 @@ const Product: React.FC = () => {
                             <td>{e.piprice}원</td>
                             <td>{e.piamount}</td>
                             <td>{e.pisumprice}원</td>
+                            <td>{e.picategory}</td>
                         </tr>
                     ))}
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colSpan={6}>
-                            <button type="button" onClick={productSumit}>결산확정</button>
+                            <button className={Stayle.button_product} type="button" onClick={productSumit}>결산확정</button>
                         </td>
                     </tr>
                 </tfoot>
