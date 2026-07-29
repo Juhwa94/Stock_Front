@@ -86,7 +86,7 @@
     flex-direction: column;
     gap: 10px;
 }
-
+ 
 .smallButton {
     width: 120px;
     padding: 8px;
@@ -98,7 +98,7 @@
 }
 
 .smallButton:hover {
-    background: #000;
+    background: #201f1f;
     color: white;
 }
 
@@ -121,10 +121,10 @@
     transition: .2s;
 }
 
-/* .button:hover {
+.button:hover {
     background: #000;
     color: #fff;
-} */
+}
 
 .footer {
     border-top: 1px solid #333;
