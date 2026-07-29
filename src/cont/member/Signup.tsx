@@ -1,6 +1,7 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import DaumPostcode, { Address } from 'react-daum-postcode';
 
 interface MemberForm {
   email: string;
@@ -33,18 +34,14 @@ const Signup: React.FC = () => {
   const [isNickChecked, setIsNickChecked] = useState(false);
   const [pwdMessage, setPwdMessage] = useState('');
   const [isPwdMatched, setIsPwdMatched] = useState(false);
-
-
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
-
-  // 약관 상태 관리
   const [agreements, setAgreements] = useState<string[]>([]);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const urls = process.env.REACT_APP_BACK_END_URL;
-  console.log("BACKEND URL =", urls);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,45 +54,13 @@ const Signup: React.FC = () => {
       setEmailMessage('');
     }
   };
-  // // 이메일 중복 확인 
-  // const emailDuplicateCheck = async () => {
-  //   if (!form.email) {
-  //     alert('이메일을 입력해주세요.');
-  //     return;
-  //   }
-  //   try {
-  //     const res = await axios.get(
-  //       `${urls}/api/member/emailCheck`,
-  //       {
-  //         params: {
-  //           email: form.email
-  //         }
-  //       }
-  //     );
-  //     if (res.data === 0) {
-  //       setEmailMessage('사용 가능한 이메일입니다. 인증을 진행해주세요.');
-  //       setIsEmailChecked(true);
-  //     } else {
-  //       setEmailMessage('이미 사용 중인 이메일입니다.');
-  //       setIsEmailChecked(false);
-  //     }
-  //   } catch (error: any) {
-  //     console.log(error);
-  //     alert("이메일 중복 확인 오류");
-  //   }
-  // };
+
   useEffect(() => {
     if (!form.email.trim()) {
       setEmailMessage('');
       setIsEmailChecked(false);
       return;
     }
-
-    // const timer = setTimeout(() => {
-    //   emailDuplicateCheck();
-    // }, 500);
-
-    // return () => clearTimeout(timer);
 
   }, [form.email]);
   // 이메일 인증 요청
@@ -279,6 +244,28 @@ const Signup: React.FC = () => {
       console.error(error);
     }
   };
+  const handleCompleteAddress = (data: Address) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      storeaddr: fullAddress,
+    }));
+
+    setIsAddressModalOpen(false);
+  };
+
   //약관동의 모달팝업
   const openModal = (title: string, content: string) => {
     setModalTitle(title);
@@ -425,10 +412,30 @@ const Signup: React.FC = () => {
 
         {/* 주소 입력란 */}
         <div className="mb-3 row">
-          <label htmlFor="storeaddr" className="col-sm-3 col-form-label fw-bold">주소</label>
-          <div className="col-sm-9">
-            <input type="text" name="storeaddr" className="form-control" placeholder="도로명 주소를 입력하세요"
-              value={form.storeaddr} onChange={handleChange} required={form.authority === 'MEMBER'} />
+          <label className="col-sm-3 col-form-label fw-bold">
+            주소
+          </label>
+
+          <div className="col-sm-7">
+            <input
+              type="text"
+              name="storeaddr"
+              value={form.storeaddr}
+              readOnly
+              className="form-control bg-light"
+              placeholder="주소 검색 버튼을 클릭하세요"
+              required={form.authority === "MEMBER"}
+            />
+          </div>
+
+          <div className="col-sm-2">
+            <button
+              type="button"
+              className="btn btn-outline-primary w-100"
+              onClick={() => setIsAddressModalOpen(true)}
+            >
+              검색
+            </button>
           </div>
         </div>
         {/* 약관동의  */}
@@ -529,6 +536,42 @@ const Signup: React.FC = () => {
             </div>
           </div>
         </>
+      )}
+      {isAddressModalOpen && (
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          onClick={() => setIsAddressModalOpen(false)}
+        >
+          <div
+            className="modal-dialog modal-lg modal-dialog-centered"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content">
+
+              <div className="modal-header">
+                <h5 className="modal-title fw-bold">
+                  주소 검색
+                </h5>
+
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setIsAddressModalOpen(false)}
+                />
+              </div>
+
+              <div className="modal-body p-0">
+                <DaumPostcode
+                  onComplete={handleCompleteAddress}
+                  autoClose={false}
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
