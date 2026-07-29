@@ -57,7 +57,7 @@ const StockDetail: React.FC = () => {
             );
 
             alert("삭제 완료");
-            navigate("/");
+            navigate("/myStockList");
 
         } catch (error) {
             console.log(error);
@@ -118,11 +118,11 @@ const StockDetail: React.FC = () => {
                     <tr>
                         <td colSpan={2}>
                             {stock[0]?.MEMBERNUM === member?.mnum && (<>
-                                <button onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true); }}
+                                <button className={styles.listLink} onClick={() => { setSelectedSnum(stock[0].SNUM); setShowUpdateModal(true);}}
                                 >수정</button>
-                                <button onClick={handleDelete}>삭제</button>
+                                <button className={styles.listLink} onClick={handleDelete}>삭제</button>
                             </>)}
-                            <Link to="/" className={styles.listLink}>목록</Link>
+                            <Link to="/myStockList" className={styles.listLink}>목록</Link>
                         </td>
                     </tr>
                 </tfoot>
