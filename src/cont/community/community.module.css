@@ -96,7 +96,7 @@
 }
 
 .titleLink:hover{
-    color:#1e73ff;
+    color:#000000;
 }
 
 .noData{
@@ -157,20 +157,21 @@
 .pageButton{
     min-width:38px;
     height:38px;
-    border:1px solid #ccc;
+    border:none;
     background:#fff;
+    color: #888;
     cursor:pointer;
 }
 
 .pageButton:hover{
-    background:#f3f3f3;
+    background:#ffffff;
 }
 
 .activePage{
     min-width:38px;
     height:38px;
     border:none;
-    background:#222;
-    color:#fff;
+    background:#ffffff;
+    color:#000000;
     cursor:pointer;
 }

@@ -135,6 +135,7 @@ const CommForm: React.FC = () => {
         data.append("cwriter", formData.cwriter);
         data.append("ccontent", formData.ccontent);
         data.append("membernum", String(formData.membernum));
+        
 
         if (formData.mfile) {
             console.log(formData.mfile);
