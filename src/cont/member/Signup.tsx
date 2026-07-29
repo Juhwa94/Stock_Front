@@ -11,6 +11,7 @@ interface MemberForm {
   name: string;
   phone: string;
   storeaddr: string;
+  storeaddrDetail: string;
   authority: string;
 }
 
@@ -23,6 +24,7 @@ const Signup: React.FC = () => {
     name: '',
     phone: '',
     storeaddr: '',
+    storeaddrDetail: '',
     authority: 'MEMBER'
   });
 
@@ -212,7 +214,7 @@ const Signup: React.FC = () => {
         nick: form.nick,
         email: form.email,
         mphone: form.phone,
-        storeaddr: form.storeaddr,
+        storeaddr: form.storeaddr + ' ' + form.storeaddrDetail,
         logintype: "LOCAL",
         authority: form.authority,
         marketingAgree: agreements.includes('marketing') ? 'Y' : 'N'
@@ -418,6 +420,23 @@ const Signup: React.FC = () => {
             >
               검색
             </button>
+          </div>
+        </div>
+        {/* 상세주소 입력란 추가 */}
+        <div className="mb-3 row">
+          <label className="col-sm-3 col-form-label fw-bold">
+            상세주소
+          </label>
+
+          <div className="col-sm-9">
+            <input
+              type="text"
+              name="storeaddrDetail"
+              value={form.storeaddrDetail}
+              onChange={handleChange}
+              className="form-control"
+              placeholder="상세주소를 입력해주세요"
+            />
           </div>
         </div>
         {/* 약관동의  */}
