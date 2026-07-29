@@ -26,3 +26,8 @@
 .managementContainer input{
     width: 80 !important;
 }
+.resultContainer button{
+    padding: 10px;
+    align-items: center;
+    text-align: right;
+}

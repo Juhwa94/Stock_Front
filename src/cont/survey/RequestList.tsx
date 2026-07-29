@@ -14,14 +14,6 @@ const backendUrl = process.env.REACT_APP_BACK_END_URL;
 
 const RequestList: React.FC<Props> = ({ requests }) => {
 
-    const deleteOldRequest = async () => {
-        try {
-            const response = await axios.delete(`${backendUrl}/api/survey/delOldRequest`);
-            console.log("삭제 완료.")
-        } catch (error) {
-            console.log("삭제하는데 오류가 생겼습니다.", error);
-        }
-    }
 
     return (
         <ul className={style.board}>
@@ -50,16 +42,6 @@ const RequestList: React.FC<Props> = ({ requests }) => {
                 </p>
             )
             }
-            <li>
-                <div className={style.buttonContainer}>
-                    <button
-                        type="button"
-                        onClick={deleteOldRequest}
-                    >
-                        오래된 요청 사항 삭제
-                    </button>
-                </div>
-            </li>
         </ul>
     );
 };

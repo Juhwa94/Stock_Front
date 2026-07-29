@@ -103,6 +103,14 @@ const SurveyManagement: React.FC = () => {
         };
         fetchRequests();
     }, []);
+    const deleteOldRequest = async () => {
+        try {
+            const response = await axios.delete(`${backendUrl}/api/survey/delOldRequest`);
+            console.log("삭제 완료.")
+        } catch (error) {
+            console.log("삭제하는데 오류가 생겼습니다.", error);
+        }
+    }
 
     //console.log(requests);
     const dataHandler = (responseData: Data) => {
@@ -176,6 +184,13 @@ const SurveyManagement: React.FC = () => {
                 <RequestList
                     requests={requests}
                 />
+                <button
+                        type="button"
+                        className={"btn btn-primary fw-bold px-4 py-2"}
+                        onClick={deleteOldRequest}
+                    >
+                        오래된 요청 사항 삭제
+                </button>
             </div>
         </div>
     );
