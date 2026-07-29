@@ -3,6 +3,8 @@ import Stayle from './order.module.css'
 import Signature from './Signature'
 import axios from 'axios';
 
+import { useAuth } from '../../comp/AuthProvider';
+
 
 
 export interface OrderForm {
@@ -31,7 +33,6 @@ const Order: React.FC = () => {
     //-------Form--------------------------------
     const [orderForm, setOrderForm] = useState<OrderForm | null>(null);
     const [oname, setOname] = useState<string>('');
-    const [mnum, setMnum] = useState<string>('');
     const [oaddr, setOaddr] = useState<string>('');
     const [ofcompany, setOfcompany] = useState<string>('');
     const [ophone, setOphone] = useState<string>('');
@@ -44,6 +45,9 @@ const Order: React.FC = () => {
     const [oipublisher, setOipublisher] = useState<string >("");
     const [oiprice, setOiprice] = useState<number>(0);
     const [oiamount, setOiamount] = useState<number>(0);
+
+    // 세션 회원 데이터 가져오기
+    const { member } = useAuth();
 
     const itmeList = () => {
         let oiSumPrice = oiprice * oiamount;
@@ -69,26 +73,12 @@ const Order: React.FC = () => {
         setOipublisher('');
         setOiprice(0);
         setOiamount(0);
-        setMnum('5');
     }
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await axios.get(`${backendUrl}/api/login/session`, {
-                    withCredentials: true,
-                });
-                setMnum(res.data.mnum);
-            } catch (error) {
-                console.error("세션 조회 실패(mnum), 더미데이터로 대체합니다(mnum : 5):", error);
-            }
-        })();
-    }, []);
 
 
     useEffect(() => {
         const assembledForm = {
-            mnum: mnum,
+            mnum: String(member?.mnum),
             oname: oname,
             oaddr: oaddr,
             ophone: ophone,
