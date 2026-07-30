@@ -32,7 +32,7 @@ const StockForm: React.FC = () => {
         sauthor: '',
         samount: 0,
         sprice: 0,
-        membernum: member?.mnum || 2,
+        membernum: Number(member?.mnum),
         images: [] // 여러개의 이미지 파일 [data:img/psgAS,data:img/pngAS]
     })
     // 미리보기를 구현할때 사용하는 상태관리 + 미리보기를 모달로
@@ -241,11 +241,11 @@ const StockForm: React.FC = () => {
             </form>
             {showModal && (
                 <div
-                    className={styles.modalOverlay}
+                    className={styles.modalBackground}
                     onClick={() => setShowModal(false)}
                 >
                     <div
-                        className={styles.modal}
+                        className={styles.imageModal}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h3>이미지 미리보기</h3>
