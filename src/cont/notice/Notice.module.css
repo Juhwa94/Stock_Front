@@ -95,9 +95,9 @@
     text-overflow:ellipsis;
 }
 
- /* .titleLink:hover{
-    color:#1e73ff;
-} */
+  .titleLink:hover{
+    color:#030303;
+} 
 
 .noData{
     padding:40px;

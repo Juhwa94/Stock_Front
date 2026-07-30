@@ -67,9 +67,9 @@
     white-space: nowrap;
 }
 
-.deleteButton:hover {
+/* .deleteButton:hover {
     color: #fcfcfc;
-}
+} */
 
 .form {
     display: flex;
@@ -103,7 +103,7 @@
 
 .submitButton {
     background: #000000;
-    color: #fcfcfc;
+    color: #fafafa;
     border: 1px solid #000000;
     padding: 8px 24px;
     font-size: 13px;
@@ -113,9 +113,9 @@
     transition: 0.2s;
 }
 
-.submitButton:hover {
+ .submitButton:hover {
     background: #333333;
-}
+} 
 /* ===========================
    댓글 페이지 버튼
 =========================== */
@@ -133,14 +133,14 @@
     height: 36px;
     padding: 0 12px;
     border: none;
-    background: #fff;
+    background: #fafafa;
     color: #888;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.active {
+ .active {
     background: #ffffff !important;
     color: #000000 !important;
     border-color: #ffffff !important;

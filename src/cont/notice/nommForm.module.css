@@ -8,11 +8,11 @@
     box-sizing: border-box;
 }
 
-.pageTitle {
+    .pageTitle {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 30px;
-}
+} 
 
 .formGroup {
     margin-bottom: 25px;
@@ -97,10 +97,10 @@
     transition: 0.2s;
 }
 
-.smallButton:hover {
+ .smallButton:hover {
     background: #000;
     color: white;
-}
+} 
 
 .buttonArea {
     display: flex;
@@ -113,18 +113,19 @@
 .button {
     width: 140px;
     padding: 10px 0;
-    border: 1px solid #000;
+    border: 1px solid #ffffff;
     background: rgb(0, 0, 0);
     cursor: pointer;
     font-size: 15px;
+    color: #ffffff;
     font-weight: bold;
     transition: .2s;
 }
 
-.button:hover {
+/* .button:hover {
     background: #000;
     color: #fff;
-}
+} */
 
 .footer {
     border-top: 1px solid #333;
