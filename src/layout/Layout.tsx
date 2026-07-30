@@ -6,6 +6,7 @@ import styles from "../cont/admin/adminManage.module.css"
 //import Navbar from '../components/navbar/Navbar'; /////
 import Navbar from './Navbar';/////
 import { useAuth } from '../comp/AuthProvider';//////
+import logo from "../images/project_logo2.png"
 // children : 컴포넌트의 여는 태그와 닫는 태그 사이에 들어가는 내용을 의미하는 props
 interface LayoutProps {
   children: React.ReactNode;
@@ -46,7 +47,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     >
       {adminLayout ? (
         <>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}><h1>프로젝트 로고</h1></Link>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>  <img
+                src={logo}
+                alt="Project Logo2"
+                style={{
+                  height: "150px",
+                  width: "auto",
+                  display: "block",
+                }}
+              /></Link>
         </>
       ) : !isSimpleLayout ? (
         <>
@@ -61,14 +70,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               alignItems: 'center',
             }}
           >
-            <h1>
-              <Link
-                to="/"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                프로젝트 로고
-              </Link>
-            </h1>
+            <Link to="/">
+              <img
+                src={logo}
+                alt="Project Logo2"
+                style={{
+                  height: "150px",
+                  width: "auto",
+                  display: "block",
+                }}
+              />
+            </Link>
 
             <div className={styles.buttonContainer}>
               {member?.authority === 'ADMIN' && (
@@ -106,14 +118,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               alignItems: 'center',
             }}
           >
-            <h1>
-              <Link
-                to="/"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                프로젝트 로고
-              </Link>
-            </h1>
+     
           </header>
         </>
       )}

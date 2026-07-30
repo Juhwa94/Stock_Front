@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../comp/AuthProvider";
-
+import logo from "../images/project_logo2.png"
 const Admin: React.FC = () => {
 
   const { member } = useAuth();
