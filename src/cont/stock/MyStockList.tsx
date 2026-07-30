@@ -88,9 +88,13 @@ const MyStockList: React.FC = () => {
 
     return (
         <div className={`${styles.stockContainer} ${styles.table_responsive}`}>
+            <div className={styles.stockHeader}>
+                <h2>재고관리</h2>
 
-            <h2>재고관리</h2>
-
+                <Link to="/stockForm" className={styles.registerBtn}>
+                    재고등록
+                </Link>
+            </div>
             <table className={styles.stockTable}>
                 <thead>
                     <tr>

@@ -481,3 +481,76 @@ input[type="file"].input {
     background:#f8f9fa;
     cursor:pointer;
 }
+
+.stockHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stockHeader h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.registerBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.registerBtn:hover {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+.registerBtn:visited {
+    color: #fff;
+}
+
+.imageGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.removeBtn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: #e03131;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.removeBtn:hover {
+    background: #c92a2a;
+}
+
+.previewBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: #4c6ef5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.previewBtn:hover {
+    background: #3b5bdb;
+}
