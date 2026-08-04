@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../comp/AuthProvider';
 
-
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -14,19 +13,22 @@ const Login: React.FC = () => {
 
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
+  // 이전 페이지 경로 추적
   let from = '/';
   const state = location.state as { from?: Location | string };
 
   if (state?.from) {
-    if (typeof state.from == 'string') {
+    if (typeof state.from === 'string') {
       from = state.from;
     } else if (typeof state.from === 'object') {
       from = (state.from as Location).pathname;
     }
-
   } else if (searchParams.get('from')) {
     from = searchParams.get('from')!;
   }
+
+  // 입력값 변경 핸들러
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -34,36 +36,39 @@ const Login: React.FC = () => {
     });
   };
 
-  const submitLogin = async (e?: React.SubmitEvent) => {
+  // 로그인 제출 핸들러
+  const submitLogin = async (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
+
     if (!formData.email || !formData.password) {
       setMessage('이메일과 비밀번호를 입력해주세요.');
       return;
-    } else {
-      const result = await login(formData.email, formData.password);
-      if (result === 'success') {
-        setMessage('로그인 성공!');
-        
-        //{replace:true} 웹페이지 에서 로그인 이후 이동 하는 경로 , 뒤로 가기를 막아주는 역할
-        navigate(from, {replace:true});
-      } else if (result === 'fail') {
-        setMessage('아이디 또는 비밀번호가 틀렸습니다.');
-      } else {
-        setMessage('서버 오류');
-      }
     }
 
+    const result = await login(formData.email, formData.password);
+
+    if (result === 'success') {
+      setMessage('로그인 성공!');
+      // 로그인 완료 후 지정된 이전 페이지로 이동 (뒤로가기 방지)
+      navigate(from, { replace: true });
+    } else if (result === 'fail') {
+      setMessage('아이디 또는 비밀번호가 틀렸습니다.');
+    } else {
+      setMessage('서버 오류');
+    }
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: '50px',
-      height: '100vh'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '50px',
+        height: '100vh',
+      }}
+    >
       <form
         onSubmit={submitLogin}
         style={{
@@ -73,9 +78,9 @@ const Login: React.FC = () => {
           borderRadius: '12px',
           boxShadow: '0 0 10px rgba(0,0,0,0.1)',
           textAlign: 'center',
-          backgroundColor: '#fff'
-        }}>
-
+          backgroundColor: '#fff',
+        }}
+      >
         <h2 style={{ marginBottom: '20px' }}>로그인</h2>
 
         {/* 이메일 입력창 */}
@@ -84,7 +89,12 @@ const Login: React.FC = () => {
           value={formData.email}
           onChange={inputChange}
           placeholder="이메일"
-          style={{ width: '100%', padding: '8px', marginBottom: '10px', boxSizing: 'border-box' }}
+          style={{
+            width: '100%',
+            padding: '8px',
+            marginBottom: '10px',
+            boxSizing: 'border-box',
+          }}
         />
 
         {/* 비밀번호 입력창 */}
@@ -94,21 +104,34 @@ const Login: React.FC = () => {
           value={formData.password}
           onChange={inputChange}
           placeholder="비밀번호"
-          style={{ width: '100%', padding: '8px', marginBottom: '15px', boxSizing: 'border-box' }}
+          style={{
+            width: '100%',
+            padding: '8px',
+            marginBottom: '15px',
+            boxSizing: 'border-box',
+          }}
         />
 
         {/* 로그인 버튼 */}
         <button
           type="submit"
-          style={{ width: '100%', padding: '10px', backgroundColor: '#0360d9', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+          style={{
+            width: '100%',
+            padding: '10px',
+            backgroundColor: '#0360d9',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
         >
           로그인
         </button>
 
         {/* 안내 메시지 */}
         <p style={{ marginTop: '10px', color: 'red', fontSize: '14px' }}>{message}</p>
-
       </form>
+
       {/* 하단 회원가입 이동 링크 */}
       <div className="login-footer" style={{ marginTop: '20px', textAlign: 'center' }}>
         <span className="footer-text" style={{ color: '#666', marginRight: '5px' }}>
@@ -122,7 +145,7 @@ const Login: React.FC = () => {
           회원가입하기
         </Link>
       </div>
-    </div >
+    </div>
   );
 };
 
