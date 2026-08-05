@@ -22,17 +22,15 @@
 
   
 ## 💻 개발환경
-> - **Language** : Java, Kotlin
-> - **IDE** : Android Studio
-> - **Database** : MySQL
-> - **Sensor** : Raspberry Pi
+> - **Language** : Java, JavaScript, TypeScript, HTML, CSS
+> - **IDE** : Visual Studio Code, Eclipse
+> - **Database** : Oracle
 
 
 ## ⚙️ 기술 스택
-> - **Java**
-> - **AWS EC2**
-> - **MySQL DBMS**
-> - **Node.js**
+> - **Spring Boot**
+> - **React**
+> - **Oracle**
 
 
 ## 🧰 협업 도구
