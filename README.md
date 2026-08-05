@@ -28,9 +28,9 @@
 
 
 ## ⚙️ 기술 스택
-> - **Spring Boot**
-> - **React**
-> - **Oracle**
+> - **Spring Boot** - 백엔드
+> - **React** - 프론트엔드
+> - **Oracle** - 데이터베이스
 
 
 ## 🧰 협업 도구
