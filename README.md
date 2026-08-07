@@ -9,6 +9,9 @@ https://youtu.be/sU0ogD0SPSw
 
 ## 🚀 배포 주소
 https://stockfront-production.up.railway.app
+> - Railway를 이용하여 프론트엔드와 백엔드 배포를 진행했습니다.
+> - 프로젝트의 전체 기능은 시연 영상을 통해 확인하실 수 있으며, 로컬 환경에서는 정상적으로 실행됩니다.
+> - 배포 문제는 지속적으로 수정 중입니다.
 
 ## 🎥 프리젠테이션
 https://drive.google.com/file/d/16ZEfj61N7T6VEQeNHA-rA1HqBN8_2XZq/view?usp=sharing
