@@ -2,11 +2,10 @@
 > 서점 리테일러들이 매장 정보를 인증하여 매출과 재고를 관리하여 효율적 거래를 할 수 있도록 도와주는 웹사이트입니다.
 
 ## 🎥 시연 영상
-
+https://youtu.be/sU0ogD0SPSw
 
 ## 🚀 배포 주소
 https://stockfront-production.up.railway.app
-
 
 ## 🎥 프리젠테이션
 
