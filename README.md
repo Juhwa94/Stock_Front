@@ -43,10 +43,14 @@ https://drive.google.com/file/d/16ZEfj61N7T6VEQeNHA-rA1HqBN8_2XZq/view?usp=shari
 
 
 ## ⚙️ 기술 스택
-> - **Spring Boot** - 백엔드
-> - **React** - 프론트엔드
-> - **Oracle** - 데이터베이스
-
+> - **React + TypeScript** 
+> - **Spring Boot** 
+> - **DB 연동** 
+> - **회원 기능**
+> - **재고관리**
+> - **매출/판매/발주 관리**
+> - **배포 시도**
+> - **CORS, 환경변수, 서버 문제 해결 경험**
 
 ## 🧰 협업 도구
 > - **Slack**
