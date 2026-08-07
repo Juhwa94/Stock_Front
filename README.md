@@ -8,7 +8,7 @@ https://youtu.be/sU0ogD0SPSw
 https://stockfront-production.up.railway.app
 
 ## 🎥 프리젠테이션
-
+https://drive.google.com/file/d/16ZEfj61N7T6VEQeNHA-rA1HqBN8_2XZq/view?usp=sharing
 
 ## 👨‍🏫 프로젝트 소개
 > 본 프로젝트는 서점 리테일러의 효율적인 매장 운영을 지원하기 위한 재고·매출 관리 웹 서비스입니다. 매장 인증을 기반으로 상품 재고 관리, 판매 내역 조회, 매출 분석, 발주 관리 기능을 구현하여 리테일러의 업무 편의성을 높였습니다. 데이터 기반의 의사결정을 통해 재고 관리 효율성을 개선하고 안정적인 거래 환경을 제공하는 것을 목표로 개발하였습니다.
